@@ -1,9 +1,14 @@
-import Sidebar from "@/component/Shared/sidebar"
-export default function Dashboard({children}){
-    return(
-        <>
-        <Sidebar/>
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/Shared/sidebar"
+
+export default function Layout({ children }) {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger />
         {children}
-        </>
-    )
+      </main>
+    </SidebarProvider>
+  )
 }
