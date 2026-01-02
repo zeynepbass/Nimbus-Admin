@@ -2,11 +2,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import users from "@/data/users.json";
-import { hasPermission, PERMISSIONS } from "@/helper/permissions";
+// import { hasPermission, PERMISSIONS } from "@/helper/permissions";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -18,11 +18,11 @@ export default function LoginPage() {
     }
 
     localStorage.setItem("user", user.email);
-    if (hasPermission(user.role, PERMISSIONS.PANEL_VIEW)) {
-      router.replace("/panel");
-    } else {
-      router.replace("/dashboard");
-    }
+    // if (hasPermission(user.role, PERMISSIONS.PANEL_VIEW)) {
+    //   router.replace("/panel");
+    // } else {
+    //   router.replace("/dashboard");
+    // }
   };
 
   return (

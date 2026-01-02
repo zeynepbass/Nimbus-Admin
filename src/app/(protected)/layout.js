@@ -4,7 +4,8 @@ import { AppSidebar } from "@/components/Shared/sidebar";
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import {getCurrentUser} from "@/lib/auth";
-import { hasPermission, PERMISSIONS } from "@/helper/permissions";
+import { roles } from "@/helper/role";
+
 
 export default function ProtectedLayout({ children }) {
   const router = useRouter();
@@ -13,29 +14,17 @@ export default function ProtectedLayout({ children }) {
   useEffect(() => {
     const user = getCurrentUser();
 
-    if (!user) {
+    if (!user || !user.email) {
       router.replace("/login");
       return;
     }
 
-    const routePermissionMap = {
-      "/panel": PERMISSIONS.PANEL_VIEW,
-      "/dashboard": PERMISSIONS.DASHBOARD_VIEW,
-    };
+    if (user.role === roles.USER && pathname.startsWith("/panel")) {
+      router.replace("/dashboard");
+    }
 
-    const requiredPermission = Object.keys(routePermissionMap)
-      .find(route => pathname.startsWith(route));
-
-    if (
-      requiredPermission &&
-      !hasPermission(user.role, routePermissionMap[requiredPermission])
-    ) {
-
-      router.replace(
-        hasPermission(user.role, PERMISSIONS.PANEL_VIEW)
-          ? "/panel"
-          : "/dashboard"
-      );
+    if (user.role === roles.ADMIN && pathname.startsWith("/dashboard")) {
+      router.replace("/panel");
     }
   }, [pathname]);
 
