@@ -1,11 +1,28 @@
-import React from 'react'
+import Image from "next/image";
+import LoginForm  from "@/components/Shared/login";
 
-const page = () => {
+const Page = () => {
   return (
-    <div>
-      login
-    </div>
-  )
-}
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+      
 
-export default page
+      <div className="relative hidden md:block">
+        <Image
+          src="/images/wallpaper.jpg"   
+          alt="Login image"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+
+
+      <div className="flex items-center justify-center">
+        <LoginForm />
+      </div>
+
+    </div>
+  );
+};
+
+export default Page;

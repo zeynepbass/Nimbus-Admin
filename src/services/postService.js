@@ -1,4 +1,4 @@
-import fetcher from "@/app/lib/post"
+import fetcher from "@/lib/fetcher"
 
 const BASE_URI = process.env.NEXT_PUBLIC_API_BASE_URL
 

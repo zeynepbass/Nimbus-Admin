@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "name": "Zeynep Baş",
+      "email": "zeynepbas@gmail.com",
+      "password": "123",
+      "role": "ADMIN"
+    },
+    {
+      "id": 2,
+      "name": "Test User",
+      "email": "user@gmail.com",
+      "password": "123",
+      "role": "USER"
+    }
+  ]
+  

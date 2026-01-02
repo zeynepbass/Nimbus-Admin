@@ -1,5 +1,5 @@
 "use client";
-import usePost  from "@/app/hooks/usePost";
+import usePost  from "@/hooks/usePost";
 export default function GetPage() {
   const { data } = usePost();
   return (

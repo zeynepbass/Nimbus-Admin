@@ -31,7 +31,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
 
-        {/* PLATFORM */}
+
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
 

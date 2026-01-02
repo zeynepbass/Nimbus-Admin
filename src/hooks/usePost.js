@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { postService } from "@/app/services/postService";
+import { postService } from "@/services/postService";
 
 export default function usePost() {
   const [data, setData] = useState([]);
