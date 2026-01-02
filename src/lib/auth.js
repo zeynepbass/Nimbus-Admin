@@ -4,8 +4,20 @@ import users from "@/data/users.json";
 export function getCurrentUser() {
   if (typeof window === "undefined") return null;
 
-  const token = localStorage.getItem("user");
-  if (!token) return null;
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user || null;
+}
 
-  return users.find(u => u.email === token) || null;
+export function authFormSetting(email, password) {
+  const user = users.find(
+    item => item.email === email && item.password.toString() === password.toString()
+  );
+
+  if (user) {
+    const settingUser=users.find((item)=>item.email===user.email)
+    localStorage.setItem("user", JSON.stringify(settingUser)); 
+    return user;
+  }
+
+  return null;
 }
