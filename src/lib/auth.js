@@ -4,7 +4,7 @@ import users from "@/data/users.json";
 export function getCurrentUser() {
   if (typeof window === "undefined") return null;
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = localStorage.getItem("user");
   return user || null;
 }
 
