@@ -1,7 +1,7 @@
 import fetcher from "@/lib/fetcher"
-
-const BASE_URI = process.env.NEXT_PUBLIC_API_BASE_URL
-
-export const postService = {
-  getAll: () => fetcher(BASE_URI),
+import { API_URL } from "@/constant/api"
+export default function postService () {
+  return{
+    getAll: () => fetcher(API_URL.POSTS)
+  }
 }
