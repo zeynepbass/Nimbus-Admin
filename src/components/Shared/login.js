@@ -1,12 +1,13 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { authFormSetting,getCurrentUser } from "@/lib/auth";
+import { authFormSetting, getCurrentUser } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
- import { Input } from "@/components/ui/input";
-  import { Label } from "@/components/ui/label";
-  import { roles } from "@/helper/role";
-// import { hasPermission, PERMISSIONS } from "@/helper/permissions";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { roles } from "@/helper/role";
+import { saveLastLogin } from "@/helper/last-login"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("user@gmail.com");
@@ -15,51 +16,99 @@ export default function LoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-   const user = getCurrentUser();
+
+    const user = getCurrentUser();
     const userSetting = authFormSetting(email, password);
+
     if (!userSetting) return alert("Email veya şifre hatalı");
-    if (user.role === roles.ADMIN) {
-      router.replace("/panel");
-    } else {
-      router.replace("/dashboard");
-    }
+
+    router.replace(
+   user.role === roles.ADMIN ? "/panel" : "/dashboard"
+    );
+    saveLastLogin()
   };
 
   return (
-    <form
-      onSubmit={handleLogin}
-      className="w-full max-w-sm space-y-4 bg-[rgb(243,243,243)] p-4 rounded-md"
-    >
-      {" "}
-      <h1 className="text-[rgb(242,168,76)] text-center text-xl font-bold">
-        Giriş Yap
-      </h1>{" "}
-      <div className="space-y-1">
-        {" "}
-        <Label htmlFor="email">Email</Label>{" "}
-        <Input
-          id="email"
-          type="email"
-          placeholder="mail@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />{" "}
-      </div>{" "}
-      <div className="space-y-1">
-        {" "}
-        <Label htmlFor="password">Şifre</Label>{" "}
-        <Input
-          id="password"
-          type="password"
-          placeholder="******"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />{" "}
-      </div>{" "}
-      <Button type="submit" className="w-full bg-[rgb(49,71,81)]">
-        {" "}
-        Giriş Yap{" "}
-      </Button>{" "}
-    </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <form
+        onSubmit={handleLogin}
+        className="
+          w-full max-w-sm
+ 
+          border
+          border-gray-200
+          p-6
+          space-y-4
+        "
+      >
+
+        <h1 className="text-lg font-semibold text-gray-700 text-center">
+          ERP Sistem Girişi
+        </h1>
+
+
+        <div className="space-y-1">
+          <Label htmlFor="email" className="text-xs text-gray-600">
+            E-posta
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="
+              h-9
+              rounded-sm
+              border-gray-300
+              text-sm
+              focus-visible:ring-0
+              focus:border-gray-500
+            "
+          />
+        </div>
+
+
+        <div className="space-y-1">
+          <Label htmlFor="password" className="text-xs text-gray-600">
+            Şifre
+          </Label>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="
+              h-9
+              rounded-sm
+              border-gray-300
+              text-sm
+              focus-visible:ring-0
+              focus:border-gray-500
+            "
+          />
+        </div>
+
+
+        <Button
+          type="submit"
+          className="
+            w-full
+            h-9
+            rounded-sm
+            bg-gray-500
+            hover:bg-gray-600
+            text-sm
+            font-normal
+          "
+        >
+          Giriş
+        </Button>
+
+
+        <p className="text-[11px] text-gray-400 text-center pt-2">
+          Yetkisiz erişimler kayıt altına alınmaktadır
+        </p>
+      </form>
+    </div>
   );
 }

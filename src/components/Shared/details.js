@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import usePost from "@/hooks/usePost";
-import { useParams } from "next/navigation";
 
 export default function DetailPage({id}) {
   const { details, getDetails } = usePost();

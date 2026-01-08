@@ -21,6 +21,8 @@ export function UserProfile() {
   const router=useRouter();
   const handleLogOut=()=>{
     router.push("/login")
+    localStorage.removeItem("user")
+    localStorage.removeItem("lastLogin")
   }
   return (
     <SidebarMenu>
@@ -41,7 +43,7 @@ export function UserProfile() {
             </span>
           </div>
 
-          <SidebarMenuButton tooltip="logout"  className="pl-10" onClick={handleLogOut}>
+          <SidebarMenuButton tooltip="logout"  className="flex items-center justify-end w-full outline-none" onClick={handleLogOut}>
           <LogOut />
           </SidebarMenuButton>
         </SidebarMenuButton>
@@ -55,7 +57,7 @@ export function UserProfile() {
           <SidebarMenuButton tooltip="Settings">
             <DropdownMenu>
               <DropdownMenuTrigger>
-              <Settings />
+
  
               </DropdownMenuTrigger>
               <DropdownMenuContent>

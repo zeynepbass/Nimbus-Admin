@@ -1,7 +1,10 @@
 "use client";
 
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/Shared/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/Shared/sidebar";
+
+import Header from "@/components/Shared/header";
+
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -15,38 +18,42 @@ export default function ProtectedLayout({ children }) {
   useEffect(() => {
     const user = getCurrentUser();
 
-    // ! login değil
     if (!user) {
       router.replace("/login");
       return;
     }
 
-    // USER → dashboard dışında bir yere giremez
     if (user.role === roles.USER && pathname.startsWith("/panel")) {
       router.replace("/dashboard");
       return;
     }
 
-    // ADMIN → dashboard'a giremez
     if (user.role === roles.ADMIN && pathname.startsWith("/dashboard")) {
       router.replace("/panel");
       return;
     }
 
-    // ! her şey uygunsa render edilebilir
     setChecking(false);
   }, [pathname]);
 
-  // ! yetki kontrolü bitmeden HİÇBİR ŞEY GÖSTERME
   if (checking) return null;
 
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <main>
-        <SidebarTrigger />
-        {children}
-      </main>
+      <div className="flex h-screen w-full">
+        <AppSidebar />
+
+        <div className="flex flex-col flex-1">
+          <Header />
+
+          <main className="flex-1 overflow-auto p-4">{children}</main>
+          <h5 className="text-right text-gray-400 p-3 text-sm">
+  Nimbus Admin © 2026 · Role-based Access · Audit Ready
+</h5>
+
+
+        </div>
+      </div>
     </SidebarProvider>
   );
 }
