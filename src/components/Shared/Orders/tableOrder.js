@@ -17,16 +17,12 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import formatDate from "@/helper/formatDate"
 const statusStyle = {
-  completed: "bg-green-100 text-green-700",
-  pending: "bg-yellow-100 text-yellow-700",
-  cancelled: "bg-red-100 text-red-700",
+  Tamamlandı: "bg-green-100 text-green-700",
+  Beklemede: "bg-yellow-100 text-yellow-700",
+  İptal: "bg-red-100 text-red-700",
 };
 
-const statusText = {
-  completed: "Tamamlandı",
-  pending: "Beklemede",
-  cancelled: "İptal",
-};
+
 
 export default function Page() {
   const [orders, setOrders] = useState(initialOrders);
@@ -83,7 +79,7 @@ export default function Page() {
                         statusStyle[order.status]
                       }`}
                     >
-                      {statusText[order.status]}
+                      {order.status}
                     </span>
                   </div>
                 </TableCell>

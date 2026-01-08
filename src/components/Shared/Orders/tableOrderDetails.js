@@ -24,7 +24,11 @@ import formatDate from "@/helper/formatDate"
 export default function OrderDetailsClient({ order }) {
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
-
+  const statusStyle = {
+    Tamamlandı: "bg-green-100 text-green-700",
+    Beklemede: "bg-yellow-100 text-yellow-700",
+    İptal: "bg-red-100 text-red-700",
+  };
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <div ref={contentRef}>
@@ -38,7 +42,7 @@ export default function OrderDetailsClient({ order }) {
             <p><b>Tarih:</b> {formatDate(order.createdAt)}</p>
             <p><b>Toplam:</b>  ₺{order.totalPrice}</p>
             <p><b>Ödeme:</b>  {order.paymentMethod}</p>
-            <Badge>{order.status}</Badge>
+            <Badge className={statusStyle[order.status]}>{order.status}</Badge>
           </CardContent>
         </Card>
 
