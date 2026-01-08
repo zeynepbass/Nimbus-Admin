@@ -15,7 +15,7 @@ import initialOrders from "@/data/orders.json";
 import { useRouter } from "next/navigation";
 
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import formatDate from "@/helper/formatDate"
 const statusStyle = {
   completed: "bg-green-100 text-green-700",
   pending: "bg-yellow-100 text-yellow-700",
@@ -68,8 +68,8 @@ export default function Page() {
               <TableRow key={order.id} className="group relative">
                 <TableCell className="font-medium">{order.id}</TableCell>
                 <TableCell>{order.customerName}</TableCell>
-                <TableCell>{order.createdAt}</TableCell>
-                <TableCell>{order.totalPrice}</TableCell>
+                <TableCell>{formatDate(order.createdAt)}</TableCell>
+                <TableCell>{order.totalPrice} TL</TableCell>
                 <TableCell>{order.paymentMethod}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">

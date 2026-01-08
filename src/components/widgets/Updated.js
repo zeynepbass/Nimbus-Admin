@@ -1,6 +1,8 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -11,8 +13,51 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { MoreVertical } from "lucide-react";
+import { toast } from "sonner";
 
-export default function SheetDemo() {
+export default function SheetDemo({ order }) {
+  const [items, setItems] = useState(order.items);
+  const [total, setTotal] = useState(order.totalPrice);
+  const [formData, setFormData] = useState({
+    customerName: order.customerName,
+    paymentMethod: order.paymentMethod,
+  });
+
+  const [openMenu, setOpenMenu] = useState(null);
+
+
+  useEffect(() => {
+    const newTotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    setTotal(newTotal);
+  }, [items]);
+
+  const handleDelete = (productId) => {
+    const updatedItems = items.filter((i) => i.productId !== productId);
+    setItems(updatedItems);
+    toast.success("Ürün silindi / iade edildi!");
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    const payload = {
+      ...formData,
+      items,
+      total,
+    };
+    console.log("Kaydedilecek veri:", payload);
+    toast.success("Değişiklikler kaydedildi!");
+
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -23,21 +68,66 @@ export default function SheetDemo() {
           <SheetTitle>Güncelle</SheetTitle>
           <SheetDescription>
             Değişiklikler yapmak için buraya tıklayın. İşleminiz bittiğinde
-            kaydet'e tıklayın.
+            Kaydet'e tıklayın.
           </SheetDescription>
         </SheetHeader>
+
         <div className="grid flex-1 auto-rows-min gap-6 px-4">
-          <div className="grid gap-3">
-            <Label htmlFor="sheet-demo-name">Name</Label>
-            <Input id="sheet-demo-name" defaultValue="Pedro Duarte" />
-          </div>
-          <div className="grid gap-3">
-            <Label htmlFor="sheet-demo-username">Username</Label>
-            <Input id="sheet-demo-username" defaultValue="@peduarte" />
-          </div>
+          <Input
+            name="customerName"
+            value={formData.customerName}
+            onChange={handleChange}
+          />
+          <Input
+            value={new Date(order.createdAt).toLocaleString()}
+            readOnly
+          />
+          <Input value={total} readOnly />
+          <Input
+            name="paymentMethod"
+            value={formData.paymentMethod}
+            onChange={handleChange}
+          />
+
+          <Table>
+            <TableBody>
+              {items.map((item) => (
+                <TableRow key={item.productId}>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.quantity}</TableCell>
+                  <TableCell>₺{item.price}</TableCell>
+                  <TableCell>₺{item.price * item.quantity}</TableCell>
+                  <TableCell className="relative">
+                    <button
+                      className="p-1 rounded hover:bg-gray-100"
+                      onClick={() =>
+                        setOpenMenu(
+                          openMenu === item.productId ? null : item.productId
+                        )
+                      }
+                    >
+                      <MoreVertical className="h-4 w-4" />
+                    </button>
+
+                    {openMenu === item.productId && (
+                      <div className="absolute right-0 top-6 w-28 bg-white border rounded shadow-md z-10">
+                        <button
+                          className="px-2 py-1 hover:bg-gray-100 w-full text-left"
+                          onClick={() => handleDelete(item.productId)}
+                        >
+                          İptal / İade
+                        </button>
+                      </div>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
-        <SheetFooter>
-          <Button type="submit">Kaydet</Button>
+
+        <SheetFooter className="flex justify-between">
+          <Button onClick={handleSave}>Kaydet</Button>
           <SheetClose asChild>
             <Button variant="outline">Çık</Button>
           </SheetClose>

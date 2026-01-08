@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Updated from "@/components/widgets/Updated";
+import formatDate from "@/helper/formatDate"
 export default function OrderDetailsClient({ order }) {
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
@@ -33,10 +34,10 @@ export default function OrderDetailsClient({ order }) {
             <CardDescription>{order.id}</CardDescription>
           </CardHeader>
           <CardContent>
-            <p>Müşteri: {order.customerName}</p>
-            <p>Tarih: {new Date(order.createdAt).toLocaleString()}</p>
-            <p>Toplam: ₺{order.totalPrice}</p>
-            <p>Ödeme: {order.paymentMethod}</p>
+            <p><b>Müşteri:</b> {order.customerName}</p>
+            <p><b>Tarih:</b> {formatDate(order.createdAt)}</p>
+            <p><b>Toplam:</b>  ₺{order.totalPrice}</p>
+            <p><b>Ödeme:</b>  {order.paymentMethod}</p>
             <Badge>{order.status}</Badge>
           </CardContent>
         </Card>
@@ -72,7 +73,7 @@ export default function OrderDetailsClient({ order }) {
 
       <div className="flex justify-end mt-4 gap-1">
         <Button onClick={reactToPrintFn}>Faturayı Yazdır</Button>
-        <Updated />
+        <Updated order={order}/>
       </div>
     </div>
   );
