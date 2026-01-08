@@ -55,7 +55,7 @@ export default function SheetDemo({ order }) {
     };
     console.log("Kaydedilecek veri:", payload);
     toast.success("Değişiklikler kaydedildi!");
-
+//!API ALANI
   };
 
   return (
@@ -89,8 +89,10 @@ export default function SheetDemo({ order }) {
             onChange={handleChange}
           />
 
-          <Table>
-            <TableBody>
+<div className="overflow-x-auto max-h-64">
+<Table>
+
+            <TableBody >
               {items.map((item) => (
                 <TableRow key={item.productId}>
                   <TableCell>{item.name}</TableCell>
@@ -124,6 +126,7 @@ export default function SheetDemo({ order }) {
               ))}
             </TableBody>
           </Table>
+          </div>
         </div>
 
         <SheetFooter className="flex justify-between">
