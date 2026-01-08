@@ -11,11 +11,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { MoreVertical } from "lucide-react";
-import  initialOrders from "@/data/orders.json"
+import initialOrders from "@/data/orders.json";
 import { useRouter } from "next/navigation";
 
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 const statusStyle = {
   completed: "bg-green-100 text-green-700",
   pending: "bg-yellow-100 text-yellow-700",
@@ -31,7 +31,7 @@ const statusText = {
 export default function Page() {
   const [orders, setOrders] = useState(initialOrders);
   const [search, setSearch] = useState("");
-const router=useRouter();
+  const router = useRouter();
   const filteredOrders = orders.filter(
     (o) =>
       o.id.toLowerCase().includes(search.toLowerCase()) ||
@@ -74,9 +74,15 @@ const router=useRouter();
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <span
-                      className={`h-2 w-2 rounded-full ${statusStyle[order.status].split(" ")[0]}`}
+                      className={`h-2 w-2 rounded-full ${
+                        statusStyle[order.status].split(" ")[0]
+                      }`}
                     ></span>
-                    <span className={`px-2 py-1 rounded-md text-xs font-medium ${statusStyle[order.status]}`}>
+                    <span
+                      className={`px-2 py-1 rounded-md text-xs font-medium ${
+                        statusStyle[order.status]
+                      }`}
+                    >
                       {statusText[order.status]}
                     </span>
                   </div>
@@ -86,28 +92,23 @@ const router=useRouter();
                     <MoreVertical className="h-4 w-4" />
                   </button>
 
-         
                   <div className="absolute right-0 top-6 hidden group-hover:block w-28 bg-white border rounded shadow-md z-10">
                     <div>
-                    <button
-                      className="px-2 py-1 hover:bg-gray-100 cursor-pointer w-full text-left"
-                      onClick={() => router.push(`/sales/orders/${order.id}`)}
-                    >
-                      Detay
-                    </button>
+                      <button
+                        className="px-2 py-1 hover:bg-gray-100 cursor-pointer w-full text-left"
+                        onClick={() => router.push(`/sales/orders/${order.id}`)}
+                      >
+                        Detay
+                      </button>
                     </div>
                     <div>
-                    <button
-                      className="px-2 py-1 hover:bg-gray-100 cursor-pointer w-full text-left"
-                      onClick={() => toast.error("Silindi")}
-                    >
-
-        Sil
-        </button>
+                      <button
+                        className="px-2 py-1 hover:bg-gray-100 cursor-pointer w-full text-left"
+                        onClick={() => toast.error("Silindi")}
+                      >
+                        Sil
+                      </button>
                     </div>
-             
-
-     
                   </div>
                 </TableCell>
               </TableRow>

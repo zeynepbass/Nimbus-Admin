@@ -1,8 +1,6 @@
-
-
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -12,7 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 
 export default function SheetDemo() {
   return (
@@ -24,7 +22,8 @@ export default function SheetDemo() {
         <SheetHeader>
           <SheetTitle>Güncelle</SheetTitle>
           <SheetDescription>
-           Değişiklikler yapmak için buraya tıklayın. İşleminiz bittiğinde kaydet'e tıklayın.
+            Değişiklikler yapmak için buraya tıklayın. İşleminiz bittiğinde
+            kaydet'e tıklayın.
           </SheetDescription>
         </SheetHeader>
         <div className="grid flex-1 auto-rows-min gap-6 px-4">
@@ -45,5 +44,5 @@ export default function SheetDemo() {
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

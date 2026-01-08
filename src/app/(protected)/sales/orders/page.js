@@ -1,7 +1,7 @@
-import React from 'react'
-import Orders from "@/components/Shared/Orders/tableOrder"
+import React from "react";
+import Orders from "@/components/Shared/Orders/tableOrder";
 const page = () => {
-  return <Orders/>
-}
+  return <Orders />;
+};
 
-export default page
+export default page;

@@ -6,7 +6,7 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 
-import { LogOut, Settings } from "lucide-react";
+import { LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,20 +15,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Image from "next/image"
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 export default function UserProfile() {
-  const router=useRouter();
-  const handleLogOut=()=>{
-    router.push("/login")
-    localStorage.removeItem("user")
-    localStorage.removeItem("lastLogin")
-  }
+  const router = useRouter();
+  const handleLogOut = () => {
+    router.push("/login");
+    localStorage.removeItem("user");
+    localStorage.removeItem("lastLogin");
+  };
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton className="h-auto items-start gap-3">
-        <Image
+          <Image
             src="/avatar.png"
             alt="User"
             width={36}
@@ -43,23 +43,21 @@ export default function UserProfile() {
             </span>
           </div>
 
-          <SidebarMenuButton tooltip="logout"  className="flex items-center justify-end w-full outline-none" onClick={handleLogOut}>
-          <LogOut />
+          <SidebarMenuButton
+            tooltip="logout"
+            className="flex items-center justify-end w-full outline-none"
+            onClick={handleLogOut}
+          >
+            <LogOut />
           </SidebarMenuButton>
         </SidebarMenuButton>
       </SidebarMenuItem>
 
       <SidebarMenuItem>
         <div className="flex gap-1">
-
-
-
           <SidebarMenuButton tooltip="Settings">
             <DropdownMenu>
-              <DropdownMenuTrigger>
-
- 
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger></DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
