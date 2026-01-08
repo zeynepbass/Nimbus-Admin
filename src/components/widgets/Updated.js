@@ -19,18 +19,22 @@ import { toast } from "sonner";
 
 export default function SheetDemo({ order }) {
 
-  const [items, setItems] = useState(order.items);
+  const [items, setItems] = useState(
+    order.items.map((item) => ({ ...item, selectedQuantity: item.quantity }))
+  );
   const [total, setTotal] = useState(order.totalPrice);
   const [formData, setFormData] = useState({
     customerName: order.customerName,
     paymentMethod: order.paymentMethod,
   });
-
   const [openMenu, setOpenMenu] = useState(null);
 
 
   useEffect(() => {
-    const newTotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    const newTotal = items.reduce(
+      (sum, i) => sum + i.price * i.selectedQuantity,
+      0
+    );
     setTotal(newTotal);
   }, [items]);
 
@@ -56,7 +60,36 @@ export default function SheetDemo({ order }) {
     };
     console.log("Kaydedilecek veri:", payload);
     toast.success("Değişiklikler kaydedildi!");
-//!API ALANI
+    //! API ALANI
+  };
+
+  const handleIncrease = (productId) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.productId === productId
+          ? {
+              ...item,
+              selectedQuantity: Math.min(
+                item.selectedQuantity + 1,
+                item.quantity 
+              ),
+            }
+          : item
+      )
+    );
+  };
+
+  const handleDecrease = (productId) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.productId === productId
+          ? {
+              ...item,
+              selectedQuantity: Math.max(item.selectedQuantity - 1, 1),
+            }
+          : item
+      )
+    );
   };
 
   return (
@@ -79,10 +112,7 @@ export default function SheetDemo({ order }) {
             value={formData.customerName}
             onChange={handleChange}
           />
-          <Input
-            value={new Date(order.createdAt).toLocaleString()}
-            readOnly
-          />
+          <Input value={new Date(order.createdAt).toLocaleString()} readOnly />
           <Input value={total} readOnly />
           <Input
             name="paymentMethod"
@@ -90,43 +120,59 @@ export default function SheetDemo({ order }) {
             onChange={handleChange}
           />
 
-<div className="overflow-x-auto max-h-64">
-<Table>
+          <div className="overflow-x-auto max-h-64">
+            <Table>
+              <TableBody>
+                {items.map((item) => (
+                  <TableRow key={item.productId}>
+                    <TableCell>{item.name}</TableCell>
 
-            <TableBody >
-              {items.map((item) => (
-                <TableRow key={item.productId}>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell>₺{item.price}</TableCell>
-                  <TableCell>₺{item.price * item.quantity}</TableCell>
-                  <TableCell className="relative">
-                    <button
-                      className="p-1 rounded hover:bg-gray-100"
-                      onClick={() =>
-                        setOpenMenu(
-                          openMenu === item.productId ? null : item.productId
-                        )
-                      }
-                    >
-                      <MoreVertical className="h-4 w-4" />
-                    </button>
+                    <TableCell className="flex items-center gap-2">
+                      <button
+                        className="px-2 bg-gray-200 rounded"
+                        onClick={() => handleDecrease(item.productId)}
+                      >
+                        -
+                      </button>
+                      {item.selectedQuantity} {/* seçilen miktar */}
+                      <button
+                        className="px-2 bg-gray-200 rounded"
+                        onClick={() => handleIncrease(item.productId)}
+                      >
+                        +
+                      </button>
+                    </TableCell>
 
-                    {openMenu === item.productId && (
-                      <div className="absolute right-0 top-6 w-28 bg-white border rounded shadow-md z-10">
-                        <button
-                          className="px-2 py-1 hover:bg-gray-100 w-full text-left"
-                          onClick={() => handleDelete(item.productId)}
-                        >
-                          İptal / İade
-                        </button>
-                      </div>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                    <TableCell>₺{item.price}</TableCell>
+                    <TableCell>₺{item.price * item.selectedQuantity}</TableCell>
+
+                    <TableCell className="relative">
+                      <button
+                        className="p-1 rounded hover:bg-gray-100"
+                        onClick={() =>
+                          setOpenMenu(
+                            openMenu === item.productId ? null : item.productId
+                          )
+                        }
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </button>
+
+                      {openMenu === item.productId && (
+                        <div className="absolute right-0 top-6 w-28 bg-white border rounded shadow-md z-10">
+                          <button
+                            className="px-2 py-1 hover:bg-gray-100 w-full text-left"
+                            onClick={() => handleDelete(item.productId)}
+                          >
+                            İptal / İade
+                          </button>
+                        </div>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         </div>
 
