@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarFooter,
 } from "@/components/ui/sidebar"
-import { UserProfile } from "../widgets/user-profile"
+import UserProfile from "../widgets/user-profile"
 import { ChevronDown } from "lucide-react"
 import { menuConfig } from "@/config/menu.config"
 

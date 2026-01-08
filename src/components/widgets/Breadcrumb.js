@@ -16,10 +16,12 @@ export default function Breadcrumb() {
   const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <nav className="flex items-center text-sm text-muted-foreground">
-      <Link href="/dashboard" className="hover:text-foreground">
-        Dashboard
-      </Link>
+    <nav className="flex items-center text-sm text-muted-foreground cursor-alias">
+    <h5>
+    Dashboard
+    </h5>
+
+
 
       {segments.map((segment, index) => {
         const href = "/" + segments.slice(0, index + 1).join("/");

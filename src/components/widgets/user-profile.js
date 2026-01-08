@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image"
 import { useRouter } from "next/navigation";
-export function UserProfile() {
+export default function UserProfile() {
   const router=useRouter();
   const handleLogOut=()=>{
     router.push("/login")
