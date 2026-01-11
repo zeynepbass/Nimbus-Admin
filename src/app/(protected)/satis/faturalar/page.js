@@ -1,5 +1,5 @@
 import React from "react";
-import Orders from "@/components/Shared/Invoice/tableOrder";
+import Orders from "@/components/Shared/Invoice/tableInvoice";
 const page = () => {
   return <Orders />;
 };

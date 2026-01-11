@@ -1,64 +1,124 @@
 [
-    {
-      "id": "ORD-1001",
-      "userId": "USR-1",
+  {
+    "id": "ORD-1001",
+    "userId": "USR-1",
+    "customerName": "Ahmet Yılmaz",
+    "items": [
+      {
+        "productId": "PRD-1",
+        "name": "Bluetooth Kulaklık",
+        "price": 1200,
+        "quantity": 1
+      },
+      {
+        "productId": "PRD-2",
+        "name": "Şarj Kablosu",
+        "price": 200,
+        "quantity": 2
+      }
+    ],
+    "totalPrice": 1600,
+    "paymentMethod": "credit_card",
+    "createdAt": "2026-01-08T10:42:00",
+    "timeline": [
+      {
+        "key": "created",
+        "label": "Sipariş Oluşturuldu",
+        "date": "2026-01-08T09:10:00"
+      },
+      {
+        "key": "paid",
+        "label": "Ödeme Alındı",
+        "date": "2026-01-08T09:12:00"
+      },
+      {
+        "key": "preparing",
+        "label": "Hazırlanıyor",
+        "date": "2026-01-08T10:00:00"
+      },
+      {
+        "key": "shipped",
+        "label": "Kargoya Verildi",
+        "date": "2026-01-08T14:30:00"
+      },
+      {
+        "key": "completed",
+        "label": "Tamamlandı",
+        "date": "2026-01-08T16:00:00"
+      }
+    ]
+  },
 
-      "customerName": "Ahmet Yılmaz",
-  
-      "items": [
-        {
-          "productId": "PRD-1",
-          "name": "Bluetooth Kulaklık",
-          "price": 1200,
-          "quantity": 1
-        },
-        {
-          "productId": "PRD-2",
-          "name": "Şarj Kablosu",
-          "price": 200,
-          "quantity": 2
-        }
-      ],
-      "totalPrice": 1600,
-      "status": "Tamamlandı",
-      "paymentMethod": "credit_card",
-      "createdAt": "2026-01-08T10:42:00"
-    },
-    {
-      "id": "ORD-1002",
-      "userId": "USR-2",
+  {
+    "id": "ORD-1002",
+    "userId": "USR-2",
+    "customerName": "Zeynep Kaya",
+    "items": [
+      {
+        "productId": "PRD-3",
+        "name": "Laptop Standı",
+        "price": 750,
+        "quantity": 1
+      }
+    ],
+    "totalPrice": 750,
+    "paymentMethod": "cash",
+    "createdAt": "2026-01-08T09:15:00",
+    "timeline": [
+      {
+        "key": "created",
+        "label": "Sipariş Oluşturuldu",
+        "date": "2026-01-08T09:10:00"
+      },
+      {
+        "key": "paid",
+        "label": "Ödeme Alındı",
+        "date": "2026-01-08T09:12:00"
+      },
+      {
+        "key": "preparing",
+        "label": "Hazırlanıyor",
+        "date": "2026-01-08T10:00:00"
+      },
+      {
+        "key": "pending",
+        "label": "Beklemede",
+        "date": "2026-01-08T14:30:00"
+      }
+    ]
+  },
 
-      "customerName": "Zeynep Kaya",
-      "items": [
-        {
-          "productId": "PRD-3",
-          "name": "Laptop Standı",
-          "price": 750,
-          "quantity": 1
-        }
-      ],
-      "totalPrice": 750,
-      "status": "Beklemede",
-      "paymentMethod": "cash",
-      "createdAt": "2026-01-08T09:15:00"
-    },
-    {
-      "id": "ORD-1003",
-      "userId": "USR-3",
-
-      "customerName": "Mehmet Demir",
-      "items": [
-        {
-          "productId": "PRD-4",
-          "name": "Kablosuz Mouse",
-          "price": 450,
-          "quantity": 1
-        }
-      ],
-      "totalPrice": 450,
-      "status": "İptal",
-      "paymentMethod": "transfer",
-      "createdAt": "2026-01-07T18:30:00"
-    }
-  ]
-  
+  {
+    "id": "ORD-1003",
+    "userId": "USR-3",
+    "customerName": "Mehmet Demir",
+    "items": [
+      {
+        "productId": "PRD-4",
+        "name": "Kablosuz Mouse",
+        "price": 450,
+        "quantity": 1
+      }
+    ],
+    "totalPrice": 450,
+    "paymentMethod": "transfer",
+    "createdAt": "2026-01-07T18:30:00",
+    "timeline": [
+      {
+        "key": "created",
+        "label": "Sipariş Oluşturuldu",
+        "date": "2026-01-08T09:10:00"
+      },
+      {
+        "key": "paid",
+        "label": "Ödeme Alındı",
+        "date": "2026-01-08T09:12:00"
+      },
+      {
+        "key": "cancelled",
+        "label": "İptal",
+        "date": "2026-01-08T14:30:00"
+      }
+    ]
+  }
+]

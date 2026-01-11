@@ -1,13 +1,11 @@
-
-
 "use client";
 import { useState } from "react";
 
-import Table from "@/components/widgets/Table"
-import { Button } from "@/components/ui/button"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import Table from "@/components/widgets/Table";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,29 +13,32 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import formatDate from "@/helper/formatDate"
- import { toast } from "sonner";
+} from "@/components/ui/dropdown-menu";
+import formatDate from "@/helper/formatDate";
+import { toast } from "sonner";
 
 export default function Page() {
   const veri = JSON.parse(localStorage.getItem("lastInvoice") || "[]");
 
   const [orders, setOrders] = useState(veri);
-  
 
-
+  const totalCiro = orders.reduce((sum, o) => sum + o.total, 0);
+  const completedCount = orders.filter(
+    (item) => item.status === "Tamamlandı"
+  ).length;
+  const pendingCount = orders.filter(
+    (item) => item.status === "Beklemede"
+  ).length;
   const handleClickDelete = (id) => {
     const updated = orders.filter((item) => item.id !== id);
-  
+
     setOrders(updated);
     localStorage.setItem("lastInvoice", JSON.stringify(updated));
-  
+
     toast.error("Silindi");
   };
 
-
- const columns = [
-
+  const columns = [
     {
       id: "select",
       header: ({ table }) => (
@@ -46,9 +47,7 @@ export default function Page() {
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
-          onCheckedChange={(value) =>
-            table.toggleAllPageRowsSelected(!!value)
-          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
       ),
@@ -62,38 +61,60 @@ export default function Page() {
       enableSorting: false,
       enableHiding: false,
     },
-  
 
     {
       accessorKey: "id",
-      header: "Sipariş No",
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Sipariş No
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
     },
-  
 
     {
       accessorKey: "customerName",
-      header: "Adı Soyadı",
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Adı Soyadı
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+
       cell: ({ row }) => (
         <div className="font-medium">{row.getValue("customerName")}</div>
       ),
     },
-  
 
     {
       accessorKey: "createdAt",
-      header: "Tarih",
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Tarih
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
       cell: ({ row }) => formatDate(row.getValue("createdAt")),
     },
-  
 
     {
       accessorKey: "paymentMethod",
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Ödeme
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -103,48 +124,58 @@ export default function Page() {
         <span className="capitalize">{row.getValue("paymentMethod")}</span>
       ),
     },
-  
 
     {
       accessorKey: "total",
-      header: () => <div className="text-right">Toplam</div>,
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Toplam
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+
       cell: ({ row }) => (
-        <div className="text-right font-semibold">
-          ₺{row.getValue("total")}
-        </div>
+        <div className="text-center font-semibold ">₺{row.getValue("total")}</div>
       ),
     },
-  
 
     {
       accessorKey: "status",
       header: "Durum",
       cell: ({ row }) => {
-        const status = row.getValue("status")
-  
+        const status = row.getValue("status");
+
         const statusStyle = {
           Tamamlandı: "bg-green-100 text-green-700",
           Beklemede: "bg-yellow-100 text-yellow-700",
           İptal: "bg-red-100 text-red-700",
-        }
-  
+        };
+
         return (
-          <span
-            className={`px-2 py-1 rounded-md text-xs font-medium ${statusStyle[status]}`}
-          >
-            {status}
-          </span>
-        )
+          <div className="flex items-center justify-center gap-2">
+            <span
+              className={`inline-block h-2 w-2 rounded-full ${statusStyle[status]}`}
+            />
+            <span
+              className={`px-2 py-1 rounded-md text-xs font-medium ${statusStyle[status]}`}
+            >
+              {status}
+            </span>
+          </div>
+        );
       },
     },
-  
 
     {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const order = row.original
-  
+        const order = row.original;
+
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -154,32 +185,36 @@ export default function Page() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Aksiyon</DropdownMenuLabel>
-  
+
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(order.id)}
               >
                 Sipariş No Kopyala
               </DropdownMenuItem>
-  
+
               <DropdownMenuSeparator />
 
-  
-              <DropdownMenuItem className="text-red-600"  onClick={() => handleClickDelete(order.id)}>
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={() => handleClickDelete(order.id)}
+              >
                 İptal Et
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        )
+        );
       },
     },
-  ]
-  
+  ];
 
   return (
- <Table
-  baslik="Faturalar"
-  data={orders}
-  columns={columns}
- />
+    <Table
+      baslik="Faturalar"
+      data={orders}
+      columns={columns}
+      totalCiro={totalCiro}
+      completedCount={completedCount}
+      pendingCount={pendingCount}
+    />
   );
 }

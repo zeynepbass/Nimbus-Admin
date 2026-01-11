@@ -1,39 +1,53 @@
-
-
 "use client";
-import { useState } from "react";
 
-import Table from "@/components/widgets/Table"
-import { Button } from "@/components/ui/button"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 
-import { Checkbox } from "@/components/ui/checkbox"
+import Table from "@/components/widgets/Table";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import formatDate from "@/helper/formatDate"
- import { toast } from "sonner";
-import initialOrders from "@/data/orders"
-import { useRouter } from "next/navigation";
+} from "@/components/ui/dropdown-menu";
+
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { toast } from "sonner";
+
+import formatDate from "@/helper/formatDate";
+import initialOrders from "@/data/orders";
+
 export default function Page() {
-const router =useRouter()
-
+  const router = useRouter();
   const [orders, setOrders] = useState(initialOrders);
-  
 
 
-  const handleClickDelete = (id) => {
-    const updated = orders.filter((item) => item.id !== id);
-    setOrders(updated);
-    toast.error("İptal Edildi");
+  const totalCiro = useMemo(
+    () => orders.reduce((sum, o) => sum + o.totalPrice, 0),
+    [orders]
+  );
+
+  const completedCount = useMemo(
+    () => orders.filter((o) => o.timeline.key === "completed").length,
+    [orders]
+  );
+
+  const pendingCount = useMemo(
+    () => orders.filter((o) => o.timeline.key === "pending").length,
+    [orders]
+  );
+
+
+  const handleDelete = (id) => {
+    setOrders((prev) => prev.filter((o) => o.id !== id));
+    toast.error("Sipariş iptal edildi");
   };
 
- const columns = [
 
+  const columns = [
     {
       id: "select",
       header: ({ table }) => (
@@ -42,45 +56,36 @@ const router =useRouter()
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
-          onCheckedChange={(value) =>
-            table.toggleAllPageRowsSelected(!!value)
-          }
-          aria-label="Select all"
+          onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
         />
       ),
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
+          onCheckedChange={(v) => row.toggleSelected(!!v)}
         />
       ),
       enableSorting: false,
-      enableHiding: false,
     },
-  
 
     {
       accessorKey: "id",
       header: "Sipariş No",
     },
-  
 
     {
       accessorKey: "customerName",
-      header: "Adı Soyadı",
+      header: "Ad Soyad",
       cell: ({ row }) => (
-        <div className="font-medium">{row.getValue("customerName")}</div>
+        <span className="font-medium">{row.getValue("customerName")}</span>
       ),
     },
-  
 
     {
       accessorKey: "createdAt",
       header: "Tarih",
       cell: ({ row }) => formatDate(row.getValue("createdAt")),
     },
-  
 
     {
       accessorKey: "paymentMethod",
@@ -99,7 +104,6 @@ const router =useRouter()
         <span className="capitalize">{row.getValue("paymentMethod")}</span>
       ),
     },
-  
 
     {
       accessorKey: "totalPrice",
@@ -110,37 +114,37 @@ const router =useRouter()
         </div>
       ),
     },
-  
 
     {
-      accessorKey: "status",
-      header: "Durum",
+      accessorKey: "timeline",
+      header: "Zaman Çizelgesi",
       cell: ({ row }) => {
-        const status = row.getValue("status")
-  
-        const statusStyle = {
-          Tamamlandı: "bg-green-100 text-green-700",
-          Beklemede: "bg-yellow-100 text-yellow-700",
-          İptal: "bg-red-100 text-red-700",
-        }
-  
+        const timeline = row.getValue("timeline");
+        if (!timeline || timeline.length === 0) return null;
+    
+        const lastStep = timeline[timeline.length - 1]; 
+    
+        const STATUS_STYLE = {
+          "Tamamlandı": "bg-green-100 text-green-700",
+          "Beklemede": "bg-yellow-100 text-yellow-700",
+          "İptal": "bg-red-100 text-red-700"
+        };
+    
         return (
           <span
-            className={`px-2 py-1 rounded-md text-xs font-medium ${statusStyle[status]}`}
+            className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[lastStep.label] || ""}`}
           >
-            {status}
+            {lastStep.label}
           </span>
-        )
+        );
       },
     },
-  
 
     {
       id: "actions",
-      enableHiding: false,
       cell: ({ row }) => {
-        const order = row.original
-  
+        const order = row.original;
+
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -148,36 +152,47 @@ const router =useRouter()
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Aksiyon</DropdownMenuLabel>
-  
+
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(order.id)}
+                onClick={() =>
+                  navigator.clipboard.writeText(order.id)
+                }
               >
                 Sipariş No Kopyala
               </DropdownMenuItem>
-              <DropdownMenuItem  onClick={(id)=> router.push(`/sales/orders/${order.id}`)}>
-               Detayı Gör
+
+              <DropdownMenuItem
+                onClick={() =>
+                  router.push(`/satis/siparisler/${order.id}`)
+                }
+              >
+                Detayı Gör
               </DropdownMenuItem>
-       
-     
-  
-              <DropdownMenuItem className="text-red-600"  onClick={() => handleClickDelete(order.id)}>
+
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={() => handleDelete(order.id)}
+              >
                 İptal Et
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        )
+        );
       },
     },
-  ]
-  
+  ];
 
   return (
- <Table
-  baslik="Siparişler"
-  data={orders}
-  columns={columns}
- />
+    <Table
+      baslik="Siparişler"
+      data={orders}
+      columns={columns}
+      totalCiro={totalCiro}
+      completedCount={completedCount}
+      pendingCount={pendingCount}
+    />
   );
 }

@@ -1,7 +1,6 @@
+"use client";
 
-"use client"
-
-import * as React from "react"
+import * as React from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -9,19 +8,19 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { ChevronDown } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-
+} from "@tanstack/react-table";
+import { ChevronDown } from "lucide-react";
+import StatCard from "@/components/ui/statCard";
+import { Button } from "@/components/ui/button";
+import { exportToExcel } from "@/helper/exportExcel";
+import formatDate from "@/helper/formatDate";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -29,21 +28,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-
-
-
-
-export default function DataTableDemo({data,columns,baslik}) {
-  const [sorting, setSorting] = React.useState([])
-  const [columnFilters, setColumnFilters] = React.useState([])
-  const [columnVisibility, setColumnVisibility] = React.useState({})
-  const [rowSelection, setRowSelection] = React.useState({})
+export default function DataTableDemo({
+  data,
+  columns,
+  baslik,
+  totalCiro,
+  completedCount,
+  pendingCount,
+}) {
+  const [sorting, setSorting] = React.useState([]);
+  const [columnFilters, setColumnFilters] = React.useState([]);
+  const [columnVisibility, setColumnVisibility] = React.useState({});
+  const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data,
     columns,
+
     state: {
       sorting,
       columnFilters,
@@ -58,55 +61,75 @@ export default function DataTableDemo({data,columns,baslik}) {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-  })
+  });
+  const excelData = data.map((o) => ({
+    "Sipariş No": o.id,
+    Müşteri: o.customerName,
+    Tarih: formatDate(o.createdAt),
+    "Toplam (₺)": o.totalPrice,
+    Ödeme: o.paymentMethod,
+    Durum: o.timeline?.length > 0 ? o.timeline[o.timeline.length - 1].label : "",
+  }));
 
   return (
     <div className="w-full">
-      <h1>{baslik}</h1>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter Adı Soyadı Yöntemi..."
-          value={table.getColumn("customerName")?.getFilterValue() ?? ""}
-          onChange={(e) =>
-            table.getColumn("customerName")?.setFilterValue(e.target.value)
-          }
-          className="max-w-sm"
-        />
-
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) =>
-                    column.toggleVisibility(!!value)
-                  }
-                  className="capitalize"
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard title="Toplam Sipariş" value={data.length} />
+        <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+        <StatCard title="Tamamlanan" value={completedCount} />
+        <StatCard title="Bekleyen" value={pendingCount} />
       </div>
 
+      <div className="flex items-center py-2">
+        <h1 className="p-1">{baslik}</h1>
+        <div className="flex gap-1">
+          <Input
+            placeholder="Filter ile Sipariş No Yöntemi..."
+            value={table.getColumn("id")?.getFilterValue() ?? ""}
+            onChange={(e) =>
+              table.getColumn("id")?.setFilterValue(e.target.value)
+            }
+            className="w-xs"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Filtrele <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                    className="capitalize"
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button
+            variant="outline"
+            onClick={() => exportToExcel(excelData, "faturalar")}
+          >
+            Excel İndir
+          </Button>
+        </div>
+      </div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader >
             {table.getHeaderGroups().map((group) => (
               <TableRow key={group.id}>
                 {group.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id}  className="text-center">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -124,7 +147,7 @@ export default function DataTableDemo({data,columns,baslik}) {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="text-center">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -163,5 +186,5 @@ export default function DataTableDemo({data,columns,baslik}) {
         </Button>
       </div>
     </div>
-  )
+  );
 }
