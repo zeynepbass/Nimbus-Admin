@@ -1,42 +1,55 @@
+
+
 "use client";
-import { useState } from "react";
+
+import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 
 import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import formatDate from "@/helper/formatDate";
+
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 
+import formatDate from "@/helper/formatDate";
+
+
 export default function Page() {
+
   const veri = JSON.parse(localStorage.getItem("lastInvoice") || "[]");
 
   const [orders, setOrders] = useState(veri);
 
-  const totalCiro = orders.reduce((sum, o) => sum + o.total, 0);
-  const completedCount = orders.filter(
-    (item) => item.status === "Tamamlandı"
-  ).length;
-  const pendingCount = orders.filter(
-    (item) => item.status === "Beklemede"
-  ).length;
-  const handleClickDelete = (id) => {
-    const updated = orders.filter((item) => item.id !== id);
 
-    setOrders(updated);
-    localStorage.setItem("lastInvoice", JSON.stringify(updated));
+  const totalCiro = useMemo(
+    () => orders.reduce((sum, o) => sum + o.totalPrice, 0),
+    [orders]
+  );
 
-    toast.error("Silindi");
+  const completedCount = useMemo(
+    () => orders.filter((o) => o.Durum.key === "completed").length,
+    [orders]
+  );
+
+  const pendingCount = useMemo(
+    () => orders.filter((o) => o.Durum.key === "pending").length,
+    [orders]
+  );
+
+
+  const handleDelete = (id) => {
+    setOrders((prev) => prev.filter((o) => o.id !== id));
+    toast.error("Sipariş iptal edildi");
   };
+
 
   const columns = [
     {
@@ -47,65 +60,34 @@ export default function Page() {
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
+          onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
         />
       ),
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
+          onCheckedChange={(v) => row.toggleSelected(!!v)}
         />
       ),
       enableSorting: false,
-      enableHiding: false,
     },
 
     {
       accessorKey: "id",
-
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Sipariş No
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
+      header: "Sipariş No",
     },
 
     {
       accessorKey: "customerName",
-
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Adı Soyadı
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-
+      header: "Ad Soyad",
       cell: ({ row }) => (
-        <div className="font-medium">{row.getValue("customerName")}</div>
+        <span className="font-medium">{row.getValue("customerName")}</span>
       ),
     },
 
     {
       accessorKey: "createdAt",
-
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Tarih
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
+      header: "Tarih",
       cell: ({ row }) => formatDate(row.getValue("createdAt")),
     },
 
@@ -114,7 +96,9 @@ export default function Page() {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
         >
           Ödeme
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -126,53 +110,42 @@ export default function Page() {
     },
 
     {
-      accessorKey: "total",
-
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Toplam
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-
+      accessorKey: "totalPrice",
+      header: () => <div className="text-right">Toplam</div>,
       cell: ({ row }) => (
-        <div className="text-center font-semibold ">₺{row.getValue("total")}</div>
+        <div className="text-right font-semibold">
+          ₺{row.getValue("totalPrice")}
+        </div>
       ),
     },
 
     {
-      accessorKey: "status",
-      header: "Durum",
+      accessorKey: "Durum",
+      header: "Zaman Çizelgesi",
       cell: ({ row }) => {
-        const status = row.getValue("status");
-
-        const statusStyle = {
-          Tamamlandı: "bg-green-100 text-green-700",
-          Beklemede: "bg-yellow-100 text-yellow-700",
-          İptal: "bg-red-100 text-red-700",
+        const timeline = row.getValue("Durum");
+        if (!timeline || timeline.length === 0) return null;
+    
+        const lastStep = timeline[timeline.length - 1]; 
+    
+        const STATUS_STYLE = {
+          "Tamamlandı": "bg-green-100 text-green-700",
+          "Beklemede": "bg-yellow-100 text-yellow-700",
+          "İptal": "bg-red-100 text-red-700"
         };
-
+    
         return (
-          <div className="flex items-center justify-center gap-2">
-            <span
-              className={`inline-block h-2 w-2 rounded-full ${statusStyle[status]}`}
-            />
-            <span
-              className={`px-2 py-1 rounded-md text-xs font-medium ${statusStyle[status]}`}
-            >
-              {status}
-            </span>
-          </div>
+          <span
+            className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[lastStep.label] || ""}`}
+          >
+            {lastStep.label}
+          </span>
         );
       },
     },
 
     {
       id: "actions",
-      enableHiding: false,
       cell: ({ row }) => {
         const order = row.original;
 
@@ -183,20 +156,22 @@ export default function Page() {
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Aksiyon</DropdownMenuLabel>
 
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(order.id)}
+                onClick={() =>
+                  navigator.clipboard.writeText(order.id)
+                }
               >
                 Sipariş No Kopyala
               </DropdownMenuItem>
 
-              <DropdownMenuSeparator />
 
               <DropdownMenuItem
                 className="text-red-600"
-                onClick={() => handleClickDelete(order.id)}
+                onClick={() => handleDelete(order.id)}
               >
                 İptal Et
               </DropdownMenuItem>
@@ -209,7 +184,7 @@ export default function Page() {
 
   return (
     <Table
-      baslik="Faturalar"
+      baslik="Siparişler"
       data={orders}
       columns={columns}
       totalCiro={totalCiro}

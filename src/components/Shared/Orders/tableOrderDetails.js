@@ -32,8 +32,8 @@ export default function OrderDetailsClient({ order }) {
       customerName: order.customerName,
       paymentMethod: order.paymentMethod,
       items: order.items,
-      total: order.totalPrice,
-      status: order.status,
+      totalPrice: order.totalPrice,
+      Durum: order.timeline?.length > 0 ? order.timeline[order.timeline.length - 1].label : "",
       createdAt: order.createdAt,
       printedAt: new Date().toISOString(),
     };
