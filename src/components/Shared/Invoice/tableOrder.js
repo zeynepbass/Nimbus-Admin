@@ -13,24 +13,28 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import formatDate from "@/helper/formatDate"
  import { toast } from "sonner";
-import initialOrders from "@/data/orders"
-import { useRouter } from "next/navigation";
-export default function Page() {
-const router =useRouter()
 
-  const [orders, setOrders] = useState(initialOrders);
+export default function Page() {
+  const veri = JSON.parse(localStorage.getItem("lastInvoice") || "[]");
+
+  const [orders, setOrders] = useState(veri);
   
 
 
   const handleClickDelete = (id) => {
     const updated = orders.filter((item) => item.id !== id);
+  
     setOrders(updated);
-    toast.error("İptal Edildi");
+    localStorage.setItem("lastInvoice", JSON.stringify(updated));
+  
+    toast.error("Silindi");
   };
+
 
  const columns = [
 
@@ -102,11 +106,11 @@ const router =useRouter()
   
 
     {
-      accessorKey: "totalPrice",
+      accessorKey: "total",
       header: () => <div className="text-right">Toplam</div>,
       cell: ({ row }) => (
         <div className="text-right font-semibold">
-          ₺{row.getValue("totalPrice")}
+          ₺{row.getValue("total")}
         </div>
       ),
     },
@@ -156,11 +160,9 @@ const router =useRouter()
               >
                 Sipariş No Kopyala
               </DropdownMenuItem>
-              <DropdownMenuItem  onClick={(id)=> router.push(`/sales/orders/${order.id}`)}>
-               Detayı Gör
-              </DropdownMenuItem>
-       
-     
+  
+              <DropdownMenuSeparator />
+
   
               <DropdownMenuItem className="text-red-600"  onClick={() => handleClickDelete(order.id)}>
                 İptal Et
@@ -175,7 +177,7 @@ const router =useRouter()
 
   return (
  <Table
-  baslik="Siparişler"
+  baslik="Faturalar"
   data={orders}
   columns={columns}
  />

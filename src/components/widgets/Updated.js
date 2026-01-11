@@ -16,7 +16,6 @@ import {
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { MoreVertical } from "lucide-react";
 import { toast } from "sonner";
-
 export default function SheetDemo({ order }) {
 
   const [items, setItems] = useState(
@@ -26,7 +25,9 @@ export default function SheetDemo({ order }) {
   const [formData, setFormData] = useState({
     customerName: order.customerName,
     paymentMethod: order.paymentMethod,
+    createdAt: new Date(order.createdAt).toISOString().slice(0, 10),
   });
+  
   const [openMenu, setOpenMenu] = useState(null);
 
 
@@ -53,16 +54,25 @@ export default function SheetDemo({ order }) {
   };
 
   const handleSave = () => {
+    const today = new Date();
+  
+    const isSameDate =
+      new Date(formData.createdAt).toISOString().slice(0, 10) ===
+      new Date(order.createdAt).toISOString().slice(0, 10);
+  
     const payload = {
       ...formData,
       items,
       total,
+      createdAt: isSameDate
+        ? today
+        : new Date(formData.createdAt),
     };
+  
     console.log("Kaydedilecek veri:", payload);
     toast.success("Değişiklikler kaydedildi!");
-    //! API ALANI
   };
-
+  
   const handleIncrease = (productId) => {
     setItems((prev) =>
       prev.map((item) =>
@@ -112,7 +122,13 @@ export default function SheetDemo({ order }) {
             value={formData.customerName}
             onChange={handleChange}
           />
-          <Input value={new Date(order.createdAt).toLocaleString()} readOnly />
+      <Input
+  type="date"
+  name="createdAt"
+  value={formData.createdAt}
+  onChange={handleChange}
+/>
+
           <Input value={total} readOnly />
           <Input
             name="paymentMethod"
