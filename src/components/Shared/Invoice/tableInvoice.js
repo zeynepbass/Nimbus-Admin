@@ -33,16 +33,21 @@ export default function Page() {
     () => orders.reduce((sum, o) => sum + o.totalPrice, 0),
     [orders]
   );
-
   const completedCount = useMemo(
-    () => orders.filter((o) => o.Durum.key === "completed").length,
+    () =>
+      orders.filter((o) =>
+        o.timeline.some((item) => item.key === "completed")
+      ).length,
+    [orders]
+  );
+  const pendingCount = useMemo(
+    () =>
+      orders.filter((o) =>
+        o.timeline.some((item) => item.key === "pending")
+      ).length,
     [orders]
   );
 
-  const pendingCount = useMemo(
-    () => orders.filter((o) => o.Durum.key === "pending").length,
-    [orders]
-  );
 
 
   const handleDelete = (id) => {
@@ -74,12 +79,33 @@ export default function Page() {
 
     {
       accessorKey: "id",
-      header: "Sipariş No",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+        Sipariş No
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
     },
 
     {
       accessorKey: "customerName",
-      header: "Ad Soyad",
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+        Ad Soyad
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
       cell: ({ row }) => (
         <span className="font-medium">{row.getValue("customerName")}</span>
       ),
@@ -87,8 +113,20 @@ export default function Page() {
 
     {
       accessorKey: "createdAt",
-      header: "Tarih",
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+          Tarih
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
       cell: ({ row }) => formatDate(row.getValue("createdAt")),
+      
     },
 
     {
@@ -111,19 +149,31 @@ export default function Page() {
 
     {
       accessorKey: "totalPrice",
-      header: () => <div className="text-right">Toplam</div>,
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+Toplam
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+
       cell: ({ row }) => (
-        <div className="text-right font-semibold">
+        <div className="text-center font-semibold">
           ₺{row.getValue("totalPrice")}
         </div>
       ),
     },
 
     {
-      accessorKey: "Durum",
+      accessorKey: "timeline",
       header: "Zaman Çizelgesi",
       cell: ({ row }) => {
-        const timeline = row.getValue("Durum");
+        const timeline = row.getValue("timeline");
         if (!timeline || timeline.length === 0) return null;
     
         const lastStep = timeline[timeline.length - 1]; 
@@ -184,7 +234,7 @@ export default function Page() {
 
   return (
     <Table
-      baslik="Siparişler"
+      baslik="Faturalar"
       data={orders}
       columns={columns}
       totalCiro={totalCiro}

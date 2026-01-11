@@ -70,7 +70,7 @@ export default function DataTableDemo({
     Ödeme: o.paymentMethod,
     Durum: o.timeline?.length > 0 ? o.timeline[o.timeline.length - 1].label : "" || o.Durum,
   }));
-console.log("excelData",excelData)
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">

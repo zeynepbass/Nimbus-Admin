@@ -44,12 +44,12 @@ import {
         {
           label: "Siparişler",
           icon: Truck,
-          href: "/satis/siparisler"
+          href: "/sales/orders"
         },
         {
           label: "Faturalar",
           icon: Wallet,
-          href: "/satis/faturalar",
+          href: "/sales/invoices",
         },
       ],
     },
