@@ -193,7 +193,7 @@ export default function SheetDemo({ order }) {
         </div>
 
         <SheetFooter className="flex justify-between">
-          <Button onClick={handleSave}>Kaydet</Button>
+          <Button onClick={handleSave} className="bg-[#102E46]">Kaydet</Button>
           <SheetClose asChild>
             <Button variant="outline">Çık</Button>
           </SheetClose>

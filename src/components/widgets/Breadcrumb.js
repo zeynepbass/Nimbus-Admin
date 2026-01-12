@@ -21,7 +21,7 @@ export default function Breadcrumb() {
   const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <nav className="flex items-center text-sm text-muted-foreground cursor-alias">
+    <nav className="flex items-center text-sm text-muted-foreground cursor-alias ">
     <h5>
     Dashboard
     </h5>

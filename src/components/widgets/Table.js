@@ -114,7 +114,7 @@ placeholder={searchTitle || "Sipariş No ile filtrele..."}
             </DropdownMenuContent>
           </DropdownMenu>
           <Button
-            variant="outline"
+            className="bg-[#6C120B] text-white"
             onClick={() => exportToExcel(excelData, "faturalar")}
           >
             Excel İndir

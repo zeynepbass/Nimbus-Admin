@@ -30,7 +30,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="flex   bg-gray-100 items-center justify-between w-full h-14 px-4 border-b ">
+      <header className="flex  items-center justify-between w-full h-14  border-b ">
         <div className="flex items-center gap-2">
           <SidebarTrigger />
           <div>
@@ -53,14 +53,13 @@ const Header = () => {
         </div>
 
         <div className="relative flex items-center gap-3">
-          <Command className="relative">
-            <CommandInput
+          <Command className="relative text-[#102E46]">
+          <CommandInput
               placeholder="Search… (⌘K)"
               onFocus={() => setOpen(true)}
               onBlur={() => setTimeout(() => setOpen(false), 150)}
-              className="w-56"
+              className="w-56 placeholder:text-[#102E46] "
             />
-
             {open &&
               createPortal(
                 <CommandList
@@ -74,6 +73,8 @@ const Header = () => {
         bg-background
         shadow-lg
         z-[9999]
+        
+        
       "
                 >
                   <CommandEmpty>No results found.</CommandEmpty>
@@ -111,15 +112,15 @@ const Header = () => {
 
           <button
             onClick={() => window.open("https://app.powerbi.com/", "_blank")}
-            className="h-9 w-9 flex items-center justify-center "
+            className="h-9 w-9 flex items-center justify-center text-[#102E46] "
             title="Power BI Reports"
           >
-            <BarChart3 className="h-5 w-5" />
+            <BarChart3 className="h-5 w-5 " />
           </button>
 
           <button className="relative h-9 w-9 flex items-center justify-center ">
-            <Bell className="h-5 w-5" onClick={() => setUser(!user)} />
-            <span className="absolute -top-1 -right-1 h-4 w-4 text-xs bg-red-500 text-white rounded-full flex items-center justify-center">
+            <Bell className="h-5 w-5 text-[#102E46]" onClick={() => setUser(!user)} />
+            <span className="absolute -top-1 -right-1 h-4 w-4 text-xs bg-[#6C120B] text-white rounded-full flex items-center justify-center">
               3
             </span>
             {user && (
@@ -151,11 +152,11 @@ const Header = () => {
             onClick={() => setDark(!dark)}
             className="h-9 w-9 flex items-center justify-center "
           >
-            {dark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {dark ? <Sun className="h-5 w-5 text-[#102E46]" /> : <Moon className="h-5 w-5 text-[#102E46]" />}
           </button>
         </div>
       </header>
-      <div className="flex justify-end py-3 px-3">
+      <div className="flex justify-end py-3 px-3 bg-gray-50">
         <Breadcrumb />
       </div>
     </>

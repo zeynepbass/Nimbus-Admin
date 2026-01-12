@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-
+import Charts from "@/components/widgets/Charts/SalesChart";
 import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,31 +16,36 @@ import {
 import StatCard from "@/components/ui/statCard";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
-
 import formatDate from "@/helper/formatDate";
 import initialDashboards from "@/data/product";
+import PieChart from "@/components/widgets/Charts/PieChart";
 
 export default function Page() {
   const router = useRouter();
   const [orders, setOrders] = useState(initialDashboards);
 
-  const totalCiro = useMemo(
-    () => orders.reduce((sum, o) => sum + o.price, 0),
-    [orders]
-  );
+  /* -------------------- STATS -------------------- */
 
-  const completedCount = useMemo(() => {
+  const totalCiro = useMemo(() => {
+    return orders.reduce((sum, o) => sum + o.price * o.sold, 0);
+  }, [orders]);
+
+  const activeCount = useMemo(() => {
     return orders.filter((p) => p.status === "active").length;
   }, [orders]);
 
   const criticalCount = useMemo(() => {
-    return orders.filter((p) => p.status === "critical").length;
+    return orders.filter((p) => p.stock <= p.criticalStock).length;
   }, [orders]);
+
+  /* -------------------- ACTIONS -------------------- */
 
   const handleDelete = (id) => {
     setOrders((prev) => prev.filter((o) => o.id !== id));
-    toast.error("Sipariş iptal edildi");
+    toast.error("Ürün silindi");
   };
+
+  /* -------------------- TABLE COLUMNS -------------------- */
 
   const columns = [
     {
@@ -78,7 +83,6 @@ export default function Page() {
 
     {
       accessorKey: "name",
-
       header: ({ column }) => (
         <Button
           variant="ghost"
@@ -95,7 +99,6 @@ export default function Page() {
 
     {
       accessorKey: "category",
-
       header: ({ column }) => (
         <Button
           variant="ghost"
@@ -105,13 +108,10 @@ export default function Page() {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => (
-        <span className="font-medium">{row.getValue("category")}</span>
-      ),
     },
+
     {
       accessorKey: "createdAt",
-
       header: ({ column }) => (
         <Button
           variant="ghost"
@@ -135,13 +135,13 @@ export default function Page() {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-
       cell: ({ row }) => (
         <div className="text-center font-semibold">
           ₺{row.getValue("price")}
         </div>
       ),
     },
+
     {
       accessorKey: "stock",
       header: ({ column }) => (
@@ -153,11 +153,8 @@ export default function Page() {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-
-      cell: ({ row }) => (
-        <div className="text-center font-semibold">{row.getValue("stock")}</div>
-      ),
     },
+
     {
       accessorKey: "criticalStock",
       header: ({ column }) => (
@@ -169,13 +166,8 @@ export default function Page() {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-
-      cell: ({ row }) => (
-        <div className="text-center font-semibold">
-          {row.getValue("criticalStock")}
-        </div>
-      ),
     },
+
     {
       accessorKey: "sold",
       header: ({ column }) => (
@@ -183,15 +175,12 @@ export default function Page() {
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Satılan Ürün Sayısı
+          Satılan
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-
-      cell: ({ row }) => (
-        <div className="text-center font-semibold">{row.getValue("sold")}</div>
-      ),
     },
+
     {
       accessorKey: "status",
       header: ({ column }) => (
@@ -199,30 +188,31 @@ export default function Page() {
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Status
+          Durum
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-
       cell: ({ row }) => {
         const status = row.getValue("status");
+
         const STATUS_STYLE = {
           active: "bg-green-100 text-green-700",
           out_of_stock: "bg-yellow-100 text-yellow-700",
           critical: "bg-red-100 text-red-700",
         };
 
+        const STATUS_TEXT = {
+          active: "Aktif",
+          out_of_stock: "Stok Yok",
+          critical: "Kritik",
+        };
+
         return (
-          <div className="flex items-center justify-center gap-2">
-            <span
-              className={`inline-block h-2 w-2 rounded-full ${STATUS_STYLE[status]}`}
-            />
-            <span
-              className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[status]}`}
-            >
-              {status}
-            </span>
-          </div>
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-semibold ${STATUS_STYLE[status]}`}
+          >
+            {STATUS_TEXT[status]}
+          </span>
         );
       },
     },
@@ -246,23 +236,20 @@ export default function Page() {
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(order.id)}
               >
-                Sipariş No Kopyala
+                Ürün No Kopyala
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                className="text-yellow-800"
-                onClick={() =>
-                  router.push(`/dashboard/
-lastOrders/${order.id}`)
-                }
+                onClick={() => router.push(`/dashboard/lastOrders/${order.id}`)}
               >
                 Detay Gör
               </DropdownMenuItem>
+
               <DropdownMenuItem
                 className="text-red-600"
                 onClick={() => handleDelete(order.id)}
               >
-                İptal Et
+                Sil
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -272,36 +259,45 @@ lastOrders/${order.id}`)
   ];
 
   return (
-    <div className="grid grid-cols-1">
-            <div className="grid-col">
-      <div className="cols-12">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-          <StatCard title="Toplam Ürün Sayısı " value={orders.length} />
-          <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
 
-          <StatCard title="Kritik Stok" value={criticalCount} />
-        </div>
-      </div>
-<div className="grid grid-cols-2 gap-1">
-    <div className="cols-6">
-          <Table
-            searchTitle="Ürün No ile filtrele..."
-            baslik="Ürünler"
-            data={orders}
-            columns={columns}
-          />
-        </div>
-        <div className="cols-6">
-          <Table
-            searchTitle="Ürün No ile filtrele..."
-            baslik="Ürünler"
-            data={orders}
-            columns={columns}
-          />
-        </div>
-</div>
-      
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <StatCard title="Toplam Ürün" value={orders.length} />
+      <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+      <StatCard title="Aktif Ürünler" value={activeCount} />
+      <StatCard title="Kritik Stok" value={criticalCount} />
     </div>
+  
+
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+      <div className="xl:col-span-1 bg-white rounded-2xl shadow-sm p-5">
+        <h3 className="text-sm font-semibold text-gray-600 mb-4">
+          Satış Grafiği
+        </h3>
+        <Charts orders={orders} />
+      </div>
+  
+
+      <div className="xl:col-span-2 bg-white rounded-2xl shadow-sm p-5">
+        <Table
+          baslik="Ürün Listesi"
+          searchTitle="Ürün No ile filtrele..."
+          data={orders}
+          columns={columns}
+        />
+      </div>
+
+    </div>
+    <div className="grid grid-cols-1 xl:grid-cols-1 p-5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <PieChart/>        <PieChart/>        <PieChart/>        <PieChart/>
+        </div>
+  
+   
+
+      </div>
+  </div>
+  
   );
 }

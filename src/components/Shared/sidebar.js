@@ -28,7 +28,7 @@ export default function AppSidebar() {
       <SidebarHeader className="border-b border-sidebar-border">
   <div className="flex items-center justify-between px-2 py-1">
     <div className="flex flex-col">
-      <span className="text-sm font-semibold tracking-tight">
+      <span className="text-sm font-semibold tracking-tight text-[#6C120B]">
         Nimbus Admin
       </span>
       <span className="text-xs text-muted-foreground">
@@ -61,14 +61,14 @@ export default function AppSidebar() {
                   >
                     {group.href ? (
                       <Link href={group.href}>
-                        <Icon />
+                        <Icon  className="text-[#102e46]"/>
                         <span className="group-data-[collapsible=icon]:hidden">
                           {group.label}
                         </span>
                       </Link>
                     ) : (
                       <>
-                        <Icon />
+                           <Icon  className="text-[#102E46]"/>
                         <span className="group-data-[collapsible=icon]:hidden">
                           {group.label}
                         </span>
@@ -98,7 +98,7 @@ export default function AppSidebar() {
                       >
                         <SidebarMenuButton asChild>
                           <Link href={item.href}>
-                            <ChildIcon />
+                            <ChildIcon className="text-[#102E46]"/>
                             <span>{item.label}</span>
                           </Link>
                         </SidebarMenuButton>

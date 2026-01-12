@@ -248,7 +248,7 @@ Status
                </DropdownMenuItem>
  
                <DropdownMenuItem
-                 className="text-yellow-800"
+                 className="text-[#6C120B]"
                  onClick={() => router.push(`/dashboard/
 critical/${order.id}`)}
                >
@@ -268,7 +268,7 @@ critical/${order.id}`)}
    ];
 
   return (
-        <>
+<div className="p-6 space-y-8 bg-gray-50 min-h-screen">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <StatCard title="Toplam Ürün Sayısı" value={orders.length} />
             <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
@@ -281,7 +281,7 @@ critical/${order.id}`)}
             data={orders}
             columns={columns}
           />
-        </>
+        </div>
 
   );
 }

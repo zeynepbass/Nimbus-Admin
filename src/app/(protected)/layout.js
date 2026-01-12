@@ -46,12 +46,10 @@ export default function ProtectedLayout({ children }) {
         <div className="flex flex-col flex-1">
           <Header />
 
-          <main className="flex-1 overflow-auto p-4">{children}</main>
+          <main className="flex-1 overflow-auto ">{children}</main>
           <h5 className="text-right text-gray-400 p-3 text-sm">
-  Nimbus Admin © 2026 · Role-based Access · Audit Ready
-</h5>
-
-
+            Nimbus Admin © 2026 · Role-based Access · Audit Ready
+          </h5>
         </div>
       </div>
     </SidebarProvider>
