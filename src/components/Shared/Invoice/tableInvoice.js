@@ -185,11 +185,17 @@ Toplam
         };
     
         return (
+          <div className="flex items-center justify-center gap-2">
           <span
+            className={`inline-block h-2 w-2 rounded-full ${STATUS_STYLE[lastStep.label] || ""}`}
+          />
+               <span
             className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[lastStep.label] || ""}`}
           >
             {lastStep.label}
           </span>
+        </div>
+    
         );
       },
     },
@@ -239,7 +245,8 @@ Toplam
       columns={columns}
       totalCiro={totalCiro}
       completedCount={completedCount}
-      pendingCount={pendingCount}
+      pendingCount={["Bekleyen",pendingCount]}
+
     />
   );
 }

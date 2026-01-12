@@ -77,7 +77,7 @@ export default function DataTableDemo({
         <StatCard title="Toplam Sipariş" value={data.length} />
         <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
         <StatCard title="Tamamlanan" value={completedCount} />
-        <StatCard title="Bekleyen" value={pendingCount} />
+        <StatCard title={pendingCount[0]} value={pendingCount[1]} />
       </div>
 
       <div className="flex items-center py-2">

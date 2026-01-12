@@ -48,3 +48,58 @@ export const downloadOrderPDF = (order) => {
 
   doc.save(`siparis-${order.id}.pdf`)
 }
+
+export const downloadDashboardPDF = (order) => {
+  const doc = new jsPDF();
+
+
+  doc.setFontSize(18);
+  doc.text("Ürün Raporu", 14, 20);
+
+
+  doc.setFontSize(11);
+  let y = 30;
+
+  doc.text(`Ürün No: ${order.id}`, 14, y); y += 6;
+  doc.text(`Ürün Adı: ${order.name}`, 14, y); y += 6;
+  doc.text(`Kategori: ${order.category}`, 14, y); y += 6;
+  doc.text(`Fiyat: ₺${order.price}`, 14, y); y += 6;
+  doc.text(`Stok: ${order.stock}`, 14, y); y += 6;
+  doc.text(`Kritik Stok: ${order.criticalStock}`, 14, y); y += 6;
+  doc.text(`Satılan Ürün Sayısı: ${order.sold}`, 14, y); y += 6;
+  doc.text(`Durum: ${order.status}`, 14, y); y += 6;
+  doc.text(`Oluşturulma Tarihi: ${formatDate(order.createdAt)}`, 14, y);
+
+
+  autoTable(doc, {
+    startY: y + 10,
+    head: [[
+      "Ürün No",
+      "Ürün Adı",
+      "Kategori",
+      "Fiyat",
+      "Satılan",
+      "Toplam Tutar",
+      "Durum"
+    ]],
+    body: [[
+      order.id,
+      order.name,
+      order.category,
+      `₺${order.price}`,
+      order.sold,
+      `₺${order.price * order.sold}`,
+      order.status
+    ]]
+  });
+
+
+  const finalY = doc.lastAutoTable.finalY + 10;
+  const total = order.price * order.sold;
+
+  doc.setFontSize(13);
+  doc.text(`Genel Toplam: ₺${total}`, 14, finalY);
+
+
+  doc.save(`Ürün-${order.id}.pdf`);
+};

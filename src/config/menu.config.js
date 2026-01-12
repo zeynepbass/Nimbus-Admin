@@ -21,7 +21,7 @@ import {
         {
           label: "Genel Özet",
           icon: TrendingUp,
-          href: "/dashboard",
+          href: "/dashboard/summary",
         },
         {
           label: "Son Siparişler",

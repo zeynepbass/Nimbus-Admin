@@ -33,7 +33,7 @@ export default function OrderDetailsClient({ order }) {
       paymentMethod: order.paymentMethod,
       items: order.items,
       totalPrice: order.totalPrice,
-      timeline: order.timeline,
+      Durum: order.timeline?.length > 0 ? order.timeline[order.timeline.length - 1].label : "",
       createdAt: order.createdAt,
       printedAt: new Date().toISOString(),
     };

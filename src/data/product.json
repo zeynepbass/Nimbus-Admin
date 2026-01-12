@@ -1,0 +1,47 @@
+[
+    {
+      "id": "PRD-001",
+      "name": "Bluetooth Kulaklık",
+      "category": "Elektronik",
+      "price": 1200,
+      "stock": 8,
+      "criticalStock": 10,
+      "sold": 42,
+      "status": "critical",
+      "createdAt": "2026-01-01T10:30:00"
+    },
+    {
+      "id": "PRD-002",
+      "name": "Laptop Standı",
+      "category": "Aksesuar",
+      "price": 750,
+      "stock": 35,
+      "criticalStock": 10,
+      "sold": 18,
+      "status": "active",
+      "createdAt": "2026-01-03T14:20:00"
+    },
+    {
+      "id": "PRD-003",
+      "name": "Kablosuz Mouse",
+      "category": "Elektronik",
+      "price": 450,
+      "stock": 0,
+      "criticalStock": 5,
+      "sold": 67,
+      "status": "out_of_stock",
+      "createdAt": "2026-01-05T09:15:00"
+    },
+    {
+      "id": "PRD-004",
+      "name": "Şarj Kablosu Type-C",
+      "category": "Aksesuar",
+      "price": 200,
+      "stock": 120,
+      "criticalStock": 20,
+      "sold": 210,
+      "status": "active",
+      "createdAt": "2026-01-06T11:00:00"
+    }
+  ]
+  
