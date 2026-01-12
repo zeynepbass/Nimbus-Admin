@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import StatCard from "@/components/ui/statCard";
+
 import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,7 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import StatCard from "@/components/ui/statCard";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 
@@ -272,19 +272,36 @@ lastOrders/${order.id}`)
   ];
 
   return (
-    <>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard title="Toplam Ürün" value={orders.length} />
-        <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
-        <StatCard title="Tamamlanan" value={completedCount} />
-        <StatCard title="Kritik Stok" value={criticalCount} />
+    <div className="grid grid-cols-1">
+            <div className="grid-col">
+      <div className="cols-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+          <StatCard title="Toplam Ürün Sayısı " value={orders.length} />
+          <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+
+          <StatCard title="Kritik Stok" value={criticalCount} />
+        </div>
       </div>
-      <Table
-        searchTitle="Ürün No ile Filtrele Yöntemi"
-        baslik="Ürünler"
-        data={orders}
-        columns={columns}
-      />
-    </>
+<div className="grid grid-cols-2 gap-1">
+    <div className="cols-6">
+          <Table
+            searchTitle="Ürün No ile filtrele..."
+            baslik="Ürünler"
+            data={orders}
+            columns={columns}
+          />
+        </div>
+        <div className="cols-6">
+          <Table
+            searchTitle="Ürün No ile filtrele..."
+            baslik="Ürünler"
+            data={orders}
+            columns={columns}
+          />
+        </div>
+</div>
+      
+      </div>
+    </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-
+import StatCard from "@/components/ui/statCard";
 import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -239,14 +239,21 @@ export default function Page() {
    ];
 
   return (
-    <Table
-      baslik="Siparişler"
-      data={orders}
-      columns={columns}
-      totalCiro={totalCiro}
-      completedCount={["Tamamlanan",completedCount]}
+               <>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <StatCard title="Toplam Sipariş Sayısı" value={orders.length} />
+                    <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+                    <StatCard title="Tamamlanan" value={completedCount} />
+                    <StatCard title="Bekleyen" value={pendingCount} />
+                  </div>
+        <Table
+          baslik="Siparişler"
+          data={orders}
+          columns={columns}
+        
+    
+        /></>
 
-      pendingCount={["Bekleyen",pendingCount]}
-    />
+
   );
 }

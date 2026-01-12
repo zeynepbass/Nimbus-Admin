@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboards from "@/components/Shared/Dashboards/LastOrders/tableLastOrders";
+import Dashboards from "@/components/Shared/Dashboards/Summary/tableSummary";
 const page = () => {
   return <Dashboards />
 };

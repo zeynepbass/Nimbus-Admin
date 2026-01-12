@@ -42,6 +42,17 @@
       "sold": 210,
       "status": "active",
       "createdAt": "2026-01-06T11:00:00"
+    },
+    {
+      "id": "PRD-005",
+      "name": "Buharlı Ütü",
+      "category": "Elektronik",
+      "price": 2300,
+      "stock": 5,
+      "criticalStock": 10,
+      "sold": 42,
+      "status": "critical",
+      "createdAt": "2026-01-01T10:30:00"
     }
   ]
   

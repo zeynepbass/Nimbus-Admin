@@ -13,7 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import StatCard from "@/components/ui/statCard";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 
@@ -22,7 +22,8 @@ import initialDashboards from "@/data/product";
 
 export default function Page() {
   const router = useRouter();
-  const [orders, setOrders] = useState(initialDashboards);
+  const filteredData=initialDashboards.filter((item)=>item.status==="critical")
+  const [orders, setOrders] = useState(filteredData);
 
 
   const totalCiro = useMemo(
@@ -267,14 +268,20 @@ critical/${order.id}`)}
    ];
 
   return (
-    <Table
-         searchTitle="Ürün No ile filtrele..."
-      baslik="Ürünler"
-      data={orders}
-      columns={columns}
-      totalCiro={totalCiro}
-      completedCount={["Satılan Toplam Ürün Sayısı","₺"+completedCount]}
-      pendingCount={["Kritik Toplam Stok",criticalCount]}
-    />
+        <>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <StatCard title="Toplam Ürün Sayısı" value={orders.length} />
+            <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+            <StatCard title="Satılan Toplam Ürün Sayısı" value={completedCount} />
+            <StatCard title="Kritik Toplam Stok" value={criticalCount} />
+          </div>
+          <Table
+            searchTitle="Ürün No ile Filtrele Yöntemi"
+            baslik="Ürünler"
+            data={orders}
+            columns={columns}
+          />
+        </>
+
   );
 }
