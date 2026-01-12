@@ -18,32 +18,27 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 
 import formatDate from "@/helper/formatDate";
-import initialOrders from "@/data/orders";
+import initialDashboards from "@/data/product";
 
 export default function Page() {
   const router = useRouter();
-  const [orders, setOrders] = useState(initialOrders);
+  const [orders, setOrders] = useState(initialDashboards);
 
 
   const totalCiro = useMemo(
-    () => orders.reduce((sum, o) => sum + o.totalPrice, 0),
+    () => orders.reduce((sum, o) => sum + o.price, 0),
     [orders]
   );
 
-  const completedCount = useMemo(
-    () =>
-      orders.filter((o) =>
-        o.timeline.some((item) => item.key === "completed")
-      ).length,
-    [orders]
-  );
-  const pendingCount = useMemo(
-    () =>
-      orders.filter((o) =>
-        o.timeline.some((item) => item.key === "pending")
-      ).length,
-    [orders]
-  );
+  const completedCount = useMemo(() => {
+    return orders.filter((p) => p.status === "active").length;
+  }, [orders]);
+
+  const criticalCount = useMemo(() => {
+    return orders.filter((p) => p.status === "critical").length;
+  }, [orders]);
+    
+
 
 
   const handleDelete = (id) => {
@@ -82,14 +77,14 @@ export default function Page() {
              column.toggleSorting(column.getIsSorted() === "asc")
            }
          >
-         Sipariş No
+       Ürün No
            <ArrowUpDown className="ml-2 h-4 w-4" />
          </Button>
        ),
      },
  
      {
-       accessorKey: "customerName",
+       accessorKey: "name",
  
        header: ({ column }) => (
          <Button
@@ -98,15 +93,33 @@ export default function Page() {
              column.toggleSorting(column.getIsSorted() === "asc")
            }
          >
-         Ad Soyad
+        Ürün Adı
            <ArrowUpDown className="ml-2 h-4 w-4" />
          </Button>
        ),
        cell: ({ row }) => (
-         <span className="font-medium">{row.getValue("customerName")}</span>
+         <span className="font-medium">{row.getValue("name")}</span>
        ),
      },
- 
+  
+     {
+      accessorKey: "category",
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+       Kategori
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <span className="font-medium">{row.getValue("category")}</span>
+      ),
+    },
      {
        accessorKey: "createdAt",
  
@@ -124,9 +137,10 @@ export default function Page() {
        cell: ({ row }) => formatDate(row.getValue("createdAt")),
        
      },
+
  
      {
-       accessorKey: "paymentMethod",
+       accessorKey: "price",
        header: ({ column }) => (
          <Button
            variant="ghost"
@@ -134,66 +148,115 @@ export default function Page() {
              column.toggleSorting(column.getIsSorted() === "asc")
            }
          >
-           Ödeme
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
-       cell: ({ row }) => (
-         <span className="capitalize">{row.getValue("paymentMethod")}</span>
-       ),
-     },
- 
-     {
-       accessorKey: "totalPrice",
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
- Toplam
+Fiyat
            <ArrowUpDown className="ml-2 h-4 w-4" />
          </Button>
        ),
  
        cell: ({ row }) => (
          <div className="text-center font-semibold">
-           ₺{row.getValue("totalPrice")}
+           ₺{row.getValue("price")}
          </div>
        ),
      },
- 
      {
-       accessorKey: "timeline",
-       header: "Zaman Çizelgesi",
-       cell: ({ row }) => {
-         const timeline = row.getValue("timeline");
-         if (!timeline || timeline.length === 0) return null;
-     
-         const lastStep = timeline[timeline.length - 1]; 
-     
-         const STATUS_STYLE = {
-           "Tamamlandı": "bg-green-100 text-green-700",
-           "Beklemede": "bg-yellow-100 text-yellow-700",
-           "İptal": "bg-red-100 text-red-700"
-         };
-     
-         return (
-          
+      accessorKey: "stock",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+Stok
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+
+      cell: ({ row }) => (
+        <div className="text-center font-semibold">
+          {row.getValue("stock")}
+        </div>
+      ),
+    },
+    {
+      accessorKey: "criticalStock",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+Kritik Stok
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+
+      cell: ({ row }) => (
+        <div className="text-center font-semibold">
+          {row.getValue("criticalStock")}
+        </div>
+      ),
+    },
+    {
+      accessorKey: "sold",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+Satılan Ürün Sayısı
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+
+      cell: ({ row }) => (
+        <div className="text-center font-semibold">
+          {row.getValue("sold")}
+        </div>
+      ),
+    },
+     {
+      accessorKey: "status",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+
+      cell: ({ row }) => {
+   
+      
+        const status = row.getValue("status");
+        const STATUS_STYLE = {
+          "active": "bg-green-100 text-green-700",
+          "out_of_stock": "bg-yellow-100 text-yellow-700",
+          "critical": "bg-red-100 text-red-700"
+        };
+    
+        return (
           <div className="flex items-center justify-center gap-2">
           <span
-            className={`inline-block h-2 w-2 rounded-full ${STATUS_STYLE[lastStep.label] || ""}`}
+            className={`inline-block h-2 w-2 rounded-full ${STATUS_STYLE[status]}`}
           />
-               <span
-            className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[lastStep.label] || ""}`}
+          <span
+            className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[status]}`}
           >
-            {lastStep.label}
+            {status}
           </span>
         </div>
-         );
-       },
-     },
+        );
+      },
+    },
  
      {
        id: "actions",
@@ -220,8 +283,9 @@ export default function Page() {
                </DropdownMenuItem>
  
                <DropdownMenuItem
-                          className="text-yellow-800"
-                 onClick={() => router.push(`/sales/orders/${order.id}`)}
+                 className="text-yellow-800"
+                 onClick={() => router.push(`/dashboard/
+lastOrders/${order.id}`)}
                >
                  Detay Gör
                </DropdownMenuItem>
@@ -240,13 +304,13 @@ export default function Page() {
 
   return (
     <Table
-      baslik="Siparişler"
+     searchTitle="Ürün No ile filtrele..."
+      baslik="Ürünler"
       data={orders}
       columns={columns}
       totalCiro={totalCiro}
       completedCount={["Tamamlanan",completedCount]}
-
-      pendingCount={["Bekleyen",pendingCount]}
+      pendingCount={["Kritik Stok",criticalCount]}
     />
   );
 }

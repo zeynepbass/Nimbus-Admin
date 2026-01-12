@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/table";
 
 export default function DataTableDemo({
+      searchTitle,
   data,
   columns,
   baslik,
@@ -76,7 +77,7 @@ export default function DataTableDemo({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard title="Toplam Sipariş" value={data.length} />
         <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
-        <StatCard title="Tamamlanan" value={completedCount} />
+        <StatCard title={completedCount[0]} value={completedCount[1]} />
         <StatCard title={pendingCount[0]} value={pendingCount[1]} />
       </div>
 
@@ -84,7 +85,8 @@ export default function DataTableDemo({
         <h1 className="p-1">{baslik}</h1>
         <div className="flex gap-1">
           <Input
-            placeholder="Filter ile Sipariş No Yöntemi..."
+placeholder={searchTitle || "Sipariş No ile filtrele..."}
+
             value={table.getColumn("id")?.getFilterValue() ?? ""}
             onChange={(e) =>
               table.getColumn("id")?.setFilterValue(e.target.value)

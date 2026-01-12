@@ -6,9 +6,14 @@ import { usePathname } from "next/navigation";
 const routeMap= {
   dashboard: "Gösterge Paneli",
   orders: "Siparişler",
+  sales:"Satışlar",
+  summary:"Genel Özet",
+  orders:"Siparişler",
+  lastOrders:"Son Siparişler",
   invoices: "Faturalar",
   profile: "Profil",
   settings: "Ayarlar",
+  critical:"Kritik Stok"
 };
 
 export default function Breadcrumb() {

@@ -26,12 +26,12 @@ import {
         {
           label: "Son Siparişler",
           icon: ShoppingCart,
-          href: "/dashboard/orders",
+          href: "/dashboard/lastOrders",
         },
         {
           label: "Kritik Stok",
           icon: Boxes,
-          href: "/dashboard/stock-alerts",
+          href: "/dashboard/critical",
         },
       ],
     },

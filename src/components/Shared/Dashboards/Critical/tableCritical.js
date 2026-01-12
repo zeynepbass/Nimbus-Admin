@@ -31,9 +31,9 @@ export default function Page() {
   );
 
   const completedCount = useMemo(() => {
-    return orders.filter((p) => p.status === "active").length;
+    return orders.reduce((sum, p) => sum + p.sold, 0);
   }, [orders]);
-
+  
   const criticalCount = useMemo(() => {
     return orders.filter((p) => p.status === "critical").length;
   }, [orders]);
@@ -77,7 +77,7 @@ export default function Page() {
              column.toggleSorting(column.getIsSorted() === "asc")
            }
          >
-         Sipariş No
+       Ürün No
            <ArrowUpDown className="ml-2 h-4 w-4" />
          </Button>
        ),
@@ -102,24 +102,8 @@ export default function Page() {
        ),
      },
   
-     {
-      accessorKey: "category",
+    
 
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
-        >
-       Kategori
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <span className="font-medium">{row.getValue("category")}</span>
-      ),
-    },
      {
        accessorKey: "createdAt",
  
@@ -138,27 +122,7 @@ export default function Page() {
        
      },
 
- 
-     {
-       accessorKey: "price",
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
-Fiyat
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
- 
-       cell: ({ row }) => (
-         <div className="text-center font-semibold">
-           ₺{row.getValue("price")}
-         </div>
-       ),
-     },
+
      {
       accessorKey: "stock",
       header: ({ column }) => (
@@ -283,9 +247,9 @@ Status
                </DropdownMenuItem>
  
                <DropdownMenuItem
-                 className="text-red-600"
+                 className="text-yellow-800"
                  onClick={() => router.push(`/dashboard/
-summary/${order.id}`)}
+critical/${order.id}`)}
                >
                  Detay Gör
                </DropdownMenuItem>
@@ -304,12 +268,13 @@ summary/${order.id}`)}
 
   return (
     <Table
+         searchTitle="Ürün No ile filtrele..."
       baslik="Ürünler"
       data={orders}
       columns={columns}
       totalCiro={totalCiro}
-      completedCount={completedCount}
-      pendingCount={["Kritik Stok",criticalCount]}
+      completedCount={["Satılan Toplam Ürün Sayısı","₺"+completedCount]}
+      pendingCount={["Kritik Toplam Stok",criticalCount]}
     />
   );
 }

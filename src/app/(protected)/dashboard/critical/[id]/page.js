@@ -1,4 +1,4 @@
-import SummaryDetailsClient from "@/components/Shared/Dashboards/LastOrders/tableLastOrdersDetails";
+import SummaryDetailsClient from "@/components/Shared/Dashboards/Critical/tableCriticalDetails";
 import Dashboard from "@/data/product.json";
 
 export default async function Page({ params }) {

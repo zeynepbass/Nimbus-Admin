@@ -244,7 +244,7 @@ Toplam
       data={orders}
       columns={columns}
       totalCiro={totalCiro}
-      completedCount={completedCount}
+      completedCount={["Tamamlanan",completedCount]}
       pendingCount={["Bekleyen",pendingCount]}
 
     />
