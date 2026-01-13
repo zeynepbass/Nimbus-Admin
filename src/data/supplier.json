@@ -1,0 +1,100 @@
+[
+    {
+      "id": "SUP-001",
+      "name": "TeknoPlus Elektronik",
+      "companyType": "Elektronik Tedarikçisi",
+      "contact": {
+        "person": "Murat Aydın",
+        "email": "murat@teknoplus.com",
+        "phone": "+90 532 111 22 33"
+      },
+      "address": {
+        "city": "İstanbul",
+        "district": "Kadıköy",
+        "fullAddress": "Hasanpaşa Mah. Elektronik Cad. No:12"
+      },
+      "products": [
+        {
+          "productId": "PRD-001",
+          "name": "Bluetooth Kulaklık",
+          "supplyPrice": 850,
+          "minOrder": 10,
+          "leadTimeDays": 3
+        },
+        {
+          "productId": "PRD-003",
+          "name": "Kablosuz Mouse",
+          "supplyPrice": 300,
+          "minOrder": 20,
+          "leadTimeDays": 5
+        }
+      ],
+      "rating": 4.6,
+      "status": "active",
+      "createdAt": "2025-11-12T09:30:00"
+    },
+  
+    {
+      "id": "SUP-002",
+      "name": "Aksesuar Depom",
+      "companyType": "Aksesuar & Yan Ürünler",
+      "contact": {
+        "person": "Elif Karaca",
+        "email": "info@aksesuar-depom.com",
+        "phone": "+90 533 444 55 66"
+      },
+      "address": {
+        "city": "Ankara",
+        "district": "Çankaya",
+        "fullAddress": "Kızılay Mah. Ticaret Sk. No:8"
+      },
+      "products": [
+        {
+          "productId": "PRD-002",
+          "name": "Laptop Standı",
+          "supplyPrice": 520,
+          "minOrder": 5,
+          "leadTimeDays": 2
+        },
+        {
+          "productId": "PRD-004",
+          "name": "Şarj Kablosu Type-C",
+          "supplyPrice": 120,
+          "minOrder": 50,
+          "leadTimeDays": 1
+        }
+      ],
+      "rating": 4.2,
+      "status": "active",
+      "createdAt": "2025-10-02T14:45:00"
+    },
+  
+    {
+      "id": "SUP-003",
+      "name": "EvTeknoloji A.Ş.",
+      "companyType": "Beyaz Eşya & Elektronik",
+      "contact": {
+        "person": "Ahmet Öz",
+        "email": "satis@evteknoloji.com",
+        "phone": "+90 216 777 88 99"
+      },
+      "address": {
+        "city": "Bursa",
+        "district": "Nilüfer",
+        "fullAddress": "Organize Sanayi Bölgesi 3. Cadde"
+      },
+      "products": [
+        {
+          "productId": "PRD-005",
+          "name": "Buharlı Ütü",
+          "supplyPrice": 1800,
+          "minOrder": 3,
+          "leadTimeDays": 7
+        }
+      ],
+      "rating": 3.9,
+      "status": "paused",
+      "createdAt": "2025-09-18T11:20:00"
+    }
+  ]
+  

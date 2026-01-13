@@ -9,6 +9,7 @@ import {
     TrendingUp,
     Wallet,
     Truck,
+    Container
   } from "lucide-react";
   
   export const menuConfig = [
@@ -69,6 +70,13 @@ import {
     },
     {
       id:"5",
+      label: "Tedarikçiler",
+      href: "/supplier",
+      roles: ["user"],
+      icon: Container
+    },
+    {
+      id:"6",
       label: "Ayarlar",
       href: "/settings",
       roles: ["user"],

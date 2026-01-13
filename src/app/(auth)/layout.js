@@ -17,7 +17,7 @@ export default function LoginLayout({ children }) {
     }
   
     router.replace(
-      user.role === roles.ADMIN ? "/panel" : "/dashboard"
+      user.role === roles.ADMIN ? "/panel" : "/dashboard/summary"
     );
   }, [router]);
   

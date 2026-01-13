@@ -13,6 +13,7 @@ const routeMap= {
   invoices: "Faturalar",
   profile: "Profil",
   settings: "Ayarlar",
+  supplier: "Tedarikçiler",
   critical:"Kritik Stok"
 };
 

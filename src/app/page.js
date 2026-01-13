@@ -9,7 +9,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const user = getCurrentUser();
-    user ? router.push("/dashboard") : router.push("/login");
+    user ? router.push("/dashboard/summary") : router.push("/login");
   }, [router]);
 
   return null;

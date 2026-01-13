@@ -1,13 +1,27 @@
 "use client";
 
 import dynamic from "next/dynamic";
-
+import initialOrders from "@/data/orders";
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function PieChart() {
-  const series = [45, 25, 15];
+export default function PieChart({initialOrders}) {
+  const pending = initialOrders.filter(order => {
+    const lastStatus = order.timeline.at(-1); 
+    return lastStatus?.key === "pending";
+  }).length;
+  const created = initialOrders.filter(order => {
+    const lastStatus = order.timeline.at(-1); 
+    return lastStatus?.key === "completed";
+  }).length;
+  const cancelled = initialOrders.filter(order => {
+    const lastStatus = order.timeline.at(-1); 
+    return lastStatus?.key === "cancelled";
+  }).length;
+  
+console.log(pending, created, cancelled)
+  const series = [pending, created, cancelled];
 
   const options = {
     chart: {
@@ -47,9 +61,6 @@ export default function PieChart() {
 
   return (
     <div className="p-6">
-      <h3 className="text-sm font-semibold text-[#6C120B] mb-4">
-        Sipariş Durumları
-      </h3>
 
       <Chart
         options={options}

@@ -59,6 +59,12 @@
         "name": "Laptop Standı",
         "price": 750,
         "quantity": 1
+      },
+      {
+        "productId": "PRD-4",
+        "name": "Şarj Kablosu",
+        "price": 200,
+        "quantity": 2
       }
     ],
     "totalPrice": 750,

@@ -32,13 +32,10 @@ import {
 
 export default function DataTableDemo({
       searchTitle,
-      length,
+
   data,
   columns,
-  baslik,
-  totalCiro,
-  completedCount,
-  pendingCount,
+  baslik
 }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -78,7 +75,7 @@ export default function DataTableDemo({
  
 
       <div className="flex items-center py-2">
-        <h1 className="p-1">{baslik}</h1>
+        <h1 className="p-1 font-bold">{baslik}</h1>
         <div className="flex gap-1">
           <Input
 placeholder={searchTitle || "Sipariş No ile filtrele..."}

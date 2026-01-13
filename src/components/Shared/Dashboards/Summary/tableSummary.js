@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Charts from "@/components/widgets/Charts/SalesChart";
+import initialOrders from "@/data/orders";
 import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -18,13 +19,39 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import formatDate from "@/helper/formatDate";
 import initialDashboards from "@/data/product";
+import { SeparatorDemo } from "@/components/widgets/Dashboards/Seperator";
 import PieChart from "@/components/widgets/Charts/PieChart";
 
 export default function Page() {
   const router = useRouter();
   const [orders, setOrders] = useState(initialDashboards);
 
-  /* -------------------- STATS -------------------- */
+  const getMostSoldProducts = (orders) => {
+    const productMap = {};
+
+    orders.forEach((order) => {
+      order.items.forEach((item) => {
+        if (!productMap[item.productId]) {
+          productMap[item.productId] = {
+            productId: item.productId,
+            productId: item.productId,
+            price: item.price,
+            name: item.name,
+            totalQuantity: 0,
+            totalRevenue: 0,
+          };
+        }
+
+        productMap[item.productId].totalQuantity += item.quantity;
+        productMap[item.productId].totalRevenue += item.price * item.quantity;
+      });
+    });
+
+    return Object.values(productMap).sort(
+      (a, b) => b.totalQuantity - a.totalQuantity
+    );
+  };
+  const mostSoldProducts = getMostSoldProducts(initialOrders);
 
   const totalCiro = useMemo(() => {
     return orders.reduce((sum, o) => sum + o.price * o.sold, 0);
@@ -38,14 +65,10 @@ export default function Page() {
     return orders.filter((p) => p.stock <= p.criticalStock).length;
   }, [orders]);
 
-  /* -------------------- ACTIONS -------------------- */
-
   const handleDelete = (id) => {
     setOrders((prev) => prev.filter((o) => o.id !== id));
     toast.error("Ürün silindi");
   };
-
-  /* -------------------- TABLE COLUMNS -------------------- */
 
   const columns = [
     {
@@ -260,44 +283,52 @@ export default function Page() {
 
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
-
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <StatCard title="Toplam Ürün" value={orders.length} />
-      <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
-      <StatCard title="Aktif Ürünler" value={activeCount} />
-      <StatCard title="Kritik Stok" value={criticalCount} />
-    </div>
-  
-
-    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-
-      <div className="xl:col-span-1 bg-white rounded-2xl shadow-sm p-5">
-        <h3 className="text-sm font-semibold text-gray-600 mb-4">
-          Satış Grafiği
-        </h3>
-        <Charts orders={orders} />
-      </div>
-  
-
-      <div className="xl:col-span-2 bg-white rounded-2xl shadow-sm p-5">
-        <Table
-          baslik="Ürün Listesi"
-          searchTitle="Ürün No ile filtrele..."
-          data={orders}
-          columns={columns}
-        />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard title="Toplam Ürün" value={orders.length} />
+        <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+        <StatCard title="Aktif Ürünler" value={activeCount} />
+        <StatCard title="Kritik Stok" value={criticalCount} />
       </div>
 
-    </div>
-    <div className="grid grid-cols-1 xl:grid-cols-1 p-5">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <PieChart/>        <PieChart/>        <PieChart/>        <PieChart/>
+      <div className="grid grid-cols-1  ">
+
+          <h3 className="text-sm font-bold text-gray-600 mb-4">
+            SATIŞ GRAFİĞİ
+          </h3>
+          <Charts orders={orders} />
+
+
+
+      </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+  
+        <div className="grid grid-cols-1  bg-zinc-100 rounded-2xl shadow-sm p-5">
+          <div>dfsdfsdf</div>          <div>sdfsdfsdfsdf</div>
+
         </div>
-  
-   
+        <div className="bg-zinc-100 rounded-2xl shadow-sm p-5">
+          <h3 className="text-sm font-bold text-gray-600 mb-4">
+            SATIŞ GRAFİĞİ
+          </h3>
+          <PieChart initialOrders={initialOrders} />
+        </div>
+        <div className="bg-zinc-100 rounded-2xl shadow-sm p-5">
+          <SeparatorDemo data={mostSoldProducts} />
+        </div>
+
+
+
 
       </div>
-  </div>
-  
+      <div className="xl:col-span-1 bg-zinc-100 rounded-2xl shadow-sm p-5">
+          <Table
+            baslik="ÜRÜN LİSTESİ"
+            searchTitle="Ürün No ile filtrele..."
+            data={orders}
+            columns={columns}
+          />
+        </div>
+    </div>
   );
 }

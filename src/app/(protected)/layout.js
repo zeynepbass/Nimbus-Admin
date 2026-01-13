@@ -24,11 +24,11 @@ export default function ProtectedLayout({ children }) {
     }
 
     if (user.role === roles.USER && pathname.startsWith("/panel")) {
-      router.replace("/dashboard");
+      router.replace("/dashboard/summary");
       return;
     }
 
-    if (user.role === roles.ADMIN && pathname.startsWith("/dashboard")) {
+    if (user.role === roles.ADMIN && pathname.startsWith("/dashboard/summary")) {
       router.replace("/panel");
       return;
     }

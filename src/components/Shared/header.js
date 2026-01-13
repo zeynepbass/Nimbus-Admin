@@ -79,7 +79,7 @@ const Header = () => {
                 >
                   <CommandEmpty>No results found.</CommandEmpty>
                   <CommandGroup heading="Hızlı Erişim">
-                    <CommandItem onSelect={() => router.push("/dashboard")}>
+                    <CommandItem onSelect={() => router.push("/dashboard/summary")}>
                       Gösterge Paneli
                     </CommandItem>
 

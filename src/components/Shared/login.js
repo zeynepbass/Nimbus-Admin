@@ -23,7 +23,7 @@ export default function LoginPage() {
     if (!userSetting) return alert("Email veya şifre hatalı");
 
     router.replace(
-   user.role === roles.ADMIN ? "/panel" : "/dashboard"
+   user.role === roles.ADMIN ? "/panel" : "/dashboard/summary"
     );
     saveLastLogin()
   };
