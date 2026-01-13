@@ -1,0 +1,194 @@
+[
+  {
+    "id": "P-001",
+    "firstName": "Zeynep",
+    "lastName": "Yılmaz",
+    "fullName": "Zeynep Yılmaz",
+    "department": "Frontend Development",
+    "position": "React Developer",
+    "email": "zeynep.yilmaz@firma.com",
+    "phone": "+90 555 123 45 67",
+    "address": {
+      "city": "İstanbul",
+      "district": "Kadıköy",
+      "fullAddress": "Moda Mah. No:12 Kadıköy / İstanbul"
+    },
+    "education": {
+      "university": "İstanbul Üniversitesi",
+      "faculty": "Bilgisayar Mühendisliği",
+      "degree": "Lisans"
+    },
+    "employment": {
+      "startDate": "2023-04-10",
+      "contractType": "Tam Zamanlı",
+      "workType": "Remote"
+    },
+    "leaveDates": [
+      {
+        "from": "2025-07-15",
+        "to": "2025-07-22",
+        "type": "Yıllık İzin"
+      }
+    ],
+    "status": "active",
+    "performanceScore": 4.6,
+    "createdAt": "2023-04-10"
+  },
+  {
+    "id": "P-002",
+    "firstName": "Ahmet",
+    "lastName": "Demir",
+    "fullName": "Ahmet Demir",
+    "department": "Backend Development",
+    "position": "Node.js Developer",
+    "email": "ahmet.demir@firma.com",
+    "phone": "+90 532 456 78 90",
+    "address": {
+      "city": "Ankara",
+      "district": "Çankaya",
+      "fullAddress": "Kızılay Mah. No:45 Çankaya / Ankara"
+    },
+    "education": {
+      "university": "ODTÜ",
+      "faculty": "Bilgisayar Mühendisliği",
+      "degree": "Lisans"
+    },
+    "employment": {
+      "startDate": "2022-01-15",
+      "contractType": "Tam Zamanlı",
+      "workType": "Hybrid"
+    },
+    "leaveDates": [],
+    "status": "active",
+    "performanceScore": 4.8,
+    "createdAt": "2022-01-15"
+  },
+  {
+    "id": "P-003",
+    "firstName": "Elif",
+    "lastName": "Kaya",
+    "fullName": "Elif Kaya",
+    "department": "UI/UX Design",
+    "position": "Product Designer",
+    "email": "elif.kaya@firma.com",
+    "phone": "+90 544 321 98 76",
+    "address": {
+      "city": "İzmir",
+      "district": "Bornova",
+      "fullAddress": "Kazımdirik Mah. No:18 Bornova / İzmir"
+    },
+    "education": {
+      "university": "Ege Üniversitesi",
+      "faculty": "Güzel Sanatlar",
+      "degree": "Lisans"
+    },
+    "employment": {
+      "startDate": "2021-09-01",
+      "contractType": "Tam Zamanlı",
+      "workType": "Office"
+    },
+    "leaveDates": [
+      {
+        "from": "2025-08-05",
+        "to": "2025-08-10",
+        "type": "Mazeret İzni"
+      }
+    ],
+    "status": "active",
+    "performanceScore": 4.3,
+    "createdAt": "2021-09-01"
+  },
+  {
+    "id": "P-004",
+    "firstName": "Mehmet",
+    "lastName": "Arslan",
+    "fullName": "Mehmet Arslan",
+    "department": "Sales",
+    "position": "Sales Manager",
+    "email": "mehmet.arslan@firma.com",
+    "phone": "+90 505 654 32 10",
+    "address": {
+      "city": "Bursa",
+      "district": "Nilüfer",
+      "fullAddress": "FSM Bulvarı No:78 Nilüfer / Bursa"
+    },
+    "education": {
+      "university": "Uludağ Üniversitesi",
+      "faculty": "İktisadi ve İdari Bilimler",
+      "degree": "Lisans"
+    },
+    "employment": {
+      "startDate": "2020-03-20",
+      "contractType": "Tam Zamanlı",
+      "workType": "Office"
+    },
+    "leaveDates": [],
+    "status": "active",
+    "performanceScore": 4.1,
+    "createdAt": "2020-03-20"
+  },
+  {
+    "id": "P-005",
+    "firstName": "Ayşe",
+    "lastName": "Çelik",
+    "fullName": "Ayşe Çelik",
+    "department": "Human Resources",
+    "position": "HR Specialist",
+    "email": "ayse.celik@firma.com",
+    "phone": "+90 538 987 65 43",
+    "address": {
+      "city": "İstanbul",
+      "district": "Beşiktaş",
+      "fullAddress": "Levent Mah. No:5 Beşiktaş / İstanbul"
+    },
+    "education": {
+      "university": "Marmara Üniversitesi",
+      "faculty": "İnsan Kaynakları",
+      "degree": "Lisans"
+    },
+    "employment": {
+      "startDate": "2019-06-12",
+      "contractType": "Tam Zamanlı",
+      "workType": "Office"
+    },
+    "leaveDates": [
+      {
+        "from": "2025-06-20",
+        "to": "2025-06-25",
+        "type": "Yıllık İzin"
+      }
+    ],
+    "status": "active",
+    "performanceScore": 4.7,
+    "createdAt": "2019-06-12"
+  },
+  {
+    "id": "P-006",
+    "firstName": "Can",
+    "lastName": "Öztürk",
+    "fullName": "Can Öztürk",
+    "department": "Finance",
+    "position": "Financial Analyst",
+    "email": "can.ozturk@firma.com",
+    "phone": "+90 552 222 11 00",
+    "address": {
+      "city": "Antalya",
+      "district": "Muratpaşa",
+      "fullAddress": "Güzeloba Mah. No:34 Muratpaşa / Antalya"
+    },
+    "education": {
+      "university": "Akdeniz Üniversitesi",
+      "faculty": "İktisat",
+      "degree": "Yüksek Lisans"
+    },
+    "employment": {
+      "startDate": "2024-02-01",
+      "contractType": "Sözleşmeli",
+      "workType": "Remote"
+    },
+    "leaveDates": [],
+    "status": "active",
+    "performanceScore": 4.0,
+    "createdAt": "2024-02-01"
+  }
+]

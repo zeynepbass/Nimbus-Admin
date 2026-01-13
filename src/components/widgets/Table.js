@@ -31,11 +31,12 @@ import {
 } from "@/components/ui/table";
 
 export default function DataTableDemo({
-      searchTitle,
-
+  searchTitle,
+  button,
+  setOpen,
   data,
   columns,
-  baslik
+  baslik,
 }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
@@ -67,19 +68,19 @@ export default function DataTableDemo({
     Tarih: formatDate(o.createdAt),
     "Toplam (₺)": o.totalPrice,
     Ödeme: o.paymentMethod,
-    Durum: o.timeline?.length > 0 ? o.timeline[o.timeline.length - 1].label : "" || o.Durum,
+    Durum:
+      o.timeline?.length > 0
+        ? o.timeline[o.timeline.length - 1].label
+        : "" || o.Durum,
   }));
 
   return (
     <div className="w-full">
- 
-
-      <div className="flex items-center py-2">
-        <h1 className="p-1 font-bold">{baslik}</h1>
+      <div className="flex items-center justify-between py-2">
+        <h1 className="p-1 ">{baslik}</h1>
         <div className="flex gap-1">
           <Input
-placeholder={searchTitle || "Sipariş No ile filtrele..."}
-
+            placeholder={searchTitle || "Sipariş No ile filtrele..."}
             value={table.getColumn("id")?.getFilterValue() ?? ""}
             onChange={(e) =>
               table.getColumn("id")?.setFilterValue(e.target.value)
@@ -92,6 +93,7 @@ placeholder={searchTitle || "Sipariş No ile filtrele..."}
                 Filtrele <ChevronDown />
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               {table
                 .getAllColumns()
@@ -116,15 +118,23 @@ placeholder={searchTitle || "Sipariş No ile filtrele..."}
           >
             Excel İndir
           </Button>
+          {button && (
+            <Button
+              className="bg-[#628DD0] text-white"
+              onClick={() => setOpen(true)}
+            >
+              {button}
+            </Button>
+          )}
         </div>
       </div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader >
+          <TableHeader>
             {table.getHeaderGroups().map((group) => (
               <TableRow key={group.id}>
                 {group.headers.map((header) => (
-                  <TableHead key={header.id}  className="text-center">
+                  <TableHead key={header.id} className="text-center">
                     {header.isPlaceholder
                       ? null
                       : flexRender(

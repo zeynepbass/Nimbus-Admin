@@ -14,7 +14,10 @@ const routeMap= {
   profile: "Profil",
   settings: "Ayarlar",
   supplier: "Tedarikçiler",
-  critical:"Kritik Stok"
+  critical:"Kritik Stok",
+  humanresources:"İnsan Kaynakları",
+  employees:"Personel Listesi",
+  leaves:"İzinler"
 };
 
 export default function Breadcrumb() {

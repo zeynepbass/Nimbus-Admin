@@ -277,7 +277,7 @@ critical/${order.id}`)}
           </div>
           <Table
             searchTitle="Ürün No ile Filtrele Yöntemi"
-            baslik="Ürünler"
+            baslik="Kritik Stok Listesi"
             data={orders}
             columns={columns}
           />

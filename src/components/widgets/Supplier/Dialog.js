@@ -11,16 +11,13 @@ import {
 import { Button } from "@/components/ui/button";
 
 export default function SupplierUpdateDialog({ open, setOpen, data, onSave }) {
-
   const [supplier, setSupplier] = useState(null);
-
 
   useEffect(() => {
     if (data) setSupplier(data);
   }, [data]);
 
   if (!supplier) return null;
-
 
   const handleChange = (field, value) => {
     setSupplier((prev) => ({
@@ -49,11 +46,9 @@ export default function SupplierUpdateDialog({ open, setOpen, data, onSave }) {
     }));
   };
 
-
   const handleSave = () => {
     if (onSave) onSave(supplier);
-    setOpen(false); 
-
+    setOpen(false);
   };
 
   return (

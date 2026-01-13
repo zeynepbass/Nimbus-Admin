@@ -190,3 +190,65 @@ export const downloadSupplierPDF = (supplier) => {
 
   doc.save(`supplier-${supplier.id}.pdf`);
 };
+export const downloadEmployeesPDF = (user) => {
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Personel Detay Bilgileri", 14, 20);
+
+  doc.setFontSize(11);
+  doc.text(`Ad Soyad: ${user.firstName} ${user.lastName}`, 14, 35);
+  doc.text(`Departman: ${user.department}`, 14, 42);
+  doc.text(`Pozisyon: ${user.position}`, 14, 49);
+  doc.text(`E-posta: ${user.email}`, 14, 56);
+  doc.text(`Telefon: ${user.phone}`, 14, 63);
+
+  doc.text(
+    `Adres: ${user.address.fullAddress}`,
+    14,
+    72,
+    { maxWidth: 180 }
+  );
+
+  doc.text(
+    `Üniversite: ${user.education.university} / ${user.education.faculty}`,
+    14,
+    84
+  );
+
+  doc.text(
+    `İşe Giriş Tarihi: ${formatDate(user.employment.startDate)}`,
+    14,
+    92
+  );
+
+  doc.text(
+    `Çalışma Tipi: ${user.employment.workType}`,
+    14,
+    100
+  );
+
+  doc.text(
+    `Performans Puanı: ⭐ ${user.performanceScore}`,
+    14,
+    108
+  );
+
+  if (user.leaveDates?.length > 0) {
+    doc.text("İzin Geçmişi", 14, 122);
+
+    autoTable(doc, {
+      startY: 128,
+      head: [["Başlangıç", "Bitiş", "İzin Türü"]],
+      body: user.leaveDates.map((leave) => [
+        formatDate(leave.from),
+        formatDate(leave.to),
+        leave.type,
+      ]),
+    });
+  }
+
+  doc.save(
+    `${user.firstName}-${user.lastName}-personel-bilgileri.pdf`
+  );
+};

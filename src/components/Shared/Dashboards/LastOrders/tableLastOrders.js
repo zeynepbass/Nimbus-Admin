@@ -281,7 +281,7 @@ lastOrders/${order.id}`)
       </div>
       <Table
         searchTitle="Ürün No ile Filtrele Yöntemi"
-        baslik="Ürünler"
+        baslik="Son Siparişler Listesi"
         data={orders}
         columns={columns}
       />

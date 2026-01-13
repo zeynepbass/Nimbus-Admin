@@ -7,7 +7,7 @@ import StatCard from "@/components/ui/statCard";
 import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import Dialog from "@/components/widgets/Supplier/Dialog"
+import Dialog from "@/components/widgets/Supplier/Dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,8 +24,6 @@ import suppliersData from "@/data/supplier";
 export default function Page() {
   const router = useRouter();
   const [suppliers, setSuppliers] = useState(suppliersData);
-
-
 
   const activeCount = useMemo(
     () => suppliers.filter((s) => s.status === "active").length,
@@ -47,13 +45,12 @@ export default function Page() {
     setSuppliers((prev) => prev.filter((s) => s.id !== id));
     toast.error("Tedarikçi silindi");
   };
-  const [open,setOpen]=useState(false)
-  const [data,setData]=useState("")
-  const handleClick=(item)=>{
-    setOpen(true)
-    setData(item)
-   
-  }
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState("");
+  const handleClick = (item) => {
+    setOpen(true);
+    setData(item);
+  };
 
   const columns = [
     {
@@ -117,9 +114,7 @@ export default function Page() {
     {
       header: "Ürün Sayısı",
       cell: ({ row }) => (
-        <span className="font-medium">
-          {row.original.products.length}
-        </span>
+        <span className="font-medium">{row.original.products.length}</span>
       ),
     },
 
@@ -161,15 +156,13 @@ export default function Page() {
 
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Aksiyonlar</DropdownMenuLabel>
-    
+
               <DropdownMenuItem
                 onClick={() => router.push(`/supplier/${supplier.id}`)}
               >
                 Detayı Gör
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={()=>handleClick(supplier)}
-              >
+              <DropdownMenuItem onClick={() => handleClick(supplier)}>
                 Güncelle
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -193,11 +186,25 @@ export default function Page() {
         <StatCard title="Pasif" value={pausedCount} />
         <StatCard title="Ortalama Puan" value={averageRating} />
       </div>
-      <Dialog open={open} setOpen={setOpen} data={data} />
+      <Dialog
+        open={open}
+        setOpen={setOpen}
+        data={data}
+        onSave={(updatedSupplier) => {
+          setSuppliers((prev) =>
+            prev.map((item) =>
+              item.id === updatedSupplier.id ? updatedSupplier : item
+            )
+          );
+
+          toast.success("Tedarikçi güncellendi");
+          setOpen(false);
+        }}
+      />
 
       <Table
-                 searchTitle="Firma No ile Filtrele Yöntemi"
-        baslik="Tedarikçiler"
+        searchTitle="Firma No ile Filtrele Yöntemi"
+        baslik="Tedarikçiler Listesi"
         data={suppliers}
         columns={columns}
       />

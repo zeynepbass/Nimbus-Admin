@@ -246,7 +246,7 @@ Toplam
                 <StatCard title="Bekleyen" value={pendingCount} />
               </div>
     <Table
-      baslik="Faturalar"
+      baslik="Faturalar Listesi"
       data={orders}
       columns={columns}
     

@@ -247,7 +247,7 @@ export default function Page() {
                     <StatCard title="Bekleyen" value={pendingCount} />
                   </div>
         <Table
-          baslik="Siparişler"
+          baslik="Siparişler Listesi"
           data={orders}
           columns={columns}
         
