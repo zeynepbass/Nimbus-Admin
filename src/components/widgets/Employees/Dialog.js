@@ -13,7 +13,7 @@ import { toast } from "sonner";
 
 export default function EmployeeUpdateDialog({
   open,
-  setOpen,
+  onOpenChange,
   employees,
   onSave,
 }) {
@@ -69,12 +69,12 @@ export default function EmployeeUpdateDialog({
     };
 
     if (onSave) onSave(updatedEmployee);
-    setOpen(false);
+    onOpenChange(false);
     toast("Güncellendi");
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
           <DialogTitle>Personel Güncelle</DialogTitle>
@@ -196,7 +196,7 @@ export default function EmployeeUpdateDialog({
         </div>
 
         <div className="flex justify-end gap-2 pt-4">
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
             İptal
           </Button>
           <Button className="bg-[#6C120B] text-white" onClick={handleSave}>

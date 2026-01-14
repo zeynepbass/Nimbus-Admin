@@ -5,7 +5,7 @@ export default async function Page({ params }) {
   const dashboardId = await params;
   const supplier = Supplier.find((o) => o.id === dashboardId.id);
 
-  if (!supplier) return <p>Tedarikçi bulunamadı</p>;
+  if (!supplier) return <p className="text-center">Tedarikçi bulunamadı</p>;
 
   return <SupplierDetails supplier={supplier} />;
 }

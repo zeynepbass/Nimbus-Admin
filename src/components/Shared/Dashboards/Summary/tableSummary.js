@@ -23,8 +23,10 @@ import initialDashboards from "@/data/product";
 import suppliers from "@/data/supplier";
 import { SeparatorDemo } from "@/components/widgets/Dashboards/Seperator";
 import PieChart from "@/components/widgets/Charts/PieChart";
-import { filterFns } from "@tanstack/react-table";
+import initialEmployees from "@/data/employees";
+import Employees from "@/components/widgets/Employees/EmployeesTable";
 
+import EmployeesLeaves from "@/components/widgets/Employees/EmployeesLeaves";
 export default function Page() {
   const router = useRouter();
   const [orders, setOrders] = useState(initialDashboards);
@@ -262,7 +264,7 @@ export default function Page() {
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(order.id)}
               >
-                Ürün No Kopyala
+                No Kopyala
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -288,40 +290,36 @@ export default function Page() {
   return (
     <div className="grid grid-cols-12 relative p-4 gap-4 bg-gray-50">
       <div className="col-span-12 relative h-40 xl:col-span-9  space-y-8 ">
-      <div
-  className=" h-40 rounded-xl bg-cover bg-center overflow-hidden"
-  style={{
-    backgroundImage: "url('/images/wave-haikei.png')",
-  }}
->
- <img
-    src="/images/curve-rafiki.png"
-    alt="Welcome illustration"
-    className="absolute -top-[80px] left-0 w-70 h-70 z-50  pointer-events-none"
-  />
+        <div
+          className=" h-40 rounded-xl bg-cover bg-center overflow-hidden"
+          style={{
+            backgroundImage: "url('/images/wave-haikei.png')",
+          }}
+        >
+          <img
+            src="/images/curve-rafiki.png"
+            alt="Welcome illustration"
+            className="absolute -top-[80px] left-0 w-70 h-70 z-50  pointer-events-none"
+          />
 
+          <div className="relative z-10 h-full flex flex-col justify-center pl-75 pr-6">
+            <span className="text-sm text-white/80">Hoş geldin 👋</span>
 
+            <h2 className="text-xl md:text-2xl font-semibold text-white">
+              {user.name}
+            </h2>
 
-  <div className="relative z-10 h-full flex flex-col justify-center pl-75 pr-6">
-    <span className="text-sm text-white/80">Hoş geldin 👋</span>
-
-    <h2 className="text-xl md:text-2xl font-semibold text-white">
-      {user.name}
-    </h2>
-
-    <p className="text-sm text-white/70 mt-1">
-      <span className="font-bold text-xl">
-        Doğru yoldasınız!
-      </span>
-      <br />
-      Son faaliyetleriniz tutarlı ilerleme ve güçlü bir katılım gösteriyor.
-      <br />
-      Geliştirmeye, iyileştirmeye ve sınırlarınızı zorlamaya devam edin;
-      sonuçlar giderek artıyor.
-    </p>
-  </div>
-</div>
-
+            <p className="text-sm text-white/70 mt-1">
+              <span className="font-bold text-xl">Doğru yoldasınız!</span>
+              <br />
+              Son faaliyetleriniz tutarlı ilerleme ve güçlü bir katılım
+              gösteriyor.
+              <br />
+              Geliştirmeye, iyileştirmeye ve sınırlarınızı zorlamaya devam edin;
+              sonuçlar giderek artıyor.
+            </p>
+          </div>
+        </div>
 
         <div className="space-y-8   min-h-screen">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -362,9 +360,21 @@ export default function Page() {
       <div className="col-span-12 xl:col-span-3 space-y-6 ">
         <div className="bg-zinc-100 rounded-2xl shadow-sm p-5">
           <h3 className="text-sm font-bold text-gray-600 mb-4">
-          ÜRÜN DETAY GRAFİĞİ
+            ÜRÜN DETAY GRAFİĞİ
           </h3>
           <PieChart initialOrders={initialOrders} />
+        </div>
+        <div className="bg-zinc-100 rounded-2xl shadow-sm p-5">
+          <h3 className="text-sm font-bold text-gray-600 mb-4">
+            PERFORMANS GRAFİĞİ
+          </h3>
+          <Employees />
+        </div>
+        <div className="bg-zinc-100 rounded-2xl shadow-sm p-5">
+          <h3 className="text-sm font-bold text-gray-600 mb-4">
+            BUGÜN İZİNLİ OLAN PERSONELLER
+          </h3>
+          <EmployeesLeaves initialEmployees={initialEmployees} />
         </div>
       </div>
     </div>

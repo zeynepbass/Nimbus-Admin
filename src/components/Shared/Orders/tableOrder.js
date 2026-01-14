@@ -24,7 +24,6 @@ export default function Page() {
   const router = useRouter();
   const [orders, setOrders] = useState(initialOrders);
 
-
   const totalCiro = useMemo(
     () => orders.reduce((sum, o) => sum + o.totalPrice, 0),
     [orders]
@@ -32,228 +31,211 @@ export default function Page() {
 
   const completedCount = useMemo(
     () =>
-      orders.filter((o) =>
-        o.timeline.some((item) => item.key === "completed")
-      ).length,
+      orders.filter((o) => o.timeline.some((item) => item.key === "completed"))
+        .length,
     [orders]
   );
   const pendingCount = useMemo(
     () =>
-      orders.filter((o) =>
-        o.timeline.some((item) => item.key === "pending")
-      ).length,
+      orders.filter((o) => o.timeline.some((item) => item.key === "pending"))
+        .length,
     [orders]
   );
-
 
   const handleDelete = (id) => {
     setOrders((prev) => prev.filter((o) => o.id !== id));
     toast.error("Sipariş iptal edildi");
   };
 
+  const columns = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(v) => row.toggleSelected(!!v)}
+        />
+      ),
+      enableSorting: false,
+    },
 
-   const columns = [
-     {
-       id: "select",
-       header: ({ table }) => (
-         <Checkbox
-           checked={
-             table.getIsAllPageRowsSelected() ||
-             (table.getIsSomePageRowsSelected() && "indeterminate")
-           }
-           onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
-         />
-       ),
-       cell: ({ row }) => (
-         <Checkbox
-           checked={row.getIsSelected()}
-           onCheckedChange={(v) => row.toggleSelected(!!v)}
-         />
-       ),
-       enableSorting: false,
-     },
- 
-     {
-       accessorKey: "id",
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
-         Sipariş No
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
-     },
- 
-     {
-       accessorKey: "customerName",
- 
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
-         Ad Soyad
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
-       cell: ({ row }) => (
-         <span className="font-medium">{row.getValue("customerName")}</span>
-       ),
-     },
- 
-     {
-       accessorKey: "createdAt",
- 
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
-           Tarih
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
-       cell: ({ row }) => formatDate(row.getValue("createdAt")),
-       
-     },
- 
-     {
-       accessorKey: "paymentMethod",
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
-           Ödeme
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
-       cell: ({ row }) => (
-         <span className="capitalize">{row.getValue("paymentMethod")}</span>
-       ),
-     },
- 
-     {
-       accessorKey: "totalPrice",
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
- Toplam
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
- 
-       cell: ({ row }) => (
-         <div className="text-center font-semibold">
-           ₺{row.getValue("totalPrice")}
-         </div>
-       ),
-     },
- 
-     {
-       accessorKey: "timeline",
-       header: "Zaman Çizelgesi",
-       cell: ({ row }) => {
-         const timeline = row.getValue("timeline");
-         if (!timeline || timeline.length === 0) return null;
-     
-         const lastStep = timeline[timeline.length - 1]; 
-     
-         const STATUS_STYLE = {
-           "Tamamlandı": "bg-green-100 text-green-700",
-           "Beklemede": "bg-yellow-100 text-yellow-700",
-           "İptal": "bg-red-100 text-red-700"
-         };
-     
-         return (
-          
-          <div className="flex items-center justify-center gap-2">
-          <span
-            className={`inline-block h-2 w-2 rounded-full ${STATUS_STYLE[lastStep.label] || ""}`}
-          />
-               <span
-            className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[lastStep.label] || ""}`}
-          >
-            {lastStep.label}
-          </span>
+    {
+      accessorKey: "id",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Sipariş No
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
+
+    {
+      accessorKey: "customerName",
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ad Soyad
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <span className="font-medium">{row.getValue("customerName")}</span>
+      ),
+    },
+
+    {
+      accessorKey: "createdAt",
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Tarih
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => formatDate(row.getValue("createdAt")),
+    },
+
+    {
+      accessorKey: "paymentMethod",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ödeme
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <span className="capitalize">{row.getValue("paymentMethod")}</span>
+      ),
+    },
+
+    {
+      accessorKey: "totalPrice",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Toplam
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+
+      cell: ({ row }) => (
+        <div className="text-center font-semibold">
+          ₺{row.getValue("totalPrice")}
         </div>
-         );
-       },
-     },
- 
-     {
-       id: "actions",
-       cell: ({ row }) => {
-         const order = row.original;
- 
-         return (
-           <DropdownMenu>
-             <DropdownMenuTrigger asChild>
-               <Button variant="ghost" className="h-8 w-8 p-0">
-                 <MoreHorizontal />
-               </Button>
-             </DropdownMenuTrigger>
- 
-             <DropdownMenuContent align="end">
-               <DropdownMenuLabel>Aksiyon</DropdownMenuLabel>
- 
-               <DropdownMenuItem
-                 onClick={() =>
-                   navigator.clipboard.writeText(order.id)
-                 }
-               >
-                 Sipariş No Kopyala
-               </DropdownMenuItem>
- 
-               <DropdownMenuItem
-                          className="text-[#6C120B]"
-                 onClick={() => router.push(`/sales/orders/${order.id}`)}
-               >
-                 Detay Gör
-               </DropdownMenuItem>
-               <DropdownMenuItem
-                 className="text-red-600"
-                 onClick={() => handleDelete(order.id)}
-               >
-                 İptal Et
-               </DropdownMenuItem>
-             </DropdownMenuContent>
-           </DropdownMenu>
-         );
-       },
-     },
-   ];
+      ),
+    },
+
+    {
+      accessorKey: "timeline",
+      header: "Zaman Çizelgesi",
+      cell: ({ row }) => {
+        const timeline = row.getValue("timeline");
+        if (!timeline || timeline.length === 0) return null;
+
+        const lastStep = timeline[timeline.length - 1];
+
+        const STATUS_STYLE = {
+          Tamamlandı: "bg-green-100 text-green-700",
+          Beklemede: "bg-yellow-100 text-yellow-700",
+          İptal: "bg-red-100 text-red-700",
+        };
+
+        return (
+          <div className="flex items-center justify-center gap-2">
+            <span
+              className={`inline-block h-2 w-2 rounded-full ${
+                STATUS_STYLE[lastStep.label] || ""
+              }`}
+            />
+            <span
+              className={`px-2 py-1 rounded-md text-xs font-medium ${
+                STATUS_STYLE[lastStep.label] || ""
+              }`}
+            >
+              {lastStep.label}
+            </span>
+          </div>
+        );
+      },
+    },
+
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const order = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Aksiyon</DropdownMenuLabel>
+
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(order.id)}
+              >
+                No Kopyala
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className="text-[#6C120B]"
+                onClick={() => router.push(`/sales/orders/${order.id}`)}
+              >
+                Detay Gör
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={() => handleDelete(order.id)}
+              >
+                İptal Et
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   return (
-<div className="p-6 space-y-8 bg-gray-50 min-h-screen">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                    <StatCard title="Toplam Sipariş Sayısı" value={orders.length} />
-                    <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
-                    <StatCard title="Tamamlanan" value={completedCount} />
-                    <StatCard title="Bekleyen" value={pendingCount} />
-                  </div>
-        <Table
-          baslik="Siparişler Listesi"
-          data={orders}
-          columns={columns}
-        
-    
-        /></div>
-
-
+    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard title="Toplam Sipariş Sayısı" value={orders.length} />
+        <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+        <StatCard title="Tamamlanan" value={completedCount} />
+        <StatCard title="Bekleyen" value={pendingCount} />
+      </div>
+      <Table
+        baslik="Siparişler Listesi"
+        data={orders.slice().reverse()}
+        columns={columns}
+      />
+    </div>
   );
 }

@@ -153,10 +153,18 @@ export default function Page() {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-
-      cell: ({ row }) => (
-        <div className="text-center font-semibold">{row.getValue("stock")}</div>
-      ),
+      cell: ({ row }) => {
+        const stock = row.getValue("stock");
+        return (
+          <div
+            className={`text-center font-semibold ${
+              stock <= 10 ? "text-red-600" : "text-gray-800"
+            }`}
+          >
+            {stock}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "criticalStock",
@@ -246,7 +254,7 @@ export default function Page() {
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(order.id)}
               >
-                Sipariş No Kopyala
+                No Kopyala
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -272,7 +280,7 @@ lastOrders/${order.id}`)
   ];
 
   return (
-<div className="p-6 space-y-8 bg-gray-50 min-h-screen">
+    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard title="Toplam Ürün" value={orders.length} />
         <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
@@ -282,7 +290,7 @@ lastOrders/${order.id}`)
       <Table
         searchTitle="Ürün No ile Filtrele Yöntemi"
         baslik="Son Siparişler Listesi"
-        data={orders}
+        data={orders.slice().reverse()}
         columns={columns}
       />
     </div>

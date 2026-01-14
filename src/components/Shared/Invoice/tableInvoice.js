@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useState, useMemo } from "react";
@@ -20,13 +18,10 @@ import { toast } from "sonner";
 
 import formatDate from "@/helper/formatDate";
 
-
 export default function Page() {
-
   const veri = JSON.parse(localStorage.getItem("lastInvoice") || "[]");
 
   const [orders, setOrders] = useState(veri);
-
 
   const totalCiro = useMemo(
     () => orders.reduce((sum, o) => sum + o.totalPrice, 0),
@@ -34,26 +29,21 @@ export default function Page() {
   );
   const completedCount = useMemo(
     () =>
-      orders.filter((o) =>
-        o.timeline.some((item) => item.key === "completed")
-      ).length,
+      orders.filter((o) => o.timeline.some((item) => item.key === "completed"))
+        .length,
     [orders]
   );
   const pendingCount = useMemo(
     () =>
-      orders.filter((o) =>
-        o.timeline.some((item) => item.key === "pending")
-      ).length,
+      orders.filter((o) => o.timeline.some((item) => item.key === "pending"))
+        .length,
     [orders]
   );
-
-
 
   const handleDelete = (id) => {
     setOrders((prev) => prev.filter((o) => o.id !== id));
     toast.error("Sipariş iptal edildi");
   };
-
 
   const columns = [
     {
@@ -81,11 +71,9 @@ export default function Page() {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-        Sipariş No
+          Sipariş No
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -97,11 +85,9 @@ export default function Page() {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-        Ad Soyad
+          Ad Soyad
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -116,16 +102,13 @@ export default function Page() {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Tarih
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
       cell: ({ row }) => formatDate(row.getValue("createdAt")),
-      
     },
 
     {
@@ -133,9 +116,7 @@ export default function Page() {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Ödeme
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -151,12 +132,9 @@ export default function Page() {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-Toplam
+          Toplam
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -174,27 +152,30 @@ Toplam
       cell: ({ row }) => {
         const timeline = row.getValue("timeline");
         if (!timeline || timeline.length === 0) return null;
-    
-        const lastStep = timeline[timeline.length - 1]; 
-    
+
+        const lastStep = timeline[timeline.length - 1];
+
         const STATUS_STYLE = {
-          "Tamamlandı": "bg-green-100 text-green-700",
-          "Beklemede": "bg-yellow-100 text-yellow-700",
-          "İptal": "bg-red-100 text-red-700"
+          Tamamlandı: "bg-green-100 text-green-700",
+          Beklemede: "bg-yellow-100 text-yellow-700",
+          İptal: "bg-red-100 text-red-700",
         };
-    
+
         return (
           <div className="flex items-center justify-center gap-2">
-          <span
-            className={`inline-block h-2 w-2 rounded-full ${STATUS_STYLE[lastStep.label] || ""}`}
-          />
-               <span
-            className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[lastStep.label] || ""}`}
-          >
-            {lastStep.label}
-          </span>
-        </div>
-    
+            <span
+              className={`inline-block h-2 w-2 rounded-full ${
+                STATUS_STYLE[lastStep.label] || ""
+              }`}
+            />
+            <span
+              className={`px-2 py-1 rounded-md text-xs font-medium ${
+                STATUS_STYLE[lastStep.label] || ""
+              }`}
+            >
+              {lastStep.label}
+            </span>
+          </div>
         );
       },
     },
@@ -216,13 +197,10 @@ Toplam
               <DropdownMenuLabel>Aksiyon</DropdownMenuLabel>
 
               <DropdownMenuItem
-                onClick={() =>
-                  navigator.clipboard.writeText(order.id)
-                }
+                onClick={() => navigator.clipboard.writeText(order.id)}
               >
-                Sipariş No Kopyala
+                No Kopyala
               </DropdownMenuItem>
-
 
               <DropdownMenuItem
                 className="text-red-600"
@@ -238,19 +216,18 @@ Toplam
   ];
 
   return (
-<div className="p-6 space-y-8 bg-gray-50 min-h-screen">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <StatCard title="Toplam Sipariş Sayısı" value={orders.length} />
-                <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
-                <StatCard title="Tamamlanan" value={completedCount} />
-                <StatCard title="Bekleyen" value={pendingCount} />
-              </div>
-    <Table
-      baslik="Faturalar Listesi"
-      data={orders}
-      columns={columns}
-    
-
-    /></div>
+    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard title="Toplam Sipariş Sayısı" value={orders.length} />
+        <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+        <StatCard title="Tamamlanan" value={completedCount} />
+        <StatCard title="Bekleyen" value={pendingCount} />
+      </div>
+      <Table
+        baslik="Faturalar Listesi"
+        data={orders.slice().reverse()}
+        columns={columns}
+      />
+    </div>
   );
 }

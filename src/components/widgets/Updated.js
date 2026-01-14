@@ -19,7 +19,7 @@ import { toast } from "sonner";
 export default function SheetDemo({ order }) {
 
   const [items, setItems] = useState(
-    order.items.map((item) => ({ ...item, selectedQuantity: item.quantity }))
+    order?.items.map((item) => ({ ...item, selectedQuantity: item.quantity }))
   );
   const [total, setTotal] = useState(order.totalPrice);
   const [formData, setFormData] = useState({

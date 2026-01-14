@@ -1,6 +1,7 @@
 [
   {
     "id": "P-001",
+    "avatar":"https://st2.depositphotos.com/41960954/42058/i/450/depositphotos_420585092-stock-photo-beautiful-woman-portrait-digital-illustration.jpg",
     "firstName": "Zeynep",
     "lastName": "Yılmaz",
     "fullName": "Zeynep Yılmaz",
@@ -25,8 +26,8 @@
     },
     "leaveDates": [
       {
-        "from": "2025-07-15",
-        "to": "2025-07-22",
+        "from": "2026-01-14",
+        "to": "2026-07-22",
         "type": "Yıllık İzin"
       }
     ],
@@ -36,12 +37,13 @@
   },
   {
     "id": "P-002",
-    "firstName": "Ahmet",
+    "avatar":"https://img.freepik.com/premium-vektor/arka-planda-izole-edilmis-erkek-avatar-profil-resmi-erkek-icin-avatar-profil-resmi_1293239-4853.jpg?w=360",
+    "firstName": "Veli",
     "lastName": "Demir",
-    "fullName": "Ahmet Demir",
+    "fullName": "Veli Demir",
     "department": "Backend Development",
     "position": "Node.js Developer",
-    "email": "ahmet.demir@firma.com",
+    "email": "veli.demir@firma.com",
     "phone": "+90 532 456 78 90",
     "address": {
       "city": "Ankara",
@@ -58,13 +60,20 @@
       "contractType": "Tam Zamanlı",
       "workType": "Hybrid"
     },
-    "leaveDates": [],
+    "leaveDates": [
+    {
+      "from": "2026-01-14",
+      "to": "2026-07-22",
+      "type": "Mazeret İzin"
+    }
+    ],
     "status": "active",
     "performanceScore": 4.8,
     "createdAt": "2022-01-15"
   },
   {
     "id": "P-003",
+    "avatar":"https://pics.craiyon.com/2023-11-26/3J0s-rIUQjCG69XQzTquvA.webp",
     "firstName": "Elif",
     "lastName": "Kaya",
     "fullName": "Elif Kaya",
@@ -89,8 +98,8 @@
     },
     "leaveDates": [
       {
-        "from": "2025-08-05",
-        "to": "2025-08-10",
+        "from": "2026-08-05",
+        "to": "2026-08-10",
         "type": "Mazeret İzni"
       }
     ],
@@ -100,6 +109,7 @@
   },
   {
     "id": "P-004",
+    "avatar":"https://img.freepik.com/premium-vektor/arka-planda-izole-edilmis-erkek-avatar-profil-resmi-erkek-icin-avatar-profil-resmi_1293239-4842.jpg",
     "firstName": "Mehmet",
     "lastName": "Arslan",
     "fullName": "Mehmet Arslan",
@@ -122,13 +132,20 @@
       "contractType": "Tam Zamanlı",
       "workType": "Office"
     },
-    "leaveDates": [],
+    "leaveDates": [
+      {
+        "from": "2026-01-14",
+        "to": "2026-01-14",
+        "type": "Yıllık İzin"
+      }
+    ],
     "status": "active",
     "performanceScore": 4.1,
     "createdAt": "2020-03-20"
   },
   {
     "id": "P-005",
+    "avatar":"https://img.freepik.com/premium-vektor/guzel-bir-asyali-kadinin-portresi-duz-stil-avatar-kadin-cesitliligi-nde-tam-yuz-portresi_729684-316.jpg",
     "firstName": "Ayşe",
     "lastName": "Çelik",
     "fullName": "Ayşe Çelik",
@@ -153,8 +170,8 @@
     },
     "leaveDates": [
       {
-        "from": "2025-06-20",
-        "to": "2025-06-25",
+        "from": "2026-01-14",
+        "to": "2026-01-15",
         "type": "Yıllık İzin"
       }
     ],
@@ -164,6 +181,7 @@
   },
   {
     "id": "P-006",
+    "avatar":"https://img.freepik.com/premium-vektor/arka-planda-izole-edilmis-erkek-avatar-profil-resmi-erkek-icin-avatar-profil-resmi_1293239-4861.jpg",
     "firstName": "Can",
     "lastName": "Öztürk",
     "fullName": "Can Öztürk",
@@ -186,7 +204,13 @@
       "contractType": "Sözleşmeli",
       "workType": "Remote"
     },
-    "leaveDates": [],
+    "leaveDates": [
+      {
+        "from": "2026-01-08",
+        "to": "2026-01-10",
+        "type": "Yıllık İzin"
+      }
+    ],
     "status": "active",
     "performanceScore": 4.0,
     "createdAt": "2024-02-01"

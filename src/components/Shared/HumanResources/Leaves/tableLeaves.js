@@ -16,8 +16,7 @@ import formatDate from "@/helper/formatDate";
 import initialEmployees from "@/data/employees";
 import { toast } from "sonner";
 export default function Page() {
-  const [leavess,setLeaves]=useState(initialEmployees)
-
+  const [leavess, setLeaves] = useState(initialEmployees);
 
   const leaves = useMemo(() => {
     return leavess.flatMap((employee) =>
@@ -38,7 +37,6 @@ export default function Page() {
     setLeaves((prev) => prev.filter((e) => e.id !== employeeId));
     toast.error("Personel silindi");
   };
-  
 
   const totalEmployee = leavess.length;
 
@@ -50,14 +48,9 @@ export default function Page() {
   const onLeaveCount = leaves.length;
 
   const avgPerformance = useMemo(() => {
-    const total = leavess.reduce(
-      (sum, e) => sum + e.performanceScore,
-      0
-    );
+    const total = leavess.reduce((sum, e) => sum + e.performanceScore, 0);
     return (total / leavess.length).toFixed(1);
   }, []);
-
-
 
   const columns = [
     {
@@ -122,11 +115,7 @@ export default function Page() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-
-                onClick={() => handleDelete(row.original.id)}
-              
-            >
+            <DropdownMenuItem onClick={() => handleDelete(row.original.id)}>
               Personel Sil
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -134,7 +123,6 @@ export default function Page() {
       ),
     },
   ];
-
 
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
@@ -145,7 +133,12 @@ export default function Page() {
         <StatCard title="Ortalama Performans" value={avgPerformance} />
       </div>
 
-      <Table baslik="Personel İzin Listesi" searchTitle="Personel No ile Filtreleme Yöntemi" data={leaves} columns={columns} />
+      <Table
+        baslik="Personel İzin Listesi"
+        searchTitle="Personel No ile Filtreleme Yöntemi"
+        data={leaves.slice().reverse()}
+        columns={columns}
+      />
     </div>
   );
 }

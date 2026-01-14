@@ -10,7 +10,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
-import StatCard from "@/components/ui/statCard";
+import Created from "@/components/widgets/Created";
 import { Button } from "@/components/ui/button";
 import { exportToExcel } from "@/helper/exportExcel";
 import formatDate from "@/helper/formatDate";
@@ -32,8 +32,10 @@ import {
 
 export default function DataTableDemo({
   searchTitle,
-  button,
-  setOpen,
+
+  handleCreate,
+  formData,
+  handleChange,
   data,
   columns,
   baslik,
@@ -78,55 +80,57 @@ export default function DataTableDemo({
     <div className="w-full">
       <div className="flex items-center justify-between py-2">
         <h1 className="p-1 ">{baslik}</h1>
-        <div className="flex gap-1">
-          <Input
-            placeholder={searchTitle || "Sipariş No ile filtrele..."}
-            value={table.getColumn("id")?.getFilterValue() ?? ""}
-            onChange={(e) =>
-              table.getColumn("id")?.setFilterValue(e.target.value)
-            }
-            className="w-xs"
-          />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Filtrele <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
+        {baslik && (
+          <div className="flex gap-1">
+            <Input
+              placeholder={searchTitle || "Sipariş No ile filtrele..."}
+              value={table.getColumn("id")?.getFilterValue() ?? ""}
+              onChange={(e) =>
+                table.getColumn("id")?.setFilterValue(e.target.value)
+              }
+              className="w-xs"
+            />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto">
+                  Filtrele <ChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                    className="capitalize"
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button
-            className="bg-[#6C120B] text-white"
-            onClick={() => exportToExcel(excelData, "faturalar")}
-          >
-            Excel İndir
-          </Button>
-          {button && (
+              <DropdownMenuContent align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                      className="capitalize"
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Button
-              className="bg-[#628DD0] text-white"
-              onClick={() => setOpen(true)}
+              className="bg-[#6C120B] text-white"
+              onClick={() => exportToExcel(excelData, "faturalar")}
             >
-              {button}
+              Excel İndir
             </Button>
-          )}
-        </div>
+            {handleCreate && (
+              <Created
+                formData={formData}
+                handleChange={handleChange}
+                handleSave={handleCreate}
+              />
+            )}
+          </div>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

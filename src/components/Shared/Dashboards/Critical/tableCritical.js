@@ -22,9 +22,10 @@ import initialDashboards from "@/data/product";
 
 export default function Page() {
   const router = useRouter();
-  const filteredData=initialDashboards.filter((item)=>item.status==="critical")
+  const filteredData = initialDashboards.filter(
+    (item) => item.status === "critical"
+  );
   const [orders, setOrders] = useState(filteredData);
-
 
   const totalCiro = useMemo(
     () => orders.reduce((sum, o) => sum + o.price, 0),
@@ -34,114 +35,96 @@ export default function Page() {
   const completedCount = useMemo(() => {
     return orders.reduce((sum, p) => sum + p.sold, 0);
   }, [orders]);
-  
+
   const criticalCount = useMemo(() => {
     return orders.filter((p) => p.status === "critical").length;
   }, [orders]);
-    
-
-
 
   const handleDelete = (id) => {
     setOrders((prev) => prev.filter((o) => o.id !== id));
     toast.error("Sipariş iptal edildi");
   };
 
+  const columns = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(v) => row.toggleSelected(!!v)}
+        />
+      ),
+      enableSorting: false,
+    },
 
-   const columns = [
-     {
-       id: "select",
-       header: ({ table }) => (
-         <Checkbox
-           checked={
-             table.getIsAllPageRowsSelected() ||
-             (table.getIsSomePageRowsSelected() && "indeterminate")
-           }
-           onCheckedChange={(v) => table.toggleAllPageRowsSelected(!!v)}
-         />
-       ),
-       cell: ({ row }) => (
-         <Checkbox
-           checked={row.getIsSelected()}
-           onCheckedChange={(v) => row.toggleSelected(!!v)}
-         />
-       ),
-       enableSorting: false,
-     },
- 
-     {
-       accessorKey: "id",
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
-       Ürün No
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
-     },
- 
-     {
-       accessorKey: "name",
- 
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
-        Ürün Adı
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
-       cell: ({ row }) => (
-         <span className="font-medium">{row.getValue("name")}</span>
-       ),
-     },
-  
-    
+    {
+      accessorKey: "id",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ürün No
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
 
-     {
-       accessorKey: "createdAt",
- 
-       header: ({ column }) => (
-         <Button
-           variant="ghost"
-           onClick={() =>
-             column.toggleSorting(column.getIsSorted() === "asc")
-           }
-         >
-           Tarih
-           <ArrowUpDown className="ml-2 h-4 w-4" />
-         </Button>
-       ),
-       cell: ({ row }) => formatDate(row.getValue("createdAt")),
-       
-     },
+    {
+      accessorKey: "name",
 
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ürün Adı
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <span className="font-medium">{row.getValue("name")}</span>
+      ),
+    },
 
-     {
+    {
+      accessorKey: "createdAt",
+
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Tarih
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => formatDate(row.getValue("createdAt")),
+    },
+
+    {
       accessorKey: "stock",
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-Stok
+          Stok
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
 
       cell: ({ row }) => (
-        <div className="text-center font-semibold">
-          {row.getValue("stock")}
-        </div>
+        <div className="text-center font-semibold">{row.getValue("stock")}</div>
       ),
     },
     {
@@ -149,11 +132,9 @@ Stok
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-Kritik Stok
+          Kritik Stok
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -169,119 +150,110 @@ Kritik Stok
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-Satılan Ürün Sayısı
+          Satılan Ürün Sayısı
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
 
       cell: ({ row }) => (
-        <div className="text-center font-semibold">
-          {row.getValue("sold")}
-        </div>
+        <div className="text-center font-semibold">{row.getValue("sold")}</div>
       ),
     },
-     {
+    {
       accessorKey: "status",
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-Status
+          Status
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
 
       cell: ({ row }) => {
-   
-      
         const status = row.getValue("status");
         const STATUS_STYLE = {
-          "active": "bg-green-100 text-green-700",
-          "out_of_stock": "bg-yellow-100 text-yellow-700",
-          "critical": "bg-red-100 text-red-700"
+          active: "bg-green-100 text-green-700",
+          out_of_stock: "bg-yellow-100 text-yellow-700",
+          critical: "bg-red-100 text-red-700",
         };
-    
+
         return (
           <div className="flex items-center justify-center gap-2">
-          <span
-            className={`inline-block h-2 w-2 rounded-full ${STATUS_STYLE[status]}`}
-          />
-          <span
-            className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[status]}`}
-          >
-            {status}
-          </span>
-        </div>
+            <span
+              className={`inline-block h-2 w-2 rounded-full ${STATUS_STYLE[status]}`}
+            />
+            <span
+              className={`px-2 py-1 rounded-md text-xs font-medium ${STATUS_STYLE[status]}`}
+            >
+              {status}
+            </span>
+          </div>
         );
       },
     },
- 
-     {
-       id: "actions",
-       cell: ({ row }) => {
-         const order = row.original;
- 
-         return (
-           <DropdownMenu>
-             <DropdownMenuTrigger asChild>
-               <Button variant="ghost" className="h-8 w-8 p-0">
-                 <MoreHorizontal />
-               </Button>
-             </DropdownMenuTrigger>
- 
-             <DropdownMenuContent align="end">
-               <DropdownMenuLabel>Aksiyon</DropdownMenuLabel>
- 
-               <DropdownMenuItem
-                 onClick={() =>
-                   navigator.clipboard.writeText(order.id)
-                 }
-               >
-                 Sipariş No Kopyala
-               </DropdownMenuItem>
- 
-               <DropdownMenuItem
-                 className="text-[#6C120B]"
-                 onClick={() => router.push(`/dashboard/
-critical/${order.id}`)}
-               >
-                 Detay Gör
-               </DropdownMenuItem>
-               <DropdownMenuItem
-                 className="text-red-600"
-                 onClick={() => handleDelete(order.id)}
-               >
-                 İptal Et
-               </DropdownMenuItem>
-             </DropdownMenuContent>
-           </DropdownMenu>
-         );
-       },
-     },
-   ];
+
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const order = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Aksiyon</DropdownMenuLabel>
+
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(order.id)}
+              >
+                No Kopyala
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className="text-[#6C120B]"
+                onClick={() =>
+                  router.push(`/dashboard/
+critical/${order.id}`)
+                }
+              >
+                Detay Gör
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={() => handleDelete(order.id)}
+              >
+                İptal Et
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   return (
-<div className="p-6 space-y-8 bg-gray-50 min-h-screen">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <StatCard title="Toplam Ürün Sayısı" value={orders.length} />
-            <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
-            <StatCard title="Satılan Toplam Ürün Sayısı" value={completedCount} />
-            <StatCard title="Kritik Toplam Stok" value={criticalCount} />
-          </div>
-          <Table
-            searchTitle="Ürün No ile Filtrele Yöntemi"
-            baslik="Kritik Stok Listesi"
-            data={orders}
-            columns={columns}
-          />
-        </div>
-
+    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard title="Toplam Ürün Sayısı" value={orders.length} />
+        <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+        <StatCard title="Satılan Toplam Ürün Sayısı" value={completedCount} />
+        <StatCard title="Kritik Toplam Stok" value={criticalCount} />
+      </div>
+      <Table
+        searchTitle="Ürün No ile Filtrele Yöntemi"
+        baslik="Kritik Stok Listesi"
+        data={orders.slice().reverse()}
+        columns={columns}
+      />
+    </div>
   );
 }

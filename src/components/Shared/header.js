@@ -16,9 +16,11 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import Breadcrumb from "../widgets/Breadcrumb";
 import { getLastLogin } from "@/helper/last-login";
+import product from "@/data/product";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+
   const [dark, setDark] = useState(false);
   const [user, setUser] = useState(false);
   const [lastLogin, setLastLogin] = useState(null);
@@ -27,6 +29,7 @@ const Header = () => {
   }, []);
 
   const router = useRouter();
+  const filteredStock = product.filter((item) => item.stock <= 10);
 
   return (
     <>
@@ -54,7 +57,7 @@ const Header = () => {
 
         <div className="relative flex items-center gap-3">
           <Command className="relative text-[#102E46]">
-          <CommandInput
+            <CommandInput
               placeholder="Search… (⌘K)"
               onFocus={() => setOpen(true)}
               onBlur={() => setTimeout(() => setOpen(false), 150)}
@@ -79,16 +82,30 @@ const Header = () => {
                 >
                   <CommandEmpty>No results found.</CommandEmpty>
                   <CommandGroup heading="Hızlı Erişim">
-                    <CommandItem onSelect={() => router.push("/dashboard/summary")}>
+                    <CommandItem
+                      onSelect={() => router.push("/dashboard/summary")}
+                    >
                       Gösterge Paneli
                     </CommandItem>
 
-                    <CommandItem onSelect={() => router.push("/orders")}>
+                    <CommandItem onSelect={() => router.push("/sales/orders")}>
                       Siparişler
                     </CommandItem>
 
-                    <CommandItem onSelect={() => router.push("/invoices")}>
+                    <CommandItem
+                      onSelect={() => router.push("/sales/invoices")}
+                    >
                       Faturalar
+                    </CommandItem>
+                    <CommandItem
+                      onSelect={() => router.push("/humanresources/employees")}
+                    >
+                      Personel Listesi
+                    </CommandItem>
+                    <CommandItem
+                      onSelect={() => router.push("/humanresources/leaves")}
+                    >
+                      İzinler
                     </CommandItem>
                   </CommandGroup>
 
@@ -119,40 +136,59 @@ const Header = () => {
           </button>
 
           <button className="relative h-9 w-9 flex items-center justify-center ">
-            <Bell className="h-5 w-5 text-[#102E46]" onClick={() => setUser(!user)} />
+            <Bell
+              className="h-5 w-5 text-[#102E46]"
+              onClick={() => setUser(!user)}
+            />
             <span className="absolute -top-1 -right-1 h-4 w-4 text-xs bg-[#6C120B] text-white rounded-full flex items-center justify-center">
-              3
+            {filteredStock.length}
             </span>
-            {user && (
-              <div className="absolute right-0 top-11 w-64 rounded-md border bg-background shadow-lg z-50">
-                <div className=" py-2 border-b text-sm font-semibold">
-                  Bildirimler
-                </div>
-
-                <ul className="max-h-60 ">
-                  <li className=" text-left px-2 py-2 text-sm hover:bg-muted cursor-pointer">
-                    🚨 Hatalı giriş denemesi (user@gmail.com)
-                  </li>
-                  <li className=" text-left px-2 py-2 text-sm hover:bg-muted cursor-pointer">
-                    🚨 Hatalı giriş denemesi (user@gmail.com)
-                  </li>
-                  <li className=" text-left px-2 py-2 text-sm hover:bg-muted cursor-pointer">
-                    🚨 Hatalı giriş denemesi (user@gmail.com)
-                  </li>
-                </ul>
-
-                <div className=" py-2 border-t text-xs text-muted-foreground text-center">
-                  Tüm bildirimleri görüntüle
-                </div>
+            {user  &&     <div className="absolute right-0 top-11 w-64 rounded-md border bg-background shadow-lg z-50">
+              <div className=" py-2 border-b text-sm font-semibold">
+                Bildirimler
               </div>
-            )}
+
+              <ul className="space-y-2">
+         
+                {filteredStock
+                  .slice()
+                  .reverse()
+                  .map((item) => (
+                    <li
+                      key={item.id}
+                      className="flex justify-between items-center px-4 py-2 text-sm  cursor-pointer transition-colors"
+                    >
+                      <span className="font-medium text-gray-700">
+                        {item.name}
+                      </span>
+                      <span className="text-red-900 font-semibold">
+                        Stok: {item.stock}
+                      </span>
+
+                    </li>
+       
+                  ))}
+              </ul>
+
+              <div
+                className=" py-2 border-t text-xs text-muted-foreground text-center cursor-pointer"
+                onClick={() => router.push("/dashboard/lastOrders")}
+              >
+                Stokları görüntüle
+              </div>
+            </div>}
+        
           </button>
 
           <button
             onClick={() => setDark(!dark)}
-            className="h-9 w-9 flex items-center justify-center "
+            className="h-9 w-9 flex items-center justify-center pr-3 "
           >
-            {dark ? <Sun className="h-5 w-5 text-[#102E46]" /> : <Moon className="h-5 w-5 text-[#102E46]" />}
+            {dark ? (
+              <Sun className="h-5 w-5 text-[#102E46]" />
+            ) : (
+              <Moon className="h-5 w-5 text-[#102E46]" />
+            )}
           </button>
         </div>
       </header>

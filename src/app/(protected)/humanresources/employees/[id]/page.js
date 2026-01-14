@@ -5,7 +5,7 @@ export default async function Page({ params }) {
   const dashboardId = await params;
   const employees = Employees.find((o) => o.id === dashboardId.id);
 
-  if (!employees) return <p>Personel bulunamadı</p>;
+  if (!employees) return <p className="text-center">Personel bulunamadı</p>;
 
   return <EmployeesDetails user={employees} />;
 }

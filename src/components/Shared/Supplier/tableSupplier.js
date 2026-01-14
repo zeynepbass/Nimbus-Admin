@@ -205,7 +205,7 @@ export default function Page() {
       <Table
         searchTitle="Firma No ile Filtrele Yöntemi"
         baslik="Tedarikçiler Listesi"
-        data={suppliers}
+        data={suppliers.slice().reverse()}
         columns={columns}
       />
     </div>

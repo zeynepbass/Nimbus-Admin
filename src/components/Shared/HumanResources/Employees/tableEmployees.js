@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import StatCard from "@/components/ui/statCard";
 import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import formatDate from "@/helper/formatDate";
@@ -30,7 +32,7 @@ export default function Page() {
   );
 
   const onLeaveCount = useMemo(
-    () => employees.filter((e) => e.leaveDates.length > 0).length,
+    () => employees.filter((e) => e.leaveDates?.length > 0).length,
     [employees]
   );
 
@@ -43,14 +45,28 @@ export default function Page() {
     setEmployees((prev) => prev.filter((o) => o.id !== id));
     toast.error("Sipariş iptal edildi");
   };
+
   const handleClick = (item) => {
     setSelectedEmployee(item);
     setOpen(true);
   };
+
   const columns = [
     {
       accessorKey: "id",
       header: "Personel No",
+    },
+    {
+      accessorKey: "avatar",
+      header: "Resim",
+      cell: ({ row }) => (
+        <Avatar className="mx-auto">
+          <AvatarImage
+            src={row.getValue("avatar")}
+            alt={row.getValue("avatar")}
+          />
+        </Avatar>
+      ),
     },
     {
       accessorKey: "fullName",
@@ -123,7 +139,7 @@ export default function Page() {
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(employees.id)}
               >
-                Sipariş No Kopyala
+                No Kopyala
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleClick(employees)}>
                 Güncelle
@@ -149,6 +165,61 @@ export default function Page() {
     },
   ];
 
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    department: "",
+    position: "",
+    email: "",
+    phone: "",
+    address: { city: "", district: "", fullAddress: "" },
+    education: { university: "", faculty: "", degree: "" },
+    employment: {
+      startDate: "",
+      contractType: "Tam Zamanlı",
+      workType: "Office",
+    },
+    status: "active",
+    performanceScore: 0,
+  });
+
+  const handleCreate = () => {
+    const lastId =
+      employees.length > 0
+        ? parseInt(employees[employees.length - 1].id.split("-")[1])
+        : 0;
+    const newId = `P-${(lastId + 1).toString().padStart(3, "0")}`;
+
+    const newEmployee = {
+      id: newId,
+      fullName: `${formData.firstName} ${formData.lastName}`,
+      ...formData,
+      createdAt: new Date().toISOString().slice(0, 10),
+    };
+
+    setEmployees((prev) => [...prev, newEmployee]);
+
+    toast.success(`${newEmployee.fullName} eklendi!`);
+  };
+
+  const handleChange = (field, value) => {
+    if (field.includes(".")) {
+      const [parent, child] = field.split(".");
+      setFormData((prev) => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [child]: value,
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
+  };
+
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -157,6 +228,7 @@ export default function Page() {
         <StatCard title="İzinde Olanlar" value={onLeaveCount} />
         <StatCard title="Ortalama Performans" value={avgPerformance} />
       </div>
+
       <Dialog
         open={open}
         setOpen={setOpen}
@@ -175,10 +247,13 @@ export default function Page() {
 
       <Table
         setOpen={setOpen}
-        button="Ekle"
+        formData={formData}
+        handleChange={handleChange}
+        handleCreate={handleCreate}
+    
         searchTitle="Personel No ile Filtreleme Yöntemi"
         baslik="Personel Listesi"
-        data={employees}
+        data={employees.slice().reverse()}
         columns={columns}
       />
     </div>

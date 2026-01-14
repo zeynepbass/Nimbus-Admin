@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import initialOrders from "@/data/orders";
+
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });

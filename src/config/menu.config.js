@@ -62,13 +62,6 @@ export const menuConfig = [
     ],
   },
 
-  {
-    id: "reports",
-    label: "Raporlar",
-    icon: BarChart3,
-    href: "/reports",
-    roles: ["user"],
-  },
 
   {
     id: "users",
@@ -107,6 +100,13 @@ export const menuConfig = [
     ],
   },
 
+  // {
+  //   id: "reports",
+  //   label: "Raporlar",
+  //   icon: BarChart3,
+  //   href: "/reports",
+  //   roles: ["user"],
+  // },
   {
     id: "settings",
     label: "Ayarlar",
