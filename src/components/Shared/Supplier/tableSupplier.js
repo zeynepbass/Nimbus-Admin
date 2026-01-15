@@ -52,6 +52,15 @@ export default function Page() {
     setData(item);
   };
 
+     const handleChange = (field, value) => {
+    setSuppliers((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+const handleCreateSupplier=()=>{
+  
+}
   const columns = [
     {
       id: "select",
@@ -203,8 +212,11 @@ export default function Page() {
       />
 
       <Table
+      handleCreateSupplier={handleCreateSupplier}
         searchTitle="Firma No ile Filtrele Yöntemi"
         baslik="Tedarikçiler Listesi"
+        handleChange={handleChange}
+        formData={formData}
         data={suppliers.slice().reverse()}
         columns={columns}
       />

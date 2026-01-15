@@ -34,6 +34,7 @@ import {
 
 export default function DataTableDemo({
   searchTitle,
+  handleCreateSupplier,
   handleCreateUser,
   handleImageChange,
   handleCreate,
@@ -121,31 +122,39 @@ export default function DataTableDemo({
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {!handleUpdated && (
+              <Button
+                className="bg-[#6C120B] text-white"
+                onClick={() => exportToExcel(excelData, "faturalar")}
+              >
+                Excel İndir
+              </Button>
+            )}
 
-{!handleUpdated &&     
- <Button
-              className="bg-[#6C120B] text-white"
-              onClick={() => exportToExcel(excelData, "faturalar")}
-            >
-              Excel İndir
-            </Button>}
-       
-            {  handleCreate && (
+            {handleCreate  && (
               <Created
                 formData={formData}
                 handleChange={handleChange}
                 handleSave={handleCreate}
               />
             )}
-        {handleUpdated || handleCreateUser && (
-              <CreatedUser
+                      {handleCreateSupplier  && (
+              <Created
                 formData={formData}
-                handleImageChange={handleImageChange}
-                handleChangeUser={handleChangeUser}
-                handleSave={handleCreateUser}
+                handleChange={handleChange}
+                handleSave={handleCreateSupplier}
               />
             )}
-
+            
+            {handleUpdated ||
+              (handleCreateUser && (
+                <CreatedUser
+                  formData={formData}
+                  handleImageChange={handleImageChange}
+                  handleChangeUser={handleChangeUser}
+                  handleSave={handleCreateUser}
+                />
+              ))}
           </div>
         )}
       </div>

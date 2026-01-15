@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import FormLeavesSetting from "@/components/widgets/Employees/FormLeavesSetting";
 import StatCard from "@/components/ui/statCard";
 import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
@@ -15,11 +15,62 @@ import { MoreHorizontal } from "lucide-react";
 import formatDate from "@/helper/formatDate";
 import initialEmployees from "@/data/employees";
 import { toast } from "sonner";
+import { usePathname } from "next/navigation";
+
 export default function Page() {
-  const [leavess, setLeaves] = useState(initialEmployees);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [employees, setEmployees] = useState(initialEmployees);
+  const pathname = usePathname();
+  const isLeavesPage = pathname === "/humanresources/leaves";
+
+  const [formLeaves, setFormLeaves] = useState({
+    fullName: "",
+    department: "",
+
+    from: "",
+    to: "",
+
+    type: "",
+    status: "",
+  });
+
+  const handleUpdatedUser = (user) => {
+    setSelectedUser(user);
+    setFormLeaves({
+      fullName: user.fullName,
+      department: user.department,
+      from: user.from || "",
+      to: user.to || "",
+      type: user.type || "",
+      status: user.status,
+    });
+  };
+
+  const handleSaveUser = () => {
+    setEmployees((prev) =>
+      prev.map((item) =>
+        item.id === selectedUser.id
+          ? {
+              ...item,
+              leaveDates: [
+                {
+                  ...item.leaveDates[0],
+                  from: formLeaves.from,
+                  to: formLeaves.to,
+                  type: formLeaves.type,
+                },
+              ],
+              status: formLeaves.status,
+            }
+          : item
+      )
+    );
+
+    setSelectedUser(null);
+  };
 
   const leaves = useMemo(() => {
-    return leavess.flatMap((employee) =>
+    return employees.flatMap((employee) =>
       employee.leaveDates.map((leave) => ({
         id: employee.id,
         fullName: employee.fullName,
@@ -31,25 +82,25 @@ export default function Page() {
         performanceScore: employee.performanceScore,
       }))
     );
-  }, [leavess]);
+  }, [employees]);
 
   const handleDelete = (employeeId) => {
-    setLeaves((prev) => prev.filter((e) => e.id !== employeeId));
+    setEmployees((prev) => prev.filter((e) => e.id !== employeeId));
     toast.error("Personel silindi");
   };
 
-  const totalEmployee = leavess.length;
+  const totalEmployee = employees.length;
 
   const activeCount = useMemo(
-    () => leavess.filter((e) => e.status === "active").length,
+    () => employees.filter((e) => e.status === "active").length,
     []
   );
 
   const onLeaveCount = leaves.length;
 
   const avgPerformance = useMemo(() => {
-    const total = leavess.reduce((sum, e) => sum + e.performanceScore, 0);
-    return (total / leavess.length).toFixed(1);
+    const total = employees.reduce((sum, e) => sum + e.performanceScore, 0);
+    return (total / employees.length).toFixed(1);
   }, []);
 
   const columns = [
@@ -118,6 +169,11 @@ export default function Page() {
             <DropdownMenuItem onClick={() => handleDelete(row.original.id)}>
               Personel Sil
             </DropdownMenuItem>
+            {!isLeavesPage && (
+              <DropdownMenuItem onClick={() => handleUpdatedUser(row.original)}>
+                Personel Güncelle
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       ),
@@ -125,14 +181,21 @@ export default function Page() {
   ];
 
   return (
-    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard title="Toplam Personel" value={totalEmployee} />
-        <StatCard title="Aktif Personel" value={activeCount} />
-        <StatCard title="İzinde Olanlar" value={onLeaveCount} />
-        <StatCard title="Ortalama Performans" value={avgPerformance} />
-      </div>
-
+    <div className="p-6 space-y-8 ">
+      {isLeavesPage && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <StatCard title="Toplam Personel" value={totalEmployee} />
+          <StatCard title="Aktif Personel" value={activeCount} />
+          <StatCard title="İzinde Olanlar" value={onLeaveCount} />
+          <StatCard title="Ortalama Performans" value={avgPerformance} />
+        </div>
+      )}
+      <FormLeavesSetting
+        selectedUser={selectedUser}
+        formLeaves={formLeaves}
+        setFormLeaves={setFormLeaves}
+        handleSaveUser={handleSaveUser}
+      />
       <Table
         baslik="Personel İzin Listesi"
         searchTitle="Personel No ile Filtreleme Yöntemi"

@@ -1,12 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState} from "react";
 import Table from "@/components/widgets/Table";
-import {SuppliersList} from "@/components/widgets/Dashboards/SuppliersList";
+import { SuppliersList } from "@/components/widgets/Dashboards/SuppliersList";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-
+import Leaves from "@/components/Shared/HumanResources/Leaves/tableLeaves";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Stock from "@/components/Shared/Dashboards/Critical/tableCritical";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,23 +15,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import initialUser from "@/data/users"
-import initialSuppliers from "@/data/supplier"
-import stock from "@/data/product"
+import initialUser from "@/data/users";
+import initialSuppliers from "@/data/supplier";
+import stock from "@/data/product";
 export default function TabsDemo() {
-    const filteredData=initialUser.filter((item)=>item.role=="USER")
+  const filteredData = initialUser.filter((item) => item.role == "USER");
   const [users, setUser] = useState(filteredData);
 
   const handleDelete = (id) => {
@@ -68,34 +61,32 @@ export default function TabsDemo() {
     },
 
     {
-        accessorKey: "resim",
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Resim
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        ),
-        cell: ({ row }) => {
-          const user = row.original;
-          return (
-            <div className="flex items-center justify-center gap-3">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={user.resim} />
-  
-              </Avatar>
-  
-            </div>
-          );
-        },
+      accessorKey: "resim",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Resim
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const user = row.original;
+        return (
+          <div className="flex items-center justify-center gap-3">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={user.resim} />
+            </Avatar>
+          </div>
+        );
       },
-      {
-          accessorKey: "name",
-          header: "Ad Soyad",
-          cell: ({ row }) => <span>{row.getValue("name")}</span>,
-        },
+    },
+    {
+      accessorKey: "name",
+      header: "Ad Soyad",
+      cell: ({ row }) => <span>{row.getValue("name")}</span>,
+    },
 
     {
       accessorKey: "email",
@@ -114,8 +105,6 @@ export default function TabsDemo() {
         </span>
       ),
     },
-
-
 
     {
       accessorKey: "role",
@@ -161,9 +150,7 @@ export default function TabsDemo() {
               >
                 Email Kopyala
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleUpdated(user.id)}
-              >
+              <DropdownMenuItem onClick={() => handleUpdated(user.id)}>
                 Güncelle
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -224,18 +211,16 @@ export default function TabsDemo() {
           <div className="flex items-center justify-center gap-3">
             <Avatar className="h-8 w-8">
               <AvatarImage src={user.resim} />
-
             </Avatar>
-
           </div>
         );
       },
     },
     {
-        accessorKey: "name",
-        header: "Ad Soyad",
-        cell: ({ row }) => <span>{row.getValue("name")}</span>,
-      },
+      accessorKey: "name",
+      header: "Ad Soyad",
+      cell: ({ row }) => <span>{row.getValue("name")}</span>,
+    },
     {
       accessorKey: "email",
       header: ({ column }) => (
@@ -260,11 +245,10 @@ export default function TabsDemo() {
       cell: ({ row }) => <span>{row.getValue("tel")}</span>,
     },
     {
-        accessorKey: "adres",
-        header: "Adres",
-        cell: ({ row }) => <span>{row.getValue("adres")}</span>,
-      },
-  
+      accessorKey: "adres",
+      header: "Adres",
+      cell: ({ row }) => <span>{row.getValue("adres")}</span>,
+    },
 
     {
       id: "actions",
@@ -310,7 +294,7 @@ export default function TabsDemo() {
   });
 
   const handleCreateUser = () => {
-    const data=users.reduce((sum,item)=>item.id+sum,0)
+    const data = users.reduce((sum, item) => item.id + sum, 0);
     const newUser = {
       id: data,
       name: formData.name,
@@ -327,7 +311,7 @@ export default function TabsDemo() {
     setUser((prev) => [newUser, ...prev]);
 
     setFormData({
-        adres:"",
+      adres: "",
       name: "",
       email: "",
       tel: "",
@@ -347,37 +331,25 @@ export default function TabsDemo() {
 
   const handleUpdated = (id) => {
     setUser((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, role: "TEST" }
-          : item
-      )
+      prev.map((item) => (item.id === id ? { ...item, role: "TEST" } : item))
     );
   };
-  
-  const handleChangeUser = (field, value) => {
 
-      setFormData((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
-    
+  const handleChangeUser = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
   const [suppliers, setSuppliers] = useState(initialSuppliers);
   const [editingId, setEditingId] = useState(null);
   const [rating, setRating] = useState("");
-  
 
-  
   const handleSupplierSave = (id) => {
     setSuppliers((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, rating: rating }
-          : item
-      )
+      prev.map((item) => (item.id === id ? { ...item, rating: rating } : item))
     );
-  
+
     setEditingId(null);
   };
   const [stocks, setStock] = useState(stock);
@@ -386,28 +358,27 @@ export default function TabsDemo() {
   const handleStockSave = (id) => {
     setStock((prev) =>
       prev.map((item) =>
-        item.id === id
-          ? { ...item, stock: Number(stockValue) }
-          : item
+        item.id === id ? { ...item, stock: Number(stockValue) } : item
       )
     );
-  
+
     setEditingStock(null);
     setStockValue("");
   };
-  
+
   
   return (
-    <div className="flex w-full  flex-col gap-6">
+    <div className="flex w-full  flex-col gap-6 ">
       <Tabs defaultValue="account">
-        <TabsList>
-          <TabsTrigger value="account">Kullanıcılar</TabsTrigger>
-          <TabsTrigger value="role">Roller ve Yetkilendirmeler</TabsTrigger>
-          <TabsTrigger value="supplier">Tedarikçiler</TabsTrigger>
-          <TabsTrigger value="stock">Stok ve Ürün Ayarı</TabsTrigger>
-          <TabsTrigger value="leaves">İzinler</TabsTrigger>
+        <TabsList className="gap-2 bg-gray-50" >
+          <TabsTrigger className="bg-white text-gray-500" value="account">Kullanıcılar</TabsTrigger>
+          <TabsTrigger  className="bg-white text-gray-500"value="role">Roller ve Yetkilendirmeler</TabsTrigger>
+          <TabsTrigger className="bg-white  text-gray-500" value="supplier">Tedarikçiler</TabsTrigger>
+          <TabsTrigger  className="bg-white  text-gray-500"value="stock">Stok ve Ürün Ayarı</TabsTrigger>
+          <TabsTrigger  className="bg-white  text-gray-500"value="leaves">İzinler</TabsTrigger>
         </TabsList>
-        <TabsContent value="account">
+        <TabsContent value="account" className="bg-white gap-1 text-gray-500 p-6 rounded-lg shadow-sm">
+
           <Table
             handleCreateUser={handleCreateUser}
             formData={formData}
@@ -419,8 +390,8 @@ export default function TabsDemo() {
             handleImageChange={handleImageChange}
           />
         </TabsContent>
-        <TabsContent value="role">
-        <Table
+        <TabsContent value="role"  className="bg-white gap-1 text-gray-500 p-6 rounded-lg shadow-sm">
+          <Table
             handleCreateUser={handleCreateUser}
             formData={formData}
             handleChangeUser={handleChangeUser}
@@ -432,40 +403,33 @@ export default function TabsDemo() {
             handleImageChange={handleImageChange}
           />
         </TabsContent>
-        <TabsContent value="supplier">
-        <SuppliersList suppliers={suppliers} editingId={editingId} setEditingId={setEditingId} rating={rating} setRating={setRating} handleSave={handleSupplierSave}/>
+        <TabsContent value="supplier"  className="bg-white gap-1 text-gray-500  rounded-lg shadow-sm">
+          <SuppliersList
+            suppliers={suppliers}
+            editingId={editingId}
+            setEditingId={setEditingId}
+            rating={rating}
+            setRating={setRating}
+            handleSave={handleSupplierSave}
+          />
         </TabsContent>
-        <TabsContent value="stock">
-        <Stock stocks={stocks} 
-          editingStock={editingStock}
-          setEditingStock={setEditingStock}
-          setStock={setStock}
-          setStockValue={setStockValue}
-          handleStockSave={handleStockSave}/>
+        <TabsContent value="stock"  className="bg-white gap-1 text-gray-500  rounded-lg shadow-sm">
+          <Stock
+            stocks={stocks}
+            editingStock={editingStock}
+            setEditingStock={setEditingStock}
+            setStock={setStock}
+            setStockValue={setStockValue}
+            handleStockSave={handleStockSave}
+          />
         </TabsContent>
-        <TabsContent value="leaves">
-          <Card>
-            <CardHeader>
-              <CardTitle>Roller ve Yetkilendirmeler</CardTitle>
-              <CardDescription>
-                Change your password here. After saving, you&apos;ll be logged
-                out.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="tabs-demo-current">Current password</Label>
-                <Input id="tabs-demo-current" type="password" />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="tabs-demo-new">New password</Label>
-                <Input id="tabs-demo-new" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
-          </Card>
+
+        <TabsContent value="leaves"  className="bg-white gap-1 text-gray-500 rounded-lg shadow-sm">
+        
+
+          <Leaves
+          
+          />
         </TabsContent>
       </Tabs>
     </div>
