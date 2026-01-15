@@ -349,7 +349,7 @@ export default function Page() {
           <div className="bg-zinc-100 rounded-2xl shadow-sm p-5">
             <Table
               baslik="ÜRÜN LİSTESİ"
-              searchTitle="Ürün No ile filtrele..."
+              searchTitle="Ürün No ile filtreleme yöntemi"
               data={orders}
               columns={columns}
             />

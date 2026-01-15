@@ -11,6 +11,8 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 import Created from "@/components/widgets/Created";
+import CreatedUser from "@/components/widgets/User/Created";
+
 import { Button } from "@/components/ui/button";
 import { exportToExcel } from "@/helper/exportExcel";
 import formatDate from "@/helper/formatDate";
@@ -32,10 +34,12 @@ import {
 
 export default function DataTableDemo({
   searchTitle,
-
+  handleCreateUser,
+  handleImageChange,
   handleCreate,
   formData,
-  handleChange,
+  handleChangeUser,
+  handleUpdated,
   data,
   columns,
   baslik,
@@ -83,7 +87,7 @@ export default function DataTableDemo({
         {baslik && (
           <div className="flex gap-1">
             <Input
-              placeholder={searchTitle || "Sipariş No ile filtrele..."}
+              placeholder={searchTitle || "Sipariş No ile filtreleme yöntemi"}
               value={table.getColumn("id")?.getFilterValue() ?? ""}
               onChange={(e) =>
                 table.getColumn("id")?.setFilterValue(e.target.value)
@@ -116,19 +120,31 @@ export default function DataTableDemo({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button
+
+{!handleUpdated &&     
+ <Button
               className="bg-[#6C120B] text-white"
               onClick={() => exportToExcel(excelData, "faturalar")}
             >
               Excel İndir
-            </Button>
-            {handleCreate && (
+            </Button>}
+       
+            {  handleCreate && (
               <Created
                 formData={formData}
                 handleChange={handleChange}
                 handleSave={handleCreate}
               />
             )}
+        {handleUpdated || handleCreateUser && (
+              <CreatedUser
+                formData={formData}
+                handleImageChange={handleImageChange}
+                handleChangeUser={handleChangeUser}
+                handleSave={handleCreateUser}
+              />
+            )}
+
           </div>
         )}
       </div>

@@ -1,17 +1,62 @@
 [
-    {
-      "id": 1,
-      "name": "Zeynep Baş",
-      "email": "zeynepbas@gmail.com",
-      "password": "123",
-      "role": "ADMIN"
-    },
-    {
-      "id": 2,
-      "name": "Test User",
-      "email": "user@gmail.com",
-      "password": "123",
-      "role": "USER"
-    }
-  ]
-  
+  {
+    "id": 1,
+    "name": "Zeynep Baş",
+    "email": "zeynepbas@gmail.com",
+    "tel": "4534534534534",
+    "adres": "dsfgsdsdsdsddsg",
+    "resim": "https://www.helvaciogluaksesuar.com.tr/wp-content/uploads/2018/01/bayan-%C4%B1con-1.jpg",
+    "password": "123",
+    "role": "MANAGER"
+  },
+  {
+    "id": 2,
+    "name": "Test User",
+    "email": "user@gmail.com",
+    "password": "123",
+    "role": "USER",
+    "tel": "4534534534534",
+    "adres": "dsfgsdsdsdsddsg",
+    "resim": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQav6jXP8ftKEC_VC_abflLVmwirO58Axa6rg&s"
+  },
+  {
+    "id": 3,
+    "name": "Ahmet Yılmaz",
+    "email": "ahmetyilmaz@gmail.com",
+    "password": "123",
+    "role": "USER",
+    "tel": "5551112233",
+    "adres": "İstanbul / Kadıköy",
+    "resim": "https://randomuser.me/api/portraits/men/32.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Mehmet Kaya",
+    "email": "mehmetkaya@gmail.com",
+    "password": "123",
+    "role": "USER",
+    "tel": "5552223344",
+    "adres": "Ankara / Çankaya",
+    "resim": "https://randomuser.me/api/portraits/men/45.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Emre Demir",
+    "email": "emredemir@gmail.com",
+    "password": "123",
+    "role": "USER",
+    "tel": "5553334455",
+    "adres": "İzmir / Bornova",
+    "resim": "https://randomuser.me/api/portraits/men/67.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Burak Arslan",
+    "email": "burakarslan@gmail.com",
+    "password": "123",
+    "role": "USER",
+    "tel": "5554445566",
+    "adres": "Bursa / Nilüfer",
+    "resim": "https://randomuser.me/api/portraits/men/81.jpg"
+  }
+]

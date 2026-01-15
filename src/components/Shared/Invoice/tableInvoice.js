@@ -224,6 +224,7 @@ export default function Page() {
         <StatCard title="Bekleyen" value={pendingCount} />
       </div>
       <Table
+
         baslik="Faturalar Listesi"
         data={orders.slice().reverse()}
         columns={columns}
