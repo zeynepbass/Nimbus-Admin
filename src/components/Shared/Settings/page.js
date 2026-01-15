@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
 import Table from "@/components/widgets/Table";
-import user from "@/data/users";
+import {SuppliersList} from "@/components/widgets/Dashboards/SuppliersList";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import Stock from "@/components/Shared/Dashboards/Critical/tableCritical";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +27,8 @@ import {
 } from "@/components/ui/card";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import initialUser from "@/data/users"
+import initialSuppliers from "@/data/supplier"
+import stock from "@/data/product"
 export default function TabsDemo() {
     const filteredData=initialUser.filter((item)=>item.role=="USER")
   const [users, setUser] = useState(filteredData);
@@ -57,7 +61,7 @@ export default function TabsDemo() {
 
     {
       accessorKey: "id",
-      header: "ID",
+      header: "Role No",
       cell: ({ row }) => (
         <span className="font-medium">{row.getValue("id")}</span>
       ),
@@ -197,7 +201,7 @@ export default function TabsDemo() {
 
     {
       accessorKey: "id",
-      header: "ID",
+      header: "Kullanıcı No",
       cell: ({ row }) => (
         <span className="font-medium">{row.getValue("id")}</span>
       ),
@@ -359,6 +363,40 @@ export default function TabsDemo() {
       }));
     
   };
+  const [suppliers, setSuppliers] = useState(initialSuppliers);
+  const [editingId, setEditingId] = useState(null);
+  const [rating, setRating] = useState("");
+  
+
+  
+  const handleSupplierSave = (id) => {
+    setSuppliers((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, rating: rating }
+          : item
+      )
+    );
+  
+    setEditingId(null);
+  };
+  const [stocks, setStock] = useState(stock);
+  const [editingStock, setEditingStock] = useState(null);
+  const [stockValue, setStockValue] = useState("");
+  const handleStockSave = (id) => {
+    setStock((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, stock: Number(stockValue) }
+          : item
+      )
+    );
+  
+    setEditingStock(null);
+    setStockValue("");
+  };
+  
+  
   return (
     <div className="flex w-full  flex-col gap-6">
       <Tabs defaultValue="account">
@@ -387,7 +425,7 @@ export default function TabsDemo() {
             formData={formData}
             handleChangeUser={handleChangeUser}
             handleUpdated={handleUpdated}
-            searchTitle="Kullanıcı No ile filtreleme yöntemi"
+            searchTitle="Role No ile filtreleme yöntemi"
             baslik="Roller Listesi"
             data={users.slice().reverse()}
             columns={column}
@@ -395,52 +433,15 @@ export default function TabsDemo() {
           />
         </TabsContent>
         <TabsContent value="supplier">
-          <Card>
-            <CardHeader>
-              <CardTitle>Roller ve Yetkilendirmeler</CardTitle>
-              <CardDescription>
-                Change your password here. After saving, you&apos;ll be logged
-                out.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="tabs-demo-current">Current password</Label>
-                <Input id="tabs-demo-current" type="password" />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="tabs-demo-new">New password</Label>
-                <Input id="tabs-demo-new" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
-          </Card>
+        <SuppliersList suppliers={suppliers} editingId={editingId} setEditingId={setEditingId} rating={rating} setRating={setRating} handleSave={handleSupplierSave}/>
         </TabsContent>
         <TabsContent value="stock">
-          <Card>
-            <CardHeader>
-              <CardTitle>Roller ve Yetkilendirmeler</CardTitle>
-              <CardDescription>
-                Change your password here. After saving, you&apos;ll be logged
-                out.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="tabs-demo-current">Current password</Label>
-                <Input id="tabs-demo-current" type="password" />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="tabs-demo-new">New password</Label>
-                <Input id="tabs-demo-new" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
-          </Card>
+        <Stock stocks={stocks} 
+          editingStock={editingStock}
+          setEditingStock={setEditingStock}
+          setStock={setStock}
+          setStockValue={setStockValue}
+          handleStockSave={handleStockSave}/>
         </TabsContent>
         <TabsContent value="leaves">
           <Card>

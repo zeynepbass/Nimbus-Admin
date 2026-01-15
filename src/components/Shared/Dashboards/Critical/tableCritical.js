@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 import Table from "@/components/widgets/Table";
@@ -15,33 +15,40 @@ import {
 } from "@/components/ui/dropdown-menu";
 import StatCard from "@/components/ui/statCard";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { toast } from "sonner";
-
+import stock from "@/data/product";
 import formatDate from "@/helper/formatDate";
-import initialDashboards from "@/data/product";
 
-export default function Page() {
+export default function Page({
+  stocks,
+  editingStock,
+  stockValue,
+  handleStockSave,
+  setStockValue,
+  setEditingStock,
+}) {
   const router = useRouter();
-  const filteredData = initialDashboards.filter(
-    (item) => item.status === "critical"
+  const orders = useMemo(
+    () => stocks || stock.filter((item) => item.status === "critical"),
+    [stocks || stock]
   );
-  const [orders, setOrders] = useState(filteredData);
 
   const totalCiro = useMemo(
-    () => orders.reduce((sum, o) => sum + o.price, 0),
-    [orders]
+    () => stocks || stock.reduce((sum, o) => sum + o.price, 0),
+    [stocks || stock]
   );
 
   const completedCount = useMemo(() => {
-    return orders.reduce((sum, p) => sum + p.sold, 0);
-  }, [orders]);
+    return stocks || stock.reduce((sum, p) => sum + p.sold, 0);
+  }, [stocks || stock]);
 
   const criticalCount = useMemo(() => {
-    return orders.filter((p) => p.status === "critical").length;
-  }, [orders]);
+    return stocks || stock.filter((p) => p.status === "critical").length;
+  }, [stocks || stock]);
 
   const handleDelete = (id) => {
-    setOrders((prev) => prev.filter((o) => o.id !== id));
+    setStock((prev) => prev.filter((o) => o.id !== id));
     toast.error("Sipariş iptal edildi");
   };
 
@@ -123,44 +130,80 @@ export default function Page() {
         </Button>
       ),
 
-      cell: ({ row }) => (
-        <div className="text-center font-semibold">{row.getValue("stock")}</div>
-      ),
-    },
-    {
-      accessorKey: "criticalStock",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Kritik Stok
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
+      cell: ({ row }) => {
+        const stock = row.original;
 
-      cell: ({ row }) => (
-        <div className="text-center font-semibold">
-          {row.getValue("criticalStock")}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "sold",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Satılan Ürün Sayısı
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
+        return (
+          <div className="text-center font-semibold">
+            {editingStock === stock.id ? (
+              <input
+                autoFocus
+                type="number"
+                value={stockValue}
+                onChange={(e) => setStockValue(e.target.value)}
+                onBlur={() => handleStockSave(stock.id)}
+                className="border px-2 py-1 rounded w-20 text-center"
+              />
+            ) : (
+              <div className="flex items-center gap-2 justify-center">
+                <span>{stock.stock}</span>
+                {handleStockSave && (
+              
+                    <Pencil width="15" height="15"      onClick={() => {
+                      setEditingStock(stock.id);
+                      setStockValue(stock.stock);
+                    }}/>
 
-      cell: ({ row }) => (
-        <div className="text-center font-semibold">{row.getValue("sold")}</div>
-      ),
+                )}
+              </div>
+            )}
+          </div>
+        );
+      },
     },
+    
+    ...(!handleStockSave
+      ? [
+          {
+            accessorKey: "criticalStock",
+            header: ({ column }) => (
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                Kritik Stok
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            ),
+            cell: ({ row }) => (
+              <div className="text-center font-semibold">
+                {row.getValue("criticalStock")}
+              </div>
+            ),
+          },
+          {
+            accessorKey: "sold",
+            header: ({ column }) => (
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                Satılan Ürün Sayısı
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            ),
+            cell: ({ row }) => (
+              <div className="text-center font-semibold">
+                {row.getValue("sold")}
+              </div>
+            ),
+          },
+        ]
+      : []),
     {
       accessorKey: "status",
       header: ({ column }) => (
@@ -242,15 +285,18 @@ critical/${order.id}`)
 
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard title="Toplam Ürün Sayısı" value={orders.length} />
-        <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
-        <StatCard title="Satılan Toplam Ürün Sayısı" value={completedCount} />
-        <StatCard title="Kritik Toplam Stok" value={criticalCount} />
-      </div>
+      {!handleStockSave && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <StatCard title="Toplam Ürün Sayısı" value={orders.length} />
+          <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />
+          <StatCard title="Satılan Toplam Ürün Sayısı" value={completedCount} />
+          <StatCard title="Kritik Toplam Stok" value={criticalCount} />
+        </div>
+      )}
+
       <Table
         searchTitle="Ürün No ile Filtrele Yöntemi"
-        baslik="Kritik Stok Listesi"
+        baslik={!handleStockSave ? "Kritik Stok Listesi" : "Stok ve Ürün Ayarları"}
         data={orders.slice().reverse()}
         columns={columns}
       />

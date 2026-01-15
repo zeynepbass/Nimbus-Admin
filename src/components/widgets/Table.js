@@ -37,6 +37,7 @@ export default function DataTableDemo({
   handleCreateUser,
   handleImageChange,
   handleCreate,
+  handleChange,
   formData,
   handleChangeUser,
   handleUpdated,

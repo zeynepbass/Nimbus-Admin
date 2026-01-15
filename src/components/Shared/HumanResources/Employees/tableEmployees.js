@@ -176,8 +176,8 @@ export default function Page() {
     education: { university: "", faculty: "", degree: "" },
     employment: {
       startDate: "",
-      contractType: "Tam Zamanlı",
-      workType: "Office",
+      contractType: "",
+      workType: "",
     },
     status: "active",
     performanceScore: 0,
