@@ -23,13 +23,13 @@ export default function ProtectedLayout({ children }) {
       return;
     }
 
-    if (user.role === roles.USER && pathname.startsWith("/panel")) {
+    if (user.role === roles.USER && pathname.startsWith("/role")) {
       router.replace("/dashboard/summary");
       return;
     }
 
     if (user.role === roles.ADMIN && pathname.startsWith("/dashboard/summary")) {
-      router.replace("/panel");
+      router.replace("/role");
       return;
     }
 

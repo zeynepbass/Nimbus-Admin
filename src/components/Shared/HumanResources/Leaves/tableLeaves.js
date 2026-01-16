@@ -86,7 +86,7 @@ export default function Page() {
 
   const handleDelete = (employeeId) => {
     setEmployees((prev) => prev.filter((e) => e.id !== employeeId));
-    toast.error("Personel silindi");
+    toast.error("iptal Edildi");
   };
 
   const totalEmployee = employees.length;

@@ -2,7 +2,7 @@ import {
   LayoutDashboard,
   ShoppingCart,
   Boxes,
-  BarChart3,
+  Ban,
   Shield,
   Settings,
   TrendingUp,
@@ -108,10 +108,19 @@ export const menuConfig = [
   //   roles: ["user"],
   // },
   {
+    id: "role",
+    label: "Roller ve Yetkilendirmeler",
+    icon: Ban,
+    href: "/role",
+    roles: ["user"],
+  },
+  {
     id: "settings",
     label: "Ayarlar",
     icon: Settings,
     href: "/settings",
     roles: ["user"],
   },
+
+
 ];

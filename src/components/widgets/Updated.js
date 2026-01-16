@@ -42,7 +42,7 @@ export default function SheetDemo({ order }) {
   const handleDelete = (productId) => {
     const updatedItems = items.filter((i) => i.productId !== productId);
     setItems(updatedItems);
-    toast.success("Ürün silindi / iade edildi!");
+    toast.success("iptal Edildi / iade edildi!");
   };
 
   const handleChange = (e) => {
@@ -69,8 +69,7 @@ export default function SheetDemo({ order }) {
         : new Date(formData.createdAt),
     };
   
-    console.log("Kaydedilecek veri:", payload);
-    toast.success("Değişiklikler kaydedildi!");
+    toast.success("Kaydedildi!");
   };
   
   const handleIncrease = (productId) => {

@@ -49,7 +49,7 @@ export default function Page({
 
   const handleDelete = (id) => {
     setStock((prev) => prev.filter((o) => o.id !== id));
-    toast.error("Sipariş iptal edildi");
+    toast.error("İptal edildi");
   };
 
   const columns = [

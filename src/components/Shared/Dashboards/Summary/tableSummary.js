@@ -72,7 +72,7 @@ export default function Page() {
 
   const handleDelete = (id) => {
     setOrders((prev) => prev.filter((o) => o.id !== id));
-    toast.error("Ürün silindi");
+    toast.error("iptal Edildi");
   };
 
   const columns = [

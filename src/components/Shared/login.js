@@ -23,7 +23,7 @@ export default function LoginPage() {
     if (!userSetting) return alert("Email veya şifre hatalı");
 
     router.replace(
-   user.role === roles.ADMIN ? "/panel" : "/dashboard/summary"
+   user.role === roles.ADMIN ? "/role" : "/dashboard/summary"
     );
     saveLastLogin()
   };
@@ -34,7 +34,7 @@ export default function LoginPage() {
         onSubmit={handleLogin}
         className="
           w-full max-w-sm
- 
+       rounded-md
           border
           border-gray-200
           p-6
@@ -42,7 +42,7 @@ export default function LoginPage() {
         "
       >
 
-        <h1 className="text-lg font-semibold text-gray-700 text-center">
+        <h1 className="text-lg font-semibold text-[#102E46] text-center">
           ERP Sistem Girişi
         </h1>
 
@@ -95,8 +95,8 @@ export default function LoginPage() {
             w-full
             h-9
             rounded-sm
-            bg-gray-500
-            hover:bg-gray-600
+            bg-[#102E46]
+            hover:bg-[#DEE6F1]
             text-sm
             font-normal
           "

@@ -12,6 +12,7 @@ const routeMap= {
   lastOrders:"Son Siparişler",
   invoices: "Faturalar",
   profile: "Profil",
+  role: "Roller ve Yetkilendirmeler",
   settings: "Ayarlar",
   supplier: "Tedarikçiler",
   critical:"Kritik Stok",

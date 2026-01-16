@@ -44,7 +44,7 @@ export default function Page() {
 
   const handleDelete = (id) => {
     setSuppliers((prev) => prev.filter((s) => s.id !== id));
-    toast.error("Tedarikçi silindi");
+    toast.error("iptal Edildi");
   };
   const [open, setOpen] = useState(false);
   const [data, setData] = useState("");
@@ -281,7 +281,7 @@ export default function Page() {
             )
           );
 
-          toast.success("Tedarikçi güncellendi");
+          toast.success("Güncellendi");
           setOpen(false);
         }}
       />

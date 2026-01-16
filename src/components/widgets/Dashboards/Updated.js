@@ -65,7 +65,7 @@ export default function SheetDemo({ order }) {
     };
 
     console.log("Kaydedilecek veri:", payload);
-    toast.success("Değişiklikler kaydedildi!");
+    toast.success("Kaydedildi!");
   };
 
 

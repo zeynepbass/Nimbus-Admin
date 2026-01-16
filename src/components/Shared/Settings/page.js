@@ -28,7 +28,7 @@ export default function TabsDemo() {
 
   const handleDelete = (id) => {
     setUser((prev) => prev.filter((o) => o.id !== id));
-    toast.error("Sipariş iptal edildi");
+    toast.error("İptal edildi");
   };
 
   const column = [
@@ -372,7 +372,7 @@ export default function TabsDemo() {
       <Tabs defaultValue="account">
         <TabsList className="gap-2 bg-gray-50" >
           <TabsTrigger className="bg-white text-gray-500" value="account">Kullanıcılar</TabsTrigger>
-          <TabsTrigger  className="bg-white text-gray-500"value="role">Roller ve Yetkilendirmeler</TabsTrigger>
+
           <TabsTrigger className="bg-white  text-gray-500" value="supplier">Tedarikçiler</TabsTrigger>
           <TabsTrigger  className="bg-white  text-gray-500"value="stock">Stok ve Ürün Ayarı</TabsTrigger>
           <TabsTrigger  className="bg-white  text-gray-500"value="leaves">İzinler</TabsTrigger>
@@ -390,19 +390,7 @@ export default function TabsDemo() {
             handleImageChange={handleImageChange}
           />
         </TabsContent>
-        <TabsContent value="role"  className="bg-white gap-1 text-gray-500 p-6 rounded-lg shadow-sm">
-          <Table
-            handleCreateUser={handleCreateUser}
-            formData={formData}
-            handleChangeUser={handleChangeUser}
-            handleUpdated={handleUpdated}
-            searchTitle="Role No ile filtreleme yöntemi"
-            baslik="Roller Listesi"
-            data={users.slice().reverse()}
-            columns={column}
-            handleImageChange={handleImageChange}
-          />
-        </TabsContent>
+
         <TabsContent value="supplier"  className="bg-white gap-1 text-gray-500  rounded-lg shadow-sm">
           <SuppliersList
             suppliers={suppliers}
