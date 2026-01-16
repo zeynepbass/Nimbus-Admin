@@ -55,7 +55,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="relative flex items-center gap-3">
+        <div className="relative flex pr-3 items-center gap-3">
           <Command className="relative text-[#102E46]">
             <CommandInput
               placeholder="Search… (⌘K)"
@@ -135,52 +135,50 @@ const Header = () => {
             <BarChart3 className="h-5 w-5 " />
           </button>
 
-          <button className="relative h-9 w-9 flex items-center justify-center ">
+          <button className="relative  h-9 w-9 flex items-center justify-center ">
             <Bell
               className="h-5 w-5 text-[#102E46]"
               onClick={() => setUser(!user)}
             />
             <span className="absolute -top-1 -right-1 h-4 w-4 text-xs bg-[#6C120B] text-white rounded-full flex items-center justify-center">
-            {filteredStock.length}
+              {filteredStock.length}
             </span>
-            {user  &&     <div className="absolute right-0 top-11 w-64 rounded-md border bg-background shadow-lg z-50">
-              <div className=" py-2 border-b text-sm font-semibold">
-                Bildirimler
+            {user && (
+              <div className="absolute right-0 top-11 w-64 rounded-md border bg-background shadow-lg z-50">
+                <div className=" py-2 border-b text-sm font-semibold">
+                  Bildirimler
+                </div>
+
+                <ul className="space-y-2">
+                  {filteredStock
+                    .slice()
+                    .reverse()
+                    .map((item) => (
+                      <li
+                        key={item.id}
+                        className="flex justify-between items-center px-4 py-2 text-sm  cursor-pointer transition-colors"
+                      >
+                        <span className="font-medium text-gray-700">
+                          {item.name}
+                        </span>
+                        <span className="text-red-900 font-semibold">
+                          Stok: {item.stock}
+                        </span>
+                      </li>
+                    ))}
+                </ul>
+
+                <div
+                  className=" py-2 p-2 border-t text-xs text-muted-foreground text-center cursor-pointer"
+                  onClick={() => router.push("/dashboard/lastOrders")}
+                >
+                  Stokları görüntüle
+                </div>
               </div>
-
-              <ul className="space-y-2">
-         
-                {filteredStock
-                  .slice()
-                  .reverse()
-                  .map((item) => (
-                    <li
-                      key={item.id}
-                      className="flex justify-between items-center px-4 py-2 text-sm  cursor-pointer transition-colors"
-                    >
-                      <span className="font-medium text-gray-700">
-                        {item.name}
-                      </span>
-                      <span className="text-red-900 font-semibold">
-                        Stok: {item.stock}
-                      </span>
-
-                    </li>
-       
-                  ))}
-              </ul>
-
-              <div
-                className=" py-2 border-t text-xs text-muted-foreground text-center cursor-pointer"
-                onClick={() => router.push("/dashboard/lastOrders")}
-              >
-                Stokları görüntüle
-              </div>
-            </div>}
-        
+            )}
           </button>
 
-          <button
+          {/* <button
             onClick={() => setDark(!dark)}
             className="h-9 w-9 flex items-center justify-center pr-3 "
           >
@@ -189,7 +187,7 @@ const Header = () => {
             ) : (
               <Moon className="h-5 w-5 text-[#102E46]" />
             )}
-          </button>
+          </button> */}
         </div>
       </header>
       <div className="flex justify-end py-3 px-3 bg-gray-50">
