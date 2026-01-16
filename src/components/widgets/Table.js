@@ -12,7 +12,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import Created from "@/components/widgets/Created";
 import CreatedUser from "@/components/widgets/User/Created";
-
+import CreatedSupplier from "@/components/widgets/Supplier/CreatedSupplier"
 import { Button } from "@/components/ui/button";
 import { exportToExcel } from "@/helper/exportExcel";
 import formatDate from "@/helper/formatDate";
@@ -139,22 +139,29 @@ export default function DataTableDemo({
               />
             )}
                       {handleCreateSupplier  && (
-              <Created
+              <CreatedSupplier
                 formData={formData}
                 handleChange={handleChange}
                 handleSave={handleCreateSupplier}
               />
             )}
             
-            {handleUpdated ||
-              (handleCreateUser && (
-                <CreatedUser
-                  formData={formData}
-                  handleImageChange={handleImageChange}
-                  handleChangeUser={handleChangeUser}
-                  handleSave={handleCreateUser}
-                />
-              ))}
+            {handleUpdated ? (
+  <CreatedUser
+    formData={formData}
+    handleImageChange={handleImageChange}
+    handleChangeUser={handleChangeUser}
+    handleSave={handleUpdated}
+  />
+) : handleCreateUser ? (
+  <CreatedUser
+    formData={formData}
+    handleImageChange={handleImageChange}
+    handleChangeUser={handleChangeUser}
+    handleSave={handleCreateUser}
+  />
+) : null}
+
           </div>
         )}
       </div>

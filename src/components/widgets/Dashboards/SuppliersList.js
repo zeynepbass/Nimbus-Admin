@@ -19,7 +19,7 @@ export function SuppliersList({
   return (
     <Card className="w-full bg-transparent shadow-none border-none">
       <CardHeader>
-        <CardTitle className="font-bold">TEDARİKÇİLER</CardTitle>
+        <CardTitle>TEDARİKÇİLER</CardTitle>
       </CardHeader>
 
       <CardContent

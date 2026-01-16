@@ -138,7 +138,7 @@ export default function Page({
             {editingStock === stock.id ? (
               <input
                 autoFocus
-                type="number"
+                type="text"
                 value={stockValue}
                 onChange={(e) => setStockValue(e.target.value)}
                 onBlur={() => handleStockSave(stock.id)}

@@ -420,6 +420,7 @@ export default function TabsDemo() {
             setEditingStock={setEditingStock}
             setStock={setStock}
             setStockValue={setStockValue}
+            stockValue={stockValue}
             handleStockSave={handleStockSave}
           />
         </TabsContent>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import StatCard from "@/components/ui/statCard";
 import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,

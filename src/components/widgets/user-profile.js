@@ -15,10 +15,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Image from "next/image";
+
 import { useRouter } from "next/navigation";
 export default function UserProfile() {
   const router = useRouter();
+  const user=JSON.parse(localStorage.getItem("user"))
   const handleLogOut = () => {
     router.push("/login");
     localStorage.removeItem("user");
@@ -28,8 +29,8 @@ export default function UserProfile() {
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton className="h-auto items-start gap-3">
-          <Image
-            src="/avatar.png"
+          <img
+            src= {user?.resim}
             alt="User"
             width={36}
             height={36}
@@ -37,9 +38,9 @@ export default function UserProfile() {
           />
 
           <div className="flex flex-col text-left">
-            <span className="text-sm font-medium">Zeynep Baş</span>
+            <span className="text-sm font-medium">{user?.name}</span>
             <span className="text-xs text-muted-foreground">
-              zeynep@mail.com
+            {user?.email}
             </span>
           </div>
 

@@ -115,7 +115,7 @@ export default function SheetDemo({ order }) {
           <Input value={total} readOnly />
         </div>
 
-        <SheetFooter className="flex justify-between">
+            <SheetFooter className="mt-1 flex justify-between">
           <Button onClick={handleSave} className="bg-[#102E46]">Kaydet</Button>
           <SheetClose asChild>
             <Button variant="outline">Çık</Button>

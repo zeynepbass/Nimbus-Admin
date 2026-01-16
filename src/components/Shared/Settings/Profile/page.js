@@ -45,7 +45,7 @@ export default function Profile() {
   }
 
   return (
-    <Card className="relative h-full w-[320px] p-6 shadow-sm">
+    <Card className="relative h-auto w-[320px] p-6 shadow-sm">
       <h4 className="text-xl font-semibold text-gray-600">Profil</h4>
 
       <button

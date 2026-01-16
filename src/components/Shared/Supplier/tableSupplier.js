@@ -52,15 +52,57 @@ export default function Page() {
     setData(item);
   };
 
-     const handleChange = (field, value) => {
-    setSuppliers((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-const handleCreateSupplier=()=>{
+
+  const supplierId = `SUP-${String(suppliers.length+1).padStart(3, "0")}`
+
+  const [formData, setFormData] = useState({
+    id: supplierId,
+    name: "",
+    companyType: "",
+    contact: {
+      person: "",
+      email: "",
+      phone: "",
+    },
+    address: {
+      city: "",
+      district: "",
+      fullAddress: "",
+    },
+    products: [
+      {
+        productId: "",
+        name: "",
+        supplyPrice: "",
+        minOrder: "",
+        leadTimeDays: "",
+      },
+    ],
+    rating: "",
+    status: "",
+    createdAt: new Date().toISOString(),
+  })
+  const handleChange = (path, value) => {
+    setFormData(prev => {
+      const keys = path.split(".")
+      let updated = { ...prev }
+      let current = updated
   
-}
+      for (let i = 0; i < keys.length - 1; i++) {
+        current[keys[i]] = { ...current[keys[i]] }
+        current = current[keys[i]]
+      }
+  
+      current[keys[keys.length - 1]] = value
+      return updated
+    })
+  }
+  
+  const handleCreateSupplier = () => {
+    setSuppliers(prev => [...prev, formData])
+  }
+
+  
   const columns = [
     {
       id: "select",
