@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import Table from "@/components/widgets/Table";
 
 
@@ -65,6 +63,7 @@ const columns = [
   return (
     <div className=" h-80">
       <Table
+
       dashboards={false}
         searchTitle="Personel No ile Filtreleme Yöntemi"
         baslik={null}

@@ -8,6 +8,7 @@ import Table from "@/components/widgets/Table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Dialog from "@/components/widgets/Supplier/Dialog";
+import formatDate from "@/helper/formatDate"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -228,7 +229,39 @@ export default function Page() {
       },
     },
   ];
-
+  const excelData = suppliers.map((s) => ({
+    "Tedarikçi No": s.id,
+    "Firma Adı": s.name,
+    "Firma Türü": s.companyType,
+  
+    "Yetkili Kişi": s.contact?.person || "",
+    "E-posta": s.contact?.email || "",
+    "Telefon": s.contact?.phone || "",
+  
+    "Şehir": s.address?.city || "",
+    "İlçe": s.address?.district || "",
+    "Adres": s.address?.fullAddress || "",
+  
+    "Ürün Sayısı": s.products?.length || 0,
+  
+    "Ürünler": s.products
+      ?.map(
+        (p) =>
+          `${p.name} | ₺${p.supplyPrice} | Min: ${p.minOrder} | ${p.leadTimeDays} gün`
+      )
+      .join(", "),
+  
+    "Puan": s.rating,
+  
+    "Durum": s.status === "active"
+      ? "Aktif"
+      : s.status === "paused"
+      ? "Pasif"
+      : s.status,
+  
+    "Kayıt Tarihi": formatDate(s.createdAt),
+  }));
+  
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -254,6 +287,7 @@ export default function Page() {
       />
 
       <Table
+      excelData={excelData}
       handleCreateSupplier={handleCreateSupplier}
         searchTitle="Firma No ile Filtrele Yöntemi"
         baslik="Tedarikçiler Listesi"

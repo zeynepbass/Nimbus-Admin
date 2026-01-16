@@ -29,13 +29,13 @@ export default function Page() {
   );
   const completedCount = useMemo(
     () =>
-      orders.filter((o) => o.timeline.some((item) => item.key === "completed"))
+      orders?.filter((o) => o.timeline?.some((item) => item.key === "completed"))
         .length,
     [orders]
   );
   const pendingCount = useMemo(
     () =>
-      orders.filter((o) => o.timeline.some((item) => item.key === "pending"))
+      orders?.filter((o) => o.timeline?.some((item) => item.key === "pending"))
         .length,
     [orders]
   );
@@ -214,7 +214,8 @@ export default function Page() {
       },
     },
   ];
-
+ 
+  
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">

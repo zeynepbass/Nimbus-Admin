@@ -219,7 +219,48 @@ export default function Page() {
       }));
     }
   };
-
+  const excelData = employees.map((e) => ({
+    "Personel No": e.id,
+    "Ad": e.firstName,
+    "Soyad": e.lastName,
+    "Ad Soyad": e.fullName,
+  
+    "Departman": e.department,
+    "Pozisyon": e.position,
+  
+    "E-posta": e.email,
+    "Telefon": e.phone,
+  
+    "Şehir": e.address?.city ?? "",
+    "İlçe": e.address?.district ?? "",
+    "Adres": e.address?.fullAddress ?? "",
+  
+    "Üniversite": e.education?.university ?? "",
+    "Fakülte": e.education?.faculty ?? "",
+    "Eğitim Durumu": e.education?.degree ?? "",
+  
+    "İşe Giriş Tarihi": formatDate(e.employment?.startDate),
+    "Sözleşme Türü": e.employment?.contractType ?? "",
+    "Çalışma Şekli": e.employment?.workType ?? "",
+  
+    "İzin Sayısı": e.leaveDates?.length ?? 0,
+  
+    "İzinler": e.leaveDates?.length
+      ? e.leaveDates
+          .map(
+            (l) =>
+              `${formatDate(l.from)} - ${formatDate(l.to)} (${l.type})`
+          )
+          .join(" / ")
+      : "",
+  
+    "Performans Puanı": e.performanceScore ?? "-",
+  
+    "Durum": e.status === "active" ? "Aktif" : "Pasif",
+  
+    "Kayıt Tarihi": formatDate(e.createdAt),
+  }));
+  
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -250,7 +291,7 @@ export default function Page() {
         formData={formData}
         handleChange={handleChange}
         handleCreate={handleCreate}
-    
+        excelData={excelData}
         searchTitle="Personel No ile Filtreleme Yöntemi"
         baslik="Personel Listesi"
         data={employees.slice().reverse()}

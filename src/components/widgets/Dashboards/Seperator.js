@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function SeparatorDemo({ data }) {
   return (
-    <div className="space-y-4 overflow-y-auto max-h-100 ">
+    <div className="space-y-4 overflow-y-auto max-h-100">
       <h6 className="font-bold ">EN ÇOK SATAN ÜRÜNLER</h6>
       {data.map((item, index) => (
         <div

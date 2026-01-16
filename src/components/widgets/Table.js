@@ -12,7 +12,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import Created from "@/components/widgets/Created";
 import CreatedUser from "@/components/widgets/User/Created";
-import CreatedSupplier from "@/components/widgets/Supplier/CreatedSupplier"
+import CreatedSupplier from "@/components/widgets/Supplier/CreatedSupplier";
 import { Button } from "@/components/ui/button";
 import { exportToExcel } from "@/helper/exportExcel";
 import formatDate from "@/helper/formatDate";
@@ -40,6 +40,7 @@ export default function DataTableDemo({
   handleCreate,
   handleChange,
   formData,
+  excelData,
   handleChangeUser,
   handleUpdated,
   data,
@@ -70,24 +71,14 @@ export default function DataTableDemo({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
-  const excelData = data.map((o) => ({
-    "Sipariş No": o.id,
-    Müşteri: o.customerName,
-    Tarih: formatDate(o.createdAt),
-    "Toplam (₺)": o.totalPrice,
-    Ödeme: o.paymentMethod,
-    Durum:
-      o.timeline?.length > 0
-        ? o.timeline[o.timeline.length - 1].label
-        : "" || o.Durum,
-  }));
+
 
   return (
     <div className="w-full">
       <div className="flex items-center justify-between py-2">
-        <h1 className="p-1 ">{baslik}</h1>
+        <h1 className="p-4">{baslik}</h1>
         {baslik && (
-          <div className="flex gap-1">
+          <div className="flex gap-1 p-4">
             <Input
               placeholder={searchTitle || "Sipariş No ile filtreleme yöntemi"}
               value={table.getColumn("id")?.getFilterValue() ?? ""}
@@ -121,47 +112,47 @@ export default function DataTableDemo({
                   ))}
               </DropdownMenuContent>
             </DropdownMenu>
+            {excelData && !handleUpdated && (
+  <Button
+    className="bg-[#6C120B] text-white"
+    onClick={() => exportToExcel(excelData, "excel")}
+  >
+    Excel İndir
+  </Button>
+)}
 
-            {!handleUpdated && (
-              <Button
-                className="bg-[#6C120B] text-white"
-                onClick={() => exportToExcel(excelData, "faturalar")}
-              >
-                Excel İndir
-              </Button>
-            )}
+     
 
-            {handleCreate  && (
+            {handleCreate && (
               <Created
                 formData={formData}
                 handleChange={handleChange}
                 handleSave={handleCreate}
               />
             )}
-                      {handleCreateSupplier  && (
+            {handleCreateSupplier && (
               <CreatedSupplier
                 formData={formData}
                 handleChange={handleChange}
                 handleSave={handleCreateSupplier}
               />
             )}
-            
-            {handleUpdated ? (
-  <CreatedUser
-    formData={formData}
-    handleImageChange={handleImageChange}
-    handleChangeUser={handleChangeUser}
-    handleSave={handleUpdated}
-  />
-) : handleCreateUser ? (
-  <CreatedUser
-    formData={formData}
-    handleImageChange={handleImageChange}
-    handleChangeUser={handleChangeUser}
-    handleSave={handleCreateUser}
-  />
-) : null}
 
+            {handleUpdated ? (
+              <CreatedUser
+                formData={formData}
+                handleImageChange={handleImageChange}
+                handleChangeUser={handleChangeUser}
+                handleSave={handleUpdated}
+              />
+            ) : handleCreateUser ? (
+              <CreatedUser
+                formData={formData}
+                handleImageChange={handleImageChange}
+                handleChangeUser={handleChangeUser}
+                handleSave={handleCreateUser}
+              />
+            ) : null}
           </div>
         )}
       </div>

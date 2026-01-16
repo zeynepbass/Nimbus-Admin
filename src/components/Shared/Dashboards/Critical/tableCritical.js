@@ -282,7 +282,22 @@ critical/${order.id}`)
       },
     },
   ];
-
+  const excelData = orders.map((p) => ({
+    "Ürün No": p.id,
+    "Ürün Adı": p.name,
+    Kategori: p.category,
+    Fiyat: p.price,
+    Stok: p.stock,
+    "Kritik Stok": p.criticalStock,
+    Satılan: p.sold,
+    Durum:
+      p.status === "active"
+        ? "Aktif"
+        : p.status === "critical"
+        ? "Kritik"
+        : "Stok Yok",
+    Tarih: formatDate(p.createdAt),
+  }));
   return (
     <div className="p-6 space-y-8 ">
       {!handleStockSave && (
@@ -298,6 +313,7 @@ critical/${order.id}`)
         searchTitle="Ürün No ile Filtrele Yöntemi"
         baslik={!handleStockSave ? "Kritik Stok Listesi" : "Stok ve Ürün Ayarları"}
         data={orders.slice().reverse()}
+        excelData={excelData}
         columns={columns}
       />
     </div>

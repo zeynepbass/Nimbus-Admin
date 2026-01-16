@@ -37,7 +37,7 @@ const router=useRouter();
         <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 ">
             {filteredData.map((item)=>{
                 return(
-                    <>
+                    <div key={item.id}>
          
                     <Avatar>
                     <AvatarImage src={item.avatar} alt={item.name} />
@@ -46,7 +46,7 @@ const router=useRouter();
                   </Avatar>
              
 
-                  </>
+                  </div>
                 )
             })}
     

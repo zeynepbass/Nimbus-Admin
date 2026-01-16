@@ -278,7 +278,23 @@ lastOrders/${order.id}`)
       },
     },
   ];
-
+  const excelData = orders.map((p) => ({
+    "Ürün No": p.id,
+    "Ürün Adı": p.name,
+    Kategori: p.category,
+    Fiyat: p.price,
+    Stok: p.stock,
+    "Kritik Stok": p.criticalStock,
+    Satılan: p.sold,
+    Durum:
+      p.status === "active"
+        ? "Aktif"
+        : p.status === "critical"
+        ? "Kritik"
+        : "Stok Yok",
+    Tarih: formatDate(p.createdAt),
+  }));
+  
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -288,6 +304,7 @@ lastOrders/${order.id}`)
         <StatCard title="Kritik Stok" value={criticalCount} />
       </div>
       <Table
+      excelData={excelData}
         searchTitle="Ürün No ile Filtrele Yöntemi"
         baslik="Son Siparişler Listesi"
         data={orders.slice().reverse()}

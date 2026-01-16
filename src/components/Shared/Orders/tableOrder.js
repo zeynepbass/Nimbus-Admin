@@ -222,7 +222,27 @@ export default function Page() {
       },
     },
   ];
-
+  const excelData = orders.map((o) => ({
+    "Sipariş No": o.id,
+    "Müşteri": o.customerName,
+    "Ürün Sayısı": o.items.reduce((sum, i) => sum + i.quantity, 0),
+    "Ürünler": o.items
+      .map((i) => `${i.name} (${i.quantity} adet)`)
+      .join(", "),
+    "Toplam Tutar (₺)": o.totalPrice,
+    "Ödeme Yöntemi":
+      o.paymentMethod === "credit_card"
+        ? "Kredi Kartı"
+        : o.paymentMethod === "cash"
+        ? "Nakit"
+        : o.paymentMethod,
+    "Sipariş Durumu":
+      o.timeline?.length > 0
+        ? o.timeline[o.timeline.length - 1].label
+        : "Bilinmiyor",
+    "Sipariş Tarihi": formatDate(o.createdAt),
+  }));
+  
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -232,6 +252,7 @@ export default function Page() {
         <StatCard title="Bekleyen" value={pendingCount} />
       </div>
       <Table
+      excelData={excelData}
         baslik="Siparişler Listesi"
         data={orders.slice().reverse()}
         columns={columns}
