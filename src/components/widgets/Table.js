@@ -15,7 +15,7 @@ import CreatedUser from "@/components/widgets/User/Created";
 import CreatedSupplier from "@/components/widgets/Supplier/CreatedSupplier";
 import { Button } from "@/components/ui/button";
 import { exportToExcel } from "@/helper/exportExcel";
-import formatDate from "@/helper/formatDate";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -72,13 +72,12 @@ export default function DataTableDemo({
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between py-2">
-        <h1 className="p-4">{baslik}</h1>
+      <div className="flex items-center justify-between">
+        <h1>{baslik}</h1>
         {baslik && (
-          <div className="flex gap-1 p-4">
+          <div className="flex gap-1 py-3">
             <Input
               placeholder={searchTitle || "Sipariş No ile filtreleme yöntemi"}
               value={table.getColumn("id")?.getFilterValue() ?? ""}
@@ -113,15 +112,13 @@ export default function DataTableDemo({
               </DropdownMenuContent>
             </DropdownMenu>
             {excelData && !handleUpdated && (
-  <Button
-    className="bg-[#6C120B] text-white"
-    onClick={() => exportToExcel(excelData, "excel")}
-  >
-    Excel İndir
-  </Button>
-)}
-
-     
+              <Button
+                className="bg-[#6C120B] text-white"
+                onClick={() => exportToExcel(excelData, "excel")}
+              >
+                Excel İndir
+              </Button>
+            )}
 
             {handleCreate && (
               <Created
@@ -156,6 +153,7 @@ export default function DataTableDemo({
           </div>
         )}
       </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -200,7 +198,7 @@ export default function DataTableDemo({
         </Table>
       </div>
 
-      <div className="flex justify-end gap-2 py-4">
+      <div className="flex justify-end gap-2 py-2">
         <Button
           variant="outline"
           size="sm"

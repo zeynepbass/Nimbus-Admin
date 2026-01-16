@@ -217,7 +217,7 @@ export default function Page() {
  
   
   return (
-    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
+    <div className="p-6  bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard title="Toplam Sipariş Sayısı" value={orders.length} />
         <StatCard title="Toplam Ciro" value={`₺${totalCiro}`} />

@@ -18,7 +18,7 @@ export default function SheetDemo({ formData, handleChange, handleSave }) {
   return (
     <Sheet>
         
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end">
         <SheetTrigger asChild>
           <Button className="bg-[#628DD0] text-white rounded-l px-4 py-2">
             + Ekle
