@@ -56,3 +56,4 @@ Dosya organizasyonunun Clean Architecture prensiplerine göre yeniden düzenlenm
 Component / Hook / Service katmanlarının net ayrıştırılması
 Shared logic’lerin custom hook’lara taşınması
 UI katmanında shadcn/ui + Tailwind ile yeniden kullanılabilir bileşen yapısının güçlendirilmesi
+
