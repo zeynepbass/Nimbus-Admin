@@ -1,6 +1,5 @@
 "use client";
 import users from "@/data/users.json";
-
 export function getCurrentUser() {
   if (typeof window === "undefined") return null;
 
