@@ -49,6 +49,11 @@ Next.js + shadcn/ui
 Responsive & temiz arayüz
 Minimal ve okunabilir tasarım
 
+
+Dev branch yapılıcaklar
+
+---
+
 🧠 Architecture & Code Quality Roadmap
 
 Proje genelinde design patterns (Container–Presenter, Service Layer, Factory) yapısına geçiş
