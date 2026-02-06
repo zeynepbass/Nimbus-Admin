@@ -126,7 +126,7 @@ const Header = () => {
                 document.body
               )}
           </Command>
-
+//powerbı alanı
           <button
             onClick={() => window.open("https://app.powerbi.com/", "_blank")}
             className="h-9 w-9 flex items-center justify-center text-[#102E46] "
