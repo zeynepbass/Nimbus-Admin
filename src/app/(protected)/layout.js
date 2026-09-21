@@ -1,14 +1,11 @@
 "use client";
 
-import { SidebarProvider } from "@/components/ui/sidebar";
-import AppSidebar from "@/components/Shared/sidebar";
-
-import Header from "@/components/Shared/header";
-
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
-import { roles } from "@/helper/role";
+import { usePathname, useRouter } from "next/navigation";
+import AppSidebar from "@/components/layout/AppSidebar";
+import Header from "@/components/layout/Header";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { getCurrentUser, getRedirectPath } from "@/lib/auth";
 
 export default function ProtectedLayout({ children }) {
   const router = useRouter();
@@ -16,25 +13,15 @@ export default function ProtectedLayout({ children }) {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    const user = getCurrentUser();
+    const redirectPath = getRedirectPath(getCurrentUser(), pathname);
 
-    if (!user) {
-      router.replace("/login");
-      return;
-    }
-
-    if (user.role === roles.USER && pathname.startsWith("/role")) {
-      router.replace("/dashboard/summary");
-      return;
-    }
-
-    if (user.role === roles.ADMIN && pathname.startsWith("/dashboard/summary")) {
-      router.replace("/role");
+    if (redirectPath) {
+      router.replace(redirectPath);
       return;
     }
 
     setChecking(false);
-  }, [pathname]);
+  }, [pathname, router]);
 
   if (checking) return null;
 
@@ -46,10 +33,10 @@ export default function ProtectedLayout({ children }) {
         <div className="flex flex-col flex-1">
           <Header />
 
-          <main className="flex-1 overflow-auto ">{children}</main>
-          <h5 className="text-right text-gray-400 p-3 text-sm">
+          <main className="flex-1 overflow-auto">{children}</main>
+          <footer className="text-right text-gray-400 p-3 text-sm">
             Nimbus Admin © 2026 · Role-based Access · Audit Ready
-          </h5>
+          </footer>
         </div>
       </div>
     </SidebarProvider>

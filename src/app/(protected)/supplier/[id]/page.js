@@ -1,9 +1,9 @@
-import SupplierDetails from "@/components/Shared/Supplier/tableSupplierDetails";
-import Supplier from "@/data/supplier.json";
+import SupplierDetails from "@/components/features/suppliers/SupplierDetails";
+import suppliers from "@/data/supplier.json";
 
 export default async function Page({ params }) {
-  const dashboardId = await params;
-  const supplier = Supplier.find((o) => o.id === dashboardId.id);
+  const { id } = await params;
+  const supplier = suppliers.find((item) => item.id === id);
 
   if (!supplier) return <p className="text-center">Tedarikçi bulunamadı</p>;
 

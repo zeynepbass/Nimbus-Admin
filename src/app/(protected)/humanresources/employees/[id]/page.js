@@ -1,11 +1,11 @@
-import EmployeesDetails from "@/components/Shared/HumanResources/Employees/tableEmployeesDetails";
-import Employees from "@/data/employees.json";
+import EmployeeDetails from "@/components/features/employees/EmployeeDetails";
+import employees from "@/data/employees.json";
 
 export default async function Page({ params }) {
-  const dashboardId = await params;
-  const employees = Employees.find((o) => o.id === dashboardId.id);
+  const { id } = await params;
+  const employee = employees.find((item) => item.id === id);
 
-  if (!employees) return <p className="text-center">Personel bulunamadı</p>;
+  if (!employee) return <p className="text-center">Personel bulunamadı</p>;
 
-  return <EmployeesDetails user={employees} />;
+  return <EmployeeDetails employee={employee} />;
 }

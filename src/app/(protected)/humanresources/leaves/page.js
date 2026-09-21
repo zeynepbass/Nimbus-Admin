@@ -1,11 +1,10 @@
-import React from "react";
-import Dashboards from "@/components/Shared/HumanResources/Leaves/tableLeaves";
-const page = () => {
-  return(
-    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
-<Dashboards />
-</div>
-  ) 
-};
+import PageContainer from "@/components/common/PageContainer";
+import LeaveTable from "@/components/features/leaves/LeaveTable";
 
-export default page;
+export default function Page() {
+  return (
+    <PageContainer>
+      <LeaveTable />
+    </PageContainer>
+  );
+}

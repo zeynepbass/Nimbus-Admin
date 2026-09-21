@@ -1,28 +1,25 @@
- "use client";
+"use client";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
-import { roles } from "@/helper/role";
+import { getCurrentUser, getHomePath } from "@/lib/auth";
 
-export default function LoginLayout({ children }) {
+export default function AuthLayout({ children }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
     const user = getCurrentUser();
-  
-    if (!user) {
-      setChecking(false);
+
+    if (user) {
+      router.replace(getHomePath(user));
       return;
     }
-  
-    router.replace(
-      user.role === roles.ADMIN ? "/role" : "/dashboard/summary"
-    );
+
+    setChecking(false);
   }, [router]);
-  
 
-  if (checking) return null; 
+  if (checking) return null;
 
-  return <>{children}</>;
+  return children;
 }

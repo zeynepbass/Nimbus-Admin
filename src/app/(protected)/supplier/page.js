@@ -1,7 +1,5 @@
-import React from "react";
-import Supplier from "@/components/Shared/Supplier/tableSupplier";
-const page = () => {
-  return <Supplier />
-};
+import SupplierTable from "@/components/features/suppliers/SupplierTable";
 
-export default page;
+export default function Page() {
+  return <SupplierTable />;
+}

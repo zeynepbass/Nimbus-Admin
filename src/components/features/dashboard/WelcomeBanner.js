@@ -1,0 +1,29 @@
+export default function WelcomeBanner({ name }) {
+  return (
+    <div className="relative h-40">
+      <div
+        className="h-40 rounded-xl bg-cover bg-center overflow-hidden"
+        style={{ backgroundImage: "url('/images/wave-haikei.png')" }}
+      >
+        <img
+          src="/images/curve-rafiki.png"
+          alt="Welcome illustration"
+          className="absolute -top-[80px] left-0 w-70 h-70 z-50 pointer-events-none"
+        />
+
+        <div className="relative z-10 h-full flex flex-col justify-center pl-75 pr-6">
+          <span className="text-sm text-white/80">Hoş geldin 👋</span>
+          <h2 className="text-xl md:text-2xl font-semibold text-white">{name}</h2>
+          <p className="text-sm text-white/70 mt-1">
+            <span className="font-bold text-xl">Doğru yoldasınız!</span>
+            <br />
+            Son faaliyetleriniz tutarlı ilerleme ve güçlü bir katılım gösteriyor.
+            <br />
+            Geliştirmeye, iyileştirmeye ve sınırlarınızı zorlamaya devam edin;
+            sonuçlar giderek artıyor.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

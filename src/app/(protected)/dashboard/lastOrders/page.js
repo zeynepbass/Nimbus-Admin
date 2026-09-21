@@ -1,7 +1,5 @@
-import React from "react";
-import Dashboards from "@/components/Shared/Dashboards/LastOrders/tableLastOrders";
-const page = () => {
-  return <Dashboards />
-};
+import LastOrders from "@/components/features/dashboard/LastOrders";
 
-export default page;
+export default function Page() {
+  return <LastOrders />;
+}

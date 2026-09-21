@@ -1,7 +1,5 @@
-import React from "react";
-import Employees from "@/components/Shared/HumanResources/Employees/tableEmployees"
-const page = () => {
-  return <Employees />
-};
+import EmployeeTable from "@/components/features/employees/EmployeeTable";
 
-export default page;
+export default function Page() {
+  return <EmployeeTable />;
+}

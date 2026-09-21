@@ -1,7 +1,5 @@
-import React from "react";
-import Orders from "@/components/Shared/Orders/tableOrder";
-const page = () => {
-  return <Orders />;
-};
+import OrderTable from "@/components/features/orders/OrderTable";
 
-export default page;
+export default function Page() {
+  return <OrderTable />;
+}

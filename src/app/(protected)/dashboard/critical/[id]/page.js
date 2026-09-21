@@ -1,11 +1,11 @@
-import SummaryDetailsClient from "@/components/Shared/Dashboards/Critical/tableCriticalDetails";
-import Dashboard from "@/data/product.json";
+import ProductDetails from "@/components/features/products/ProductDetails";
+import products from "@/data/product.json";
 
 export default async function Page({ params }) {
-  const dashboardId = await params;
-  const summary = Dashboard.find((o) => o.id === dashboardId.id);
+  const { id } = await params;
+  const product = products.find((item) => item.id === id);
 
-  if (!summary) return <p className="text-center">Ürün bulunamadı</p>;
+  if (!product) return <p className="text-center">Ürün bulunamadı</p>;
 
-  return <SummaryDetailsClient order={summary} />;
+  return <ProductDetails product={product} />;
 }

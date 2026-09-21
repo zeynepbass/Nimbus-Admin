@@ -1,11 +1,11 @@
-import OrderDetailsClient from "@/components/Shared/Orders/tableOrderDetails";
+import OrderDetails from "@/components/features/orders/OrderDetails";
 import orders from "@/data/orders.json";
 
 export default async function Page({ params }) {
-  const orderId = await params;
-  const order = orders.find((o) => o.id === orderId.id);
+  const { id } = await params;
+  const order = orders.find((item) => item.id === id);
 
   if (!order) return <p className="text-center">Sipariş bulunamadı</p>;
 
-  return <OrderDetailsClient order={order} />;
+  return <OrderDetails order={order} />;
 }
